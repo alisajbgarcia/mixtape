@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+
 void main() {
   runApp(const MyApp());
 }
@@ -58,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      print("hi");
     });
   }
 
@@ -73,7 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text("This is a custom font",
+          style: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
