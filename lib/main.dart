@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/home_page.dart';
+import 'package:mixtape/utilities/colors.dart';
 
 
 
@@ -107,6 +109,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
+            ),
+            FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                }
             ),
           ],
         ),

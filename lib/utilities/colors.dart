@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /* Define MixTape custom colors
- * 1. Import this file: import package:mixtape/assets/colors.dart
+ * 1. Import this file: import package:mixtape/utilities/colors.dart
  * 2. Use MixTapeColors.<color>
  */
 class MixTapeColors {
