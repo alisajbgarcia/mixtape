@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/profile_page.dart';
 import 'package:mixtape/utilities/colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,10 +17,20 @@ class _HomePageState extends State<HomePage> {
     Text('Tab 4 Content'),
   ];
 
+  static const List<Widget> _pages = <Widget>[
+    ProfilePage(),
+    ProfilePage(),
+    ProfilePage(),
+    ProfilePage(),
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => _pages.elementAt(_selectedIndex)),
+    );
   }
 
   @override
@@ -43,8 +54,8 @@ class _HomePageState extends State<HomePage> {
             label: 'Tab 2',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Tab 3',
+            icon: Icon(Icons.account_circle_rounded),
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
