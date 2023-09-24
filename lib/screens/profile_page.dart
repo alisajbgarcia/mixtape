@@ -16,8 +16,8 @@ class ProfilePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            flex: 9,
+          Flexible(
+            flex: 1,
             child: Column(
               children: [
                 const Text(
@@ -37,32 +37,56 @@ class ProfilePage extends StatelessWidget {
                           fit: BoxFit.fill,
                           image: AssetImage('assets/green_colored_logo.png'),
                         ))),
+                const Text(
+                  'Ish Mistry',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold),
+                ),
               ],
             ),
           ),
           Flexible(
-            flex: 5,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                foregroundColor:
-                    MaterialStateProperty.all<Color>(MixTapeColors.green),
-              ),
-              onPressed: () {
-                print("logout");
-              },
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/spotify/Spotify_Icon_RGB_Green.png',
-                    width: 100,
-                    height: 100,
+            flex: 1,
+            child: Padding(
+              padding: EdgeInsets.only(left: 50, right: 50),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(MixTapeColors.green),
+                  padding: MaterialStateProperty.all(EdgeInsets.only(left: 25, right: 100)),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
                   ),
-                  const Text(
-                    'Logout',
-                    style: TextStyle(fontFamily: 'Montserrat'),
-                  ),
-                ],
+                ),
+                onPressed: () {
+                  print("logout");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Image.asset(
+                        'assets/spotify/Spotify_Icon_RGB_Green.png',
+                        width: 100,
+                        height: 100,
+                      ),
+                    ),
+                    Flexible(
+                      flex: 5,
+                      child: const Text(
+                        'Logout',
+                        style: TextStyle(fontFamily: 'Montserrat'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
