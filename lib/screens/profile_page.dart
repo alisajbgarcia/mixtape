@@ -20,7 +20,11 @@ class _ProfilePageState extends State<ProfilePage> {
   // ];
   //
   // void _onItemTapped(int index) {
-  //   Navigator.of(context as BuildContext).push(
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  //   print(_selectedIndex);
+  //   Navigator.of(context).push(
   //     MaterialPageRoute(builder: (context) => _pages.elementAt(_selectedIndex)),
   //   );
   // }
@@ -53,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.width * .01),
                   child: const Text(
                     'Profile',
                     style: TextStyle(
@@ -78,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ))),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .01),
                   child: const Text(
                     'ish mistry',
                     style: TextStyle(
@@ -147,14 +151,15 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       // bottomNavigationBar: BottomNavigationBar(
+      //   backgroundColor: MixTapeColors.black,
       //   items: const <BottomNavigationBarItem>[
       //     BottomNavigationBarItem(
       //       icon: Icon(Icons.home),
-      //       label: 'Tab 1',
+      //       label: 'Home',
       //     ),
       //     BottomNavigationBarItem(
       //       icon: Icon(Icons.business),
-      //       label: 'Tab 2',
+      //       label: 'Friends',
       //     ),
       //     BottomNavigationBarItem(
       //       icon: Icon(Icons.account_circle_rounded),
@@ -162,7 +167,8 @@ class _ProfilePageState extends State<ProfilePage> {
       //     ),
       //   ],
       //   currentIndex: _selectedIndex,
-      //   selectedItemColor: Colors.blue,
+      //   selectedItemColor: MixTapeColors.green,
+      //   unselectedItemColor: MixTapeColors.green,
       //   onTap: _onItemTapped,
       // ),
     );
