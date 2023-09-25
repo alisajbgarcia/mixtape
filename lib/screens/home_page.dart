@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
+import 'package:mixtape/widgets/navbar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,17 +19,17 @@ class PlaylistInfo {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  List<PlaylistInfo> cardData = [
-    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20),
-    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30),
-    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
+  List<PlaylistInfo> cardData = [
+    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20),
+    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30),
+    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -188,31 +189,9 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      bottomNavigationBar: Theme(
-        data: ThemeData(
-          canvasColor: MixTapeColors.black, // Set the canvasColor to black
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: MixTapeColors.black,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: MixTapeColors.green),
-              label: 'Home'
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_add, color: MixTapeColors.green),
-              label: 'Friends',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings, color: MixTapeColors.green),
-              label: 'Profile'
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: MixTapeColors.green,
-          unselectedItemColor: MixTapeColors.green,
-          onTap: _onItemTapped,
-        ),
+      bottomNavigationBar: NavBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
