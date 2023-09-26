@@ -9,8 +9,21 @@ class PlaylistCreationScreen extends StatefulWidget {
 }
 
 class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final Size screenSize = MediaQuery.of(context).size;
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    final double screenWidth = screenSize.width;
+    final double screenHeight = screenSize.height;
+    return Container(
+      width: screenWidth,
+      height: screenHeight,
+      decoration: BoxDecoration(
+        color: MixTapeColors.black,
+      ),
+
+
+    );
   }
 }

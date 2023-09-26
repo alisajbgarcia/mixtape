@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
@@ -173,7 +174,10 @@ class _HomePageState extends State<HomePage> {
           ),
           FloatingActionButton.extended(
             onPressed: () {
-              // Add your button action here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
+              );
             },
             label: Text(
                 'Create a Playlist',
