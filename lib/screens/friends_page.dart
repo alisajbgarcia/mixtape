@@ -18,14 +18,18 @@ class _FriendsPageState extends State<FriendsPage> {
       _selectedIndex = index;
     });
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => NavbarPages.navBarPages.elementAt(_selectedIndex)),
+      MaterialPageRoute(
+          builder: (context) =>
+              NavbarPages.navBarPages.elementAt(_selectedIndex)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("Friends Page placeholder"),
+      body: Center(
+        child: Text("Friends Page placeholder"),
+      ),
       bottomNavigationBar: NavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
