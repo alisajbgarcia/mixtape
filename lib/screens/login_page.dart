@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 
@@ -26,8 +25,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 20),
               FilledButton.icon(
-                onPressed: null,
+                onPressed: () {
+                  print("login");
+                },
                 style: FilledButton.styleFrom(
+                  backgroundColor: MixTapeColors.dark_gray,
                   padding: EdgeInsets.all(10),
                   fixedSize: Size(250, 100),
                 ),
@@ -41,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                   'Login with Spotify',
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.white,
+                    color: MixTapeColors.green,
                   ),
                   textAlign: TextAlign.center,
                 ),
