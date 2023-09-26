@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
+import 'package:mixtape/screens/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -27,6 +28,10 @@ class _LoginPageState extends State<LoginPage> {
               FilledButton.icon(
                 onPressed: () {
                   print("login");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
                 },
                 style: FilledButton.styleFrom(
                   backgroundColor: MixTapeColors.dark_gray,
