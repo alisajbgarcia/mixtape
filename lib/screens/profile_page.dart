@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mixtape/screens/home_page.dart';
+import 'package:mixtape/utilities/navbar_pages.dart';
+import 'package:mixtape/widgets/navbar.dart';
 
 import '../utilities/colors.dart';
 
@@ -11,47 +12,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // int _selectedIndex = 0;
-  //
-  // static List<Widget> _pages = <Widget>[
-  //   HomePage(),
-  //   ProfilePage(),
-  //   ProfilePage(),
-  // ];
-  //
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  //   print(_selectedIndex);
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(builder: (context) => _pages.elementAt(_selectedIndex)),
-  //   );
-  // }
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => NavbarPages.navBarPages.elementAt(_selectedIndex)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MixTapeColors.black,
-      // appBar: AppBar(
-      //   backgroundColor: MixTapeColors.black,
-      //   title: Text('Profile Page'),
-      // ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Flexible(
-          //   flex: 1,
-          //   child: Align(
-          //     alignment: Alignment.topRight,
-          //     child: IconButton(
-          //     icon: const Icon(Icons.settings),
-          //     onPressed: () {
-          //       print("settings");
-          //     },
-          //   ),),
-          // ),
           Flexible(
             flex: 1,
             child: Column(
@@ -150,27 +129,10 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   backgroundColor: MixTapeColors.black,
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.business),
-      //       label: 'Friends',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.account_circle_rounded),
-      //       label: 'Profile',
-      //     ),
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   selectedItemColor: MixTapeColors.green,
-      //   unselectedItemColor: MixTapeColors.green,
-      //   onTap: _onItemTapped,
-      // ),
+      bottomNavigationBar: NavBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
