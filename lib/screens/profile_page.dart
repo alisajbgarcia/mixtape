@@ -25,6 +25,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: MixTapeColors.black,
       body: Column(
@@ -37,13 +39,13 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.width * .01),
-                  child: const Text(
+                  child: Text(
                     'Profile',
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
-                      fontSize: 40,
+                      fontSize: 40.0 * textScaleFactor,
                     ),
                   ),
                 ),
@@ -62,12 +64,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .01),
-                  child: const Text(
+                  child: Text(
                     'ish mistry',
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0 * textScaleFactor,
+                    ),
                   ),
                 ),
               ],
@@ -111,11 +115,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     Flexible(
                       flex: 5,
                       child: Center(
-                        child: const Text(
+                        child: Text(
                           'Logout',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
-                            fontSize: 20,
+                            fontSize: 20.0 * textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: MixTapeColors.green,
                           ),
