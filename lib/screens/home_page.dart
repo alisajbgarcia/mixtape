@@ -3,6 +3,8 @@ import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
+import '../utilities/navbar_pages.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -24,6 +26,9 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => NavbarPages.navBarPages.elementAt(_selectedIndex)),
+    );
   }
 
   List<PlaylistInfo> cardData = [
@@ -192,7 +197,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-
       bottomNavigationBar: NavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
