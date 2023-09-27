@@ -9,6 +9,14 @@ class PlaylistCreationScreen extends StatefulWidget {
 }
 
 class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
+  TextEditingController _textController = TextEditingController();
+  String _textFieldValue = "";
+
+  @override
+  void dispose() {
+    _textController.dispose(); // Dispose of the controller when the widget is disposed.
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +45,15 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
           ),
           child: Column(
             children: [
-              Text(
-                "This is a custom font",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
+              Container(
+                height: screenHeight * .035, // Set
+                width: screenWidth * .5,// the width of the container
+                padding: EdgeInsets.fromLTRB(16, 100, 16, 16), // Add padding
+                decoration: BoxDecoration(
+                  color: MixTapeColors.black.withOpacity(.5), // Set the background color to gray
+                  borderRadius: BorderRadius.circular(1.5), // Add rounded corners
                 ),
-              ),
-              Text(
-                "This is a custom font",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                ),
+                child: Text("Test"),
               ),
             ],
 
