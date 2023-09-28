@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 
+class PlaylistInfo {
+  String title;
+  String image;
+  int numSongs;
+
+  PlaylistInfo(this.title, this.image, this.numSongs);
+}
+
 class PlaylistScreen extends StatefulWidget {
   final int playlistId;
   final int spotify_id;
@@ -11,7 +19,14 @@ class PlaylistScreen extends StatefulWidget {
 }
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
+
   // API call to get playlist info
+  List<PlaylistInfo> cardData = [
+    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20),
+    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30),
+    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -47,31 +62,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         color: MixTapeColors.black.withOpacity(.5), // Set the background color to gray
                         borderRadius: BorderRadius.circular(3), // Add rounded corners
                       ),
-                      child: SingleChildScrollView(
-                        child: TextField(
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: textScaleFactor * 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
-                            border: InputBorder.none,
-                            focusColor: Colors.white,
-                            hintText: "Name",
-                            hintStyle: TextStyle(
+                      child:FittedBox(
+                        fit: BoxFit.scaleDown, // This makes the text shrink to fit
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            'ish and charlie like to party',
+                            style: TextStyle(
+                              fontSize: 20,
                               fontFamily: 'Montserrat',
-                              fontSize: textScaleFactor * 15,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),
-                            suffixIcon: Icon(
-                              Icons.create_rounded,
-                              color: Colors.white,
-                              size: 15,
-                            ), // The trailing icon
                           ),
                         ),
                       ),
@@ -123,6 +126,117 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     )
                 ),
               ],
+            ),
+            Expanded(
+              child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
+                child: Column(
+                  children: cardData.map((playlist) {
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(12.0),
+                      onTap: () {
+                        print('Tapped on Card ${playlist.title}');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
+                        );
+                      },
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                          ),
+                          elevation: 3.0,
+                          margin: EdgeInsets.all(15.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    height: screenHeight * .2,
+                                    color: MixTapeColors.dark_gray,
+                                    child: Image.asset(playlist.image),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
+                                    height: screenHeight * .2,
+                                    color: MixTapeColors.light_gray,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          playlist.title,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: (22 * textScaleFactor),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        FilledButton(
+                                          style: FilledButton.styleFrom(
+                                            backgroundColor: MixTapeColors.dark_gray,
+                                            padding: EdgeInsets.all(0),
+                                            fixedSize: Size(150, 15),
+                                          ),
+                                          onPressed: null,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Image.asset('assets/blue_colored_logo.png', width: 25, height: 25),
+                                              Text(
+                                                "with alexfrey2",
+                                                style: TextStyle(
+                                                  fontSize: (10 * textScaleFactor),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Card(
+                                          color: MixTapeColors.light_gray,
+                                          elevation: 0.0,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "${playlist.numSongs} songs",
+                                                style: TextStyle(
+                                                  fontSize: (12 * textScaleFactor),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                '${3} hours, ${30} min',
+                                                style: TextStyle(
+                                                  color: Colors.grey[400],
+                                                  fontSize: (12 * textScaleFactor),
+                                                ),
+                                              ),
+                                              Image.asset(
+                                                'assets/spotify/Spotify_Icon_RGB_Green.png',
+                                                height: screenHeight * .03,
+                                                width: screenHeight * .03,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .05),
