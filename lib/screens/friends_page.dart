@@ -22,6 +22,7 @@ class FriendsInfo {
 }
 
 class _FriendsPageState extends State<FriendsPage> {
+  bool isSearchBarVisible = false;
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -34,6 +35,12 @@ class _FriendsPageState extends State<FriendsPage> {
               NavbarPages.navBarPages.elementAt(_selectedIndex)),
     );
   }
+
+  void toggleSearchBar() {
+      setState(() {
+        isSearchBarVisible = !isSearchBarVisible;
+      });
+    }
 
   List<FriendsInfo> cardData = [
     FriendsInfo('zestythomae', 'assets/green_colored_logo.png'),
@@ -52,25 +59,23 @@ class _FriendsPageState extends State<FriendsPage> {
     return Scaffold(
       backgroundColor: MixTapeColors.black,
       appBar: AppBar(
-        title: Text('Your Friends',
-          style: TextStyle(
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w600,
-            fontSize: (25.0 * textScaleFactor),
+        title: 
+        Align(
+          alignment: Alignment.center,
+          child: Text('Your Friends',
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w600,
+              fontSize: (25.0 * textScaleFactor),
+            ),
           ),
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
         elevation: 0.0,
         toolbarHeight: screenHeight * .13,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Image.asset('assets/blue_colored_logo.png'),
-          )
-        ],
       ),
-      body: Column(
+      body: Stack(
         children: [
           Container(
             height: screenHeight * .67,
@@ -89,7 +94,7 @@ class _FriendsPageState extends State<FriendsPage> {
                             borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
                           ),
                           elevation: 3.0,
-                          margin: EdgeInsets.all(15.0),
+                          margin: EdgeInsets.all(8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12.0),
                             child: Row(
@@ -144,8 +149,52 @@ class _FriendsPageState extends State<FriendsPage> {
               ),
             ),
           ),
-        ],
-      ),
+          isSearchBarVisible
+          ? Container(
+            color: MixTapeColors.dark_gray,
+            height: MediaQuery.of(context).size.height * 3/4,
+            child: Center(
+              child: isSearchBarVisible
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Search Bar',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        // Add your search bar widget here
+                        // Example: TextField(),
+                      ],
+                    )
+                  : SizedBox() // Empty placeholder when not visible
+            ),
+          )
+          : SizedBox(),
+         ],
+       ),
+      floatingActionButton: GestureDetector(
+          onTap: () { print('Tapped Added Friends'); },
+          child: Container(
+            width: 200,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: MixTapeColors.green,
+            ),
+            child: Center(
+              child: TextButton(
+                child: const Text(
+                  'Add Friends +',
+                  style: TextStyle(
+                    fontSize: (22),                       
+                    color: Colors.white,
+                   ),
+                  ),
+                  onPressed: toggleSearchBar,
+                ),
+              ),
+            ),
+          ),
       bottomNavigationBar: NavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
