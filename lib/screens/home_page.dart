@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
+import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
@@ -77,6 +78,10 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
                         print('Tapped on Card ${playlist.title}');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
+                        );
                       },
                       child: Card(
                           shape: RoundedRectangleBorder(
