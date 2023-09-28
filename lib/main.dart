@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/home_page.dart';
+import 'package:mixtape/screens/tape_creation_page.dart';
 import 'package:mixtape/utilities/colors.dart';
 
 
@@ -113,8 +114,16 @@ class _MyHomePageState extends State<MyHomePage> {
             FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                }
+            ),
+            FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TapeCreationPage()),
                   );
                 }
             ),
