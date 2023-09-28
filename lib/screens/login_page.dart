@@ -12,6 +12,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    final double screenWidth = screenSize.width;
+    final double screenHeight = screenSize.height;
     return Scaffold(
         backgroundColor: MixTapeColors.black,
         body: Center(
@@ -21,8 +25,8 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               Image.asset(
                 'assets/green_colored_logo.png',
-                width: 200,
-                height: 200,
+                width: screenHeight * .4,
+                height: screenHeight * .4,
               ),
               SizedBox(height: 20),
               FilledButton.icon(
@@ -36,18 +40,18 @@ class _LoginPageState extends State<LoginPage> {
                 style: FilledButton.styleFrom(
                   backgroundColor: MixTapeColors.dark_gray,
                   padding: EdgeInsets.all(10),
-                  fixedSize: Size(250, 100),
+                  fixedSize: Size(screenWidth * .75, screenWidth * .25),
                 ),
                 icon: Image.asset(
                   'assets/spotify/Spotify_Icon_RGB_Green.png',
-                  width: 35,
-                  height: 35,
+                  width: screenSize.shortestSide * .1,
+                  height: screenSize.shortestSide * .1,
                   alignment: Alignment.centerLeft,
                 ),
                 label: Text(
                   'Login with Spotify',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 20 * textScaleFactor,
                     color: MixTapeColors.green,
                   ),
                   textAlign: TextAlign.center,
