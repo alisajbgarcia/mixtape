@@ -156,45 +156,78 @@ class _FriendsPageState extends State<FriendsPage> {
             child: Center(
               child: isSearchBarVisible
                   ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Search Bar',
-                          style: TextStyle(fontSize: 24),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: MixTapeColors.light_gray,
+                              shape: CircleBorder(
+                                side: BorderSide(color: MixTapeColors.light_gray),
+                              ),
+                            ),
+                            child: Text(
+                              style: const TextStyle(
+                                              fontSize: (22),
+                                              color: Colors.white,
+                                            ),
+                              'X',
+                            ), 
+                            onPressed: toggleSearchBar,
+                          ),
                         ),
-                        // Add your search bar widget here
-                        // Example: TextField(),
+                        Container(
+                          margin: EdgeInsets.only(top: 0, bottom: 5, left: 10, right: 10),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              filled: true,
+                              hintStyle: TextStyle(color: MixTapeColors.dark_gray),
+                              hintText: "Search for users...",
+                              fillColor: Colors.white70,
+                            ),
+                          ),
+                        ),
+                        //TODO: Search bar results
+                        
                       ],
                     )
                   : SizedBox() // Empty placeholder when not visible
             ),
           )
-          : SizedBox(),
-         ],
-       ),
-      floatingActionButton: GestureDetector(
-          onTap: () { print('Tapped Added Friends'); },
-          child: Container(
-            width: 200,
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: MixTapeColors.green,
-            ),
-            child: Center(
-              child: TextButton(
-                child: const Text(
-                  'Add Friends +',
-                  style: TextStyle(
-                    fontSize: (22),                       
-                    color: Colors.white,
-                   ),
+          : Container(
+            alignment: Alignment.bottomRight,
+            margin: EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () { print('Tapped Added Friends'); },
+              child: Container(
+                //alignment: Alignment.bottomRight,
+                width: 200,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: MixTapeColors.green,
+                ),
+                child: Center(
+                  child:TextButton(
+                    child: const Text(
+                      'Add Friends +',
+                      style: TextStyle(
+                        fontSize: (22),                       
+                        color: Colors.white,
+                      ),
+                      ),
+                      onPressed: toggleSearchBar,
+                    )
                   ),
-                  onPressed: toggleSearchBar,
                 ),
               ),
             ),
-          ),
+         ],
+       ),
+
       bottomNavigationBar: NavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
