@@ -4,7 +4,15 @@ import 'package:mixtape/screens/login_page.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MaterialApp(
+      initialRoute: '/home', // Specify the initial route
+      routes: {
+        '/home': (context) => HomePage(), // Define the home screen
+        // Add other routes here
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -44,4 +52,3 @@ class MyHomePage extends LoginPage {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 }
-

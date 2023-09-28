@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
@@ -19,7 +20,7 @@ class PlaylistInfo {
 
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -46,6 +47,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: MixTapeColors.black,
       appBar: AppBar(
         title: Text('Your Playlists',
+          textAlign: TextAlign.start,
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w600,
@@ -58,7 +60,7 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: screenHeight * .13,
         actions: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(screenHeight * .03),
             child: Image.asset('assets/blue_colored_logo.png'),
           )
         ],
@@ -69,8 +71,7 @@ class _HomePageState extends State<HomePage> {
             height: screenHeight * .67,
             padding: EdgeInsets.fromLTRB(5, 0, 5, 30),
             child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
-              child: Container(
-                child: Column(
+              child: Column(
                   children: cardData.map((playlist) {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
@@ -173,12 +174,19 @@ class _HomePageState extends State<HomePage> {
                     );
                   }).toList(),
                 ),
-              ),
             ),
           ),
           FloatingActionButton.extended(
+            heroTag: "playlist_creation",
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
+            ),
             onPressed: () {
-              // Add your button action here
+              print("here omg please");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
+              );
             },
             label: Text(
                 'Create a Playlist',
