@@ -8,7 +8,7 @@ void main() {
     MaterialApp(
       initialRoute: '/home', // Specify the initial route
       routes: {
-        '/home': (context) => HomePage(), // Define the home screen
+        '/home': (context) => LoginPage(), // Define the home screen
         // Add other routes here
       },
     ),
