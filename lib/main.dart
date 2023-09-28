@@ -5,7 +5,15 @@ import 'package:mixtape/utilities/colors.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MaterialApp(
+      initialRoute: '/home', // Specify the initial route
+      routes: {
+        '/home': (context) => HomePage(), // Define the home screen
+        // Add other routes here
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -109,14 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
-            ),
-            FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                  );
-                }
             ),
           ],
         ),

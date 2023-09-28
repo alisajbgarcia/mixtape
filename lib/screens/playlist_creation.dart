@@ -24,41 +24,142 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
-    return Container(
-      width: screenWidth,
-      height: screenHeight,
-      color: MixTapeColors.black,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(5, 40, 5, 0),
-        child: Container(
-          width: screenWidth,
-          height: screenHeight,
-          decoration: BoxDecoration(
-            color: MixTapeColors.black,
-            image: DecorationImage(
-              image: AssetImage(
-                'assets/mixtape_image.png',
-              ),
-              alignment: Alignment.topCenter,
-              scale: 1.04,
-            ),
-          ),
-          child: Column(
-            children: [
-              Container(
-                height: screenHeight * .035, // Set
-                width: screenWidth * .5,// the width of the container
-                padding: EdgeInsets.fromLTRB(16, 100, 16, 16), // Add padding
-                decoration: BoxDecoration(
-                  color: MixTapeColors.black.withOpacity(.5), // Set the background color to gray
-                  borderRadius: BorderRadius.circular(1.5), // Add rounded corners
+    return Scaffold(
+      body: Container(
+        width: screenWidth,
+        height: screenHeight,
+        color: MixTapeColors.black,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 20, 5, 0),
+                  child: Image.asset(
+                    'assets/mixtape_image.png',
+                    scale: 1.01,
+                  ),
                 ),
-                child: Text("Test"),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: screenHeight * .06, // Adjust the top position as needed
+                  child: Center(
+                    child: Container(
+                      height: screenHeight * .05, // Set
+                      width: screenWidth * .55,
+                      decoration: BoxDecoration(
+                        color: MixTapeColors.black.withOpacity(.5), // Set the background color to gray
+                        borderRadius: BorderRadius.circular(3), // Add rounded corners
+                      ),
+                      child: SingleChildScrollView(
+                          child: TextField(
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: textScaleFactor * 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+                              border: InputBorder.none,
+                              focusColor: Colors.white,
+                              hintText: "Name",
+                              hintStyle: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: textScaleFactor * 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                              suffixIcon: Icon(
+                                Icons.create_rounded,
+                                color: Colors.white,
+                                size: 15,
+                              ), // The trailing icon
+                            ),
+                          ),
+                        ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: screenHeight * .27,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(screenWidth * .05, 0, 0, 0),
+                          child: Container(
+                            decoration: ShapeDecoration(
+                              color: MixTapeColors.light_gray,
+                              shape: CircleBorder(),
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.add_photo_alternate_outlined),
+                              color: Colors.white,
+                              onPressed: () {
+                                print("here my goodness");
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, screenWidth * .05, 0),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.person_add_alt_rounded,
+                              size: screenHeight * .04,
+                            ),
+                            color: Colors.white,
+                            onPressed: () {
+                              print("do you have friends");
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+              ],
+            ),
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .05),
+              child: FloatingActionButton.extended(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
+                ),
+                heroTag: "playlist_invitation",
+                onPressed: () {
+                  print("send invitation");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
+                  );
+                },
+                label: Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Send invitation',
+                    style: TextStyle(
+                      fontSize: textScaleFactor * 20,
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                backgroundColor: MixTapeColors.green, // Change the button's color
               ),
-            ],
-
-          ),
-
+            ),
+          ],
         ),
       ),
     );
