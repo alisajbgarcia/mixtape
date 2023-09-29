@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<Response> getAuth() async {
     OAuth2Client client = SpotifyOAuth2Client(
-        redirectUri: "com.mixtape//callback", customUriScheme: "com.mixtape");
+        redirectUri: "oauth2://com.mixtape/callback", customUriScheme: "oauth2");
 
 //Then, instantiate the helper passing the previously instantiated client
     OAuth2Helper oauth2Helper = OAuth2Helper(client,
@@ -43,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
         scopes: ['profile', 'openid']);
 //
     Response res = await oauth2Helper
-        .get('http://localhost:8080/api/v1/profile/me') as Response;
+        .get('http://api.localhost:8081/v1/profile/me') as Response;
 //     Response res = await get(Uri.parse('http://localhost:8080/api/v1/profile/me'));
 //     Response res = await get(Uri.parse('http://localhost:9000/login'));
     // print(jsonDecode(res.body));
@@ -178,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
