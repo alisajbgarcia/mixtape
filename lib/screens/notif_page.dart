@@ -93,9 +93,7 @@ class _NotifPage extends State<NotifPage> {
                           size: textScaleFactor * 50,
                           color: Colors.white,
                         ),
-                        onPressed: () {
-                          null;
-                        }
+                        onPressed: () => setState(() => notifInfo.remove(notif)),
                       ),
                       IconButton(
                         padding: EdgeInsets.all(10),
@@ -104,9 +102,7 @@ class _NotifPage extends State<NotifPage> {
                           size: textScaleFactor * 20,
                           color: Colors.white,
                         ),
-                        onPressed: () {
-                          null;
-                        }
+                        onPressed: () => setState(() => notifInfo.remove(notif)),
                       ),
                     ]
                   ),
@@ -126,6 +122,24 @@ class _NotifPage extends State<NotifPage> {
                           ),
                         '${notif.user} invited you to join the playlist "${notif.title}" do you accept?'
                         ),
+                      ),
+                      IconButton(
+                        padding: EdgeInsets.all(10),
+                        icon: ImageIcon(
+                          AssetImage("assets/yes.png"),
+                          size: textScaleFactor * 50,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => setState(() => notifInfo.remove(notif)),
+                      ),
+                      IconButton(
+                        padding: EdgeInsets.all(10),
+                        icon: ImageIcon(
+                          AssetImage("assets/no.png"),
+                          size: textScaleFactor * 20,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => setState(() => notifInfo.remove(notif)),
                       ),
                     ]
                   ),
