@@ -167,10 +167,10 @@ class _FriendsPageState extends State<FriendsPage> {
                               ),
                             ),
                             child: Text(
-                              style: const TextStyle(
-                                              fontSize: (22),
-                                              color: Colors.white,
-                                            ),
+                              style: TextStyle(
+                                  fontSize: (15 * textScaleFactor),
+                                  color: Colors.white,
+                                  ),
                               'X',
                             ), 
                             onPressed: toggleSearchBar,
@@ -212,10 +212,10 @@ class _FriendsPageState extends State<FriendsPage> {
                 ),
                 child: Center(
                   child:TextButton(
-                    child: const Text(
+                    child: Text(
                       'Add Friends +',
                       style: TextStyle(
-                        fontSize: (22),                       
+                        fontSize: (22 * textScaleFactor),                       
                         color: Colors.white,
                       ),
                       ),
