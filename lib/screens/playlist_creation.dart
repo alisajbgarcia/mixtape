@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 
+import '../widgets/playlist_invitation.dart';
+
 class PlaylistCreationScreen extends StatefulWidget {
   const PlaylistCreationScreen({super.key});
 
@@ -16,6 +18,16 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   void dispose() {
     _textController.dispose(); // Dispose of the controller when the widget is disposed.
     super.dispose();
+  }
+
+  // Function to open the PlaylistInvitation alert dialog
+  void openPlaylistInvitationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PlaylistInvitation();
+      },
+    );
   }
 
   @override
@@ -121,6 +133,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                             color: Colors.white,
                             onPressed: () {
                               print("do you have friends");
+                              openPlaylistInvitationDialog(context);
                             },
                           ),
                         ),
@@ -140,10 +153,6 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                 heroTag: "playlist_invitation",
                 onPressed: () {
                   print("send invitation");
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
-                  );
                 },
                 label: Padding(
                   padding: EdgeInsets.all(5.0),

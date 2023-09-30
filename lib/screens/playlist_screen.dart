@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 
-class PlaylistInfo {
+class Song {
+  String title;
+  String artist;
+  String album;
+
+  Song(this.title, this.artist, this.album);
+}
+
+class MixTapeInfo {
   String title;
   String image;
   int numSongs;
+  List<Song> songs;
 
-  PlaylistInfo(this.title, this.image, this.numSongs);
+  MixTapeInfo(this.title, this.image, this.numSongs, this.songs);
 }
 
 class PlaylistScreen extends StatefulWidget {
@@ -21,11 +30,27 @@ class PlaylistScreen extends StatefulWidget {
 class _PlaylistScreenState extends State<PlaylistScreen> {
 
   // API call to get playlist info
-  List<PlaylistInfo> cardData = [
-    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20),
-    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30),
-    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50),
-  ];
+  late List<Song> songs;
+  late List<MixTapeInfo> cardData;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize songs
+    songs = [
+      Song("The Less I Know the Better", "Tame Impala", "Currents"),
+      Song("Eventually", "Tame Impala", "Currents"),
+    ];
+
+    // Initialize cardData
+    cardData = [
+      MixTapeInfo('tame impala da goat', 'assets/green_colored_logo.png', 20, songs),
+      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, songs),
+      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, songs),
+    ];
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,157 +106,155 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     ),
                   ),
                 ),
-                Positioned(
-                    left: 0,
-                    right: 0,
-                    top: screenHeight * .27,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(screenWidth * .05, 0, 0, 0),
-                            child: Container(
-                              decoration: ShapeDecoration(
-                                color: MixTapeColors.light_gray,
-                                shape: CircleBorder(),
-                              ),
-                              child: IconButton(
-                                icon: Icon(Icons.add_photo_alternate_outlined),
-                                color: Colors.white,
-                                onPressed: () {
-                                  print("here my goodness");
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 0, screenWidth * .05, 0),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.person_add_alt_rounded,
-                                size: screenHeight * .04,
-                              ),
-                              color: Colors.white,
-                              onPressed: () {
-                                print("do you have friends");
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                ),
               ],
             ),
             Expanded(
               child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
                 child: Column(
-                  children: cardData.map((playlist) {
+                  children: cardData.map((mixtape) {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
-                        print('Tapped on Card ${playlist.title}');
+                        print('Tapped on Card ${mixtape.title}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
                         );
                       },
                       child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
-                          ),
-                          elevation: 3.0,
-                          margin: EdgeInsets.all(15.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12.0),
-                            child: Row(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                        ),
+                        elevation: 0.0,
+                        color: MixTapeColors.dark_gray,
+                        margin: EdgeInsets.all(15.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12.0),
+                          child: Container(
+                            color: MixTapeColors.dark_gray,
+                            height: screenHeight * .25,
+                            width: screenWidth * .9,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.all(10),
-                                    height: screenHeight * .2,
-                                    color: MixTapeColors.dark_gray,
-                                    child: Image.asset(playlist.image),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(20, 20, 10, 0),
+                                  child: Text(
+                                    mixtape.title,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: (21 * textScaleFactor),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    padding: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
-                                    height: screenHeight * .2,
-                                    color: MixTapeColors.light_gray,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          playlist.title,
-                                          textAlign: TextAlign.center,
+                                Container(
+                                  width: screenWidth * .9,
+                                  height: screenHeight * .07,
+                                  color: MixTapeColors.dark_gray,
+                                  child: Card(
+                                    elevation: 0.0,
+                                    color: MixTapeColors.dark_gray,
+                                    child: ListTile(
+                                      leading: Image.asset(
+                                        mixtape.image,
+                                        width: screenWidth * .1,
+                                        height: screenHeight * .1,
+                                      ),
+                                      title: Text(
+                                        mixtape.songs[0].title,
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: textScaleFactor * 13,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        "${mixtape.songs[0].artist} • ${mixtape.songs[0].album}",
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white,
+                                          fontSize: textScaleFactor * 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: screenHeight * .01,
+                                ),
+                                Container(
+                                  width: screenWidth * .9,
+                                  height: screenHeight * .07,
+                                  color: MixTapeColors.dark_gray,
+                                  child: Card(
+                                    elevation: 0.0,
+                                    color: MixTapeColors.dark_gray,
+                                    child: ListTile(
+                                      leading: Image.asset(
+                                        mixtape.image,
+                                        width: screenWidth * .1,
+                                        height: screenHeight * .1,
+                                      ),
+                                      title: Text(
+                                        mixtape.songs[0].title,
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: textScaleFactor * 13,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        "${mixtape.songs[0].artist} • ${mixtape.songs[0].album}",
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white,
+                                          fontSize: textScaleFactor * 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(screenWidth * .64,0,0,0),
+                                    child: FloatingActionButton.extended(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
+                                      ),
+                                      heroTag: "mixtape_creation",
+                                      onPressed: () {
+                                        print("add to queue");
+                                        /* Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
+                                         ); */
+                                      },
+                                      label: Padding(
+                                        padding: EdgeInsets.fromLTRB(1,1,1,1),
+                                        child: Text(
+                                          'Queue',
                                           style: TextStyle(
-                                            fontSize: (22 * textScaleFactor),
-                                            color: Colors.white,
+                                            fontSize: textScaleFactor * 15,
+                                            fontFamily: "Montserrat",
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        FilledButton(
-                                          style: FilledButton.styleFrom(
-                                            backgroundColor: MixTapeColors.dark_gray,
-                                            padding: EdgeInsets.all(0),
-                                            fixedSize: Size(150, 15),
-                                          ),
-                                          onPressed: null,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Image.asset('assets/blue_colored_logo.png', width: 25, height: 25),
-                                              Text(
-                                                "with alexfrey2",
-                                                style: TextStyle(
-                                                  fontSize: (10 * textScaleFactor),
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Card(
-                                          color: MixTapeColors.light_gray,
-                                          elevation: 0.0,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "${playlist.numSongs} songs",
-                                                style: TextStyle(
-                                                  fontSize: (12 * textScaleFactor),
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              Text(
-                                                '${3} hours, ${30} min',
-                                                style: TextStyle(
-                                                  color: Colors.grey[400],
-                                                  fontSize: (12 * textScaleFactor),
-                                                ),
-                                              ),
-                                              Image.asset(
-                                                'assets/spotify/Spotify_Icon_RGB_Green.png',
-                                                height: screenHeight * .03,
-                                                width: screenHeight * .03,
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                      ),
+                                      backgroundColor: MixTapeColors.green, // Change the button's color
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                          )
+                          ),
+                        ),
                       ),
                     );
                   }).toList(),
