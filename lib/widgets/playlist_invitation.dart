@@ -33,6 +33,43 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
+
+    List<Widget> listTiles = [];
+    for (int i = 0; i < friends.length; i++) {
+      listTiles.add(
+        Container(
+          width: screenWidth * 0.7,
+          height: screenHeight * 0.05,
+          child: Center(
+            child: ListTile(
+              tileColor: selectedStates[i] ? MixTapeColors.mint : null,
+              onTap: () {
+                setState(() {
+                  selectedStates[i] = !selectedStates[i];
+                });
+                print("Tapped a friend: ${friends[i].name}");
+              },
+              selected: selectedStates[i],
+              contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 1),
+              leading: Icon(
+                Icons.person,
+                color: selectedStates[i] ? MixTapeColors.green : Colors.white, // Change the icon color to white when selected
+              ),
+              title: Text(
+                friends[i].name,
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Montserrat',
+                  fontSize: textScaleFactor * 20,
+                  color: selectedStates[i] ? MixTapeColors.green : Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return AlertDialog(
       backgroundColor: MixTapeColors.black,
       title: Text(
@@ -48,62 +85,7 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: screenWidth * .7,
-              height: screenHeight * .05,
-              child: Center(
-                child: ListTile(
-                  tileColor: selectedStates[0] ? MixTapeColors.light_gray : null,
-                  contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 1),
-                  leading: Icon(Icons.face),
-                  title: Text(
-                    'alexfrey1',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Montserrat',
-                      fontSize: textScaleFactor * 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      selectedStates[0] = !selectedStates[0]; // Toggle the selected state
-                    });
-                    print("tapped a friend");
-                  },
-                ),
-              ),
-            ),
-            Container(
-              width: screenWidth * .7,
-              height: screenHeight * .05,
-              child: Center(
-                child: ListTile(
-                  tileColor: selectedStates[1] ? MixTapeColors.light_gray : null,
-                  onTap: () {
-                    setState(() {
-                      selectedStates[1] = !selectedStates[1]; // Toggle the selected state
-                    });
-                    print("tapped a friend");
-                  },
-                  selectedColor: MixTapeColors.mint,
-                  contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 1),
-                  leading: Icon(Icons.face),
-                  title: Text(
-                    'alexfrey1',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Montserrat',
-                      fontSize: textScaleFactor * 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-          ],
+          children: listTiles,
         ),
       ),
       actions: <Widget>[
@@ -135,4 +117,3 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
     );
   }
 }
-
