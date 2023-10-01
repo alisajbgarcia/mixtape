@@ -3,7 +3,6 @@ import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
-import 'package:mixtape/screens/notif_page.dart';
 
 import '../utilities/navbar_pages.dart';
 
@@ -84,26 +83,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             ],
-        leading: IconButton(
-          padding: EdgeInsets.all(10),
-          icon: ImageIcon(
-            AssetImage("assets/notif.png"),
-            size: textScaleFactor * 50
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NotifPage()),
-            );
-          }
-          ),
-        title: Text('Your Playlists',
-          textAlign: TextAlign.start,
-          style: TextStyle(
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w600,
-            fontSize: (25.0 * textScaleFactor),
-          ),
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
@@ -113,7 +92,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: EdgeInsets.all(screenHeight * .03),
             child: Image.asset('assets/blue_colored_logo.png'),
-          ),
+          )
         ],
       ),
       body: Column(
