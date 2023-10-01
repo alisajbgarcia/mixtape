@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/utilities/colors.dart';
+import 'package:mixtape/widgets/playlist_invitation_sent.dart';
 
 import '../widgets/playlist_invitation.dart';
 
@@ -34,6 +36,16 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
             print('Selected friend!: $friendName');
           },
         );
+      },
+    );
+  }
+
+  void openPlaylistInvitationSentDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return PlaylistInvitationSent();
       },
     );
   }
@@ -160,27 +172,31 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
             ),
 
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .05),
-              child: FloatingActionButton.extended(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
-                ),
-                heroTag: "playlist_invitation",
-                onPressed: () {
-                  print("send invitation");
-                },
-                label: Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'Send invitation to $selectedFriend',
-                    style: TextStyle(
-                      fontSize: textScaleFactor * 20,
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.w600,
+              padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * 0.05),
+              child: FittedBox(
+                fit: BoxFit.scaleDown, // This will scale the child down if it overflows
+                child: FloatingActionButton.extended(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  heroTag: "playlist_invitation",
+                  onPressed: () {
+                    print("send invitation");
+                    openPlaylistInvitationSentDialog(context);
+                  },
+                  label: Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text(
+                      'Send invitation to $selectedFriend',
+                      style: TextStyle(
+                        fontSize: textScaleFactor * 20,
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
+                  backgroundColor: MixTapeColors.green,
                 ),
-                backgroundColor: MixTapeColors.green, // Change the button's color
               ),
             ),
           ],
