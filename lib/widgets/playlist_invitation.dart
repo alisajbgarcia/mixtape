@@ -7,6 +7,9 @@ class Friend {
 }
 
 class PlaylistInvitation extends StatefulWidget {
+  final Function(String) onFriendSelected;
+
+  PlaylistInvitation({required this.onFriendSelected});
   @override
   _PlaylistInvitationState createState() => _PlaylistInvitationState();
 }
@@ -17,14 +20,22 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
     Friend('alisajbgarcia'),
   ];
 
-  // Create a list of selected states for each friend
   late List<bool> selectedStates;
+  String selectedFriend = ""; // Define selectedFriend as an instance variable
 
   @override
   void initState() {
     super.initState();
-    // Initialize the selectedStates list with false values
     selectedStates = List.generate(friends.length, (index) => false);
+  }
+
+  void handleFriendSelection(int friendIndex) {
+    setState(() {
+      selectedFriend = friends[friendIndex].name;
+      for (int i = 0; i < friends.length; i++) {
+        selectedStates[i] = (i == friendIndex);
+      }
+    });
   }
 
   @override
@@ -44,16 +55,14 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
             child: ListTile(
               tileColor: selectedStates[i] ? MixTapeColors.mint : null,
               onTap: () {
-                setState(() {
-                  selectedStates[i] = !selectedStates[i];
-                });
+                handleFriendSelection(i); // Handle friend selection
                 print("Tapped a friend: ${friends[i].name}");
               },
               selected: selectedStates[i],
               contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 1),
               leading: Icon(
                 Icons.person,
-                color: selectedStates[i] ? MixTapeColors.green : Colors.white, // Change the icon color to white when selected
+                color: selectedStates[i] ? MixTapeColors.green : Colors.white,
               ),
               title: Text(
                 friends[i].name,
@@ -100,14 +109,17 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
               ),
               backgroundColor: MixTapeColors.green,
               onPressed: () {
+                print(selectedFriend);
+                widget.onFriendSelected(selectedFriend);
                 Navigator.of(context).pop();
               },
               child: Text(
-                'Close,',
+                'Close',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                   color: Colors.white,
+                  fontSize: textScaleFactor * 15,
                 ),
               ),
             ),

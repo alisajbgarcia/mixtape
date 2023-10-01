@@ -13,6 +13,7 @@ class PlaylistCreationScreen extends StatefulWidget {
 class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   TextEditingController _textController = TextEditingController();
   String _textFieldValue = "";
+  String selectedFriend = "";
 
   @override
   void dispose() {
@@ -25,7 +26,14 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return PlaylistInvitation();
+        return PlaylistInvitation(
+          onFriendSelected: (String friendName) {
+            setState(() {
+              selectedFriend = friendName;
+            });
+            print('Selected friend!: $friendName');
+          },
+        );
       },
     );
   }
@@ -36,6 +44,13 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
+
+    // Callback function to handle the selected friend
+    void handleFriendSelection(String friendName) {
+      setState(() {
+        selectedFriend = friendName;
+      });
+    }
     return Scaffold(
       body: Container(
         width: screenWidth,
@@ -157,7 +172,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                 label: Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Send invitation',
+                    'Send invitation to $selectedFriend',
                     style: TextStyle(
                       fontSize: textScaleFactor * 20,
                       fontFamily: "Montserrat",
