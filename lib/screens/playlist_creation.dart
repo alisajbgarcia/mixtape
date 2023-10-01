@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/utilities/colors.dart';
+import 'package:mixtape/widgets/playlist_invitation_sent.dart';
+
+import '../widgets/playlist_invitation.dart';
 
 class PlaylistCreationScreen extends StatefulWidget {
   const PlaylistCreationScreen({super.key});
@@ -11,11 +15,39 @@ class PlaylistCreationScreen extends StatefulWidget {
 class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   TextEditingController _textController = TextEditingController();
   String _textFieldValue = "";
+  String selectedFriend = "";
 
   @override
   void dispose() {
     _textController.dispose(); // Dispose of the controller when the widget is disposed.
     super.dispose();
+  }
+
+  // Function to open the PlaylistInvitation alert dialog
+  void openPlaylistInvitationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PlaylistInvitation(
+          onFriendSelected: (String friendName) {
+            setState(() {
+              selectedFriend = friendName;
+            });
+            print('Selected friend!: $friendName');
+          },
+        );
+      },
+    );
+  }
+
+  void openPlaylistInvitationSentDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return PlaylistInvitationSent();
+      },
+    );
   }
 
   @override
@@ -24,6 +56,13 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
+
+    // Callback function to handle the selected friend
+    void handleFriendSelection(String friendName) {
+      setState(() {
+        selectedFriend = friendName;
+      });
+    }
     return Scaffold(
       body: Container(
         width: screenWidth,
@@ -121,6 +160,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                             color: Colors.white,
                             onPressed: () {
                               print("do you have friends");
+                              openPlaylistInvitationDialog(context);
                             },
                           ),
                         ),
@@ -132,31 +172,31 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
             ),
 
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .05),
-              child: FloatingActionButton.extended(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
-                ),
-                heroTag: "playlist_invitation",
-                onPressed: () {
-                  print("send invitation");
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
-                  );
-                },
-                label: Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'Send invitation',
-                    style: TextStyle(
-                      fontSize: textScaleFactor * 20,
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.w600,
+              padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * 0.05),
+              child: FittedBox(
+                fit: BoxFit.scaleDown, // This will scale the child down if it overflows
+                child: FloatingActionButton.extended(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  heroTag: "playlist_invitation",
+                  onPressed: () {
+                    print("send invitation");
+                    openPlaylistInvitationSentDialog(context);
+                  },
+                  label: Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text(
+                      'Send invitation to $selectedFriend',
+                      style: TextStyle(
+                        fontSize: textScaleFactor * 20,
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
+                  backgroundColor: MixTapeColors.green,
                 ),
-                backgroundColor: MixTapeColors.green, // Change the button's color
               ),
             ),
           ],
