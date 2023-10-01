@@ -22,6 +22,7 @@ class PlaylistInfo {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
+  bool light = true;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -44,16 +45,44 @@ class _HomePageState extends State<HomePage> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
+
     return Scaffold(
       backgroundColor: MixTapeColors.black,
       appBar: AppBar(
-        title: Text('Your Playlists',
-          textAlign: TextAlign.start,
-          style: TextStyle(
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w600,
-            fontSize: (25.0 * textScaleFactor),
-          ),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0,5,0,0),
+              child: Text('Your Playlists',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  fontSize: (25.0 * textScaleFactor),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Icon(
+                  light ? Icons.sunny : Icons.dark_mode,
+                  color: Colors.white,
+                ),
+                Switch(
+                  // This bool value toggles the switch.
+                  value: light,
+                  activeColor: MixTapeColors.green,
+                  onChanged: (bool value) {
+                    // This is called when the user toggles the switch.
+                    setState(() {
+                      light = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            ],
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
@@ -70,7 +99,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Container(
             height: screenHeight * .67,
-            padding: EdgeInsets.fromLTRB(5, 0, 5, 30),
+            padding: EdgeInsets.fromLTRB(5, 10, 5, 30),
             child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
               child: Column(
                   children: cardData.map((playlist) {
