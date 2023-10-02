@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
-import 'package:mixtape/widgets/navbar.dart';
-
-import '../utilities/navbar_pages.dart';
+import 'package:mixtape/screens/search_page.dart';
 
 class TapeCreationPage extends StatefulWidget {
   const TapeCreationPage({super.key});
@@ -96,18 +94,18 @@ class _TapeCreationPageState extends State<TapeCreationPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
                 ),
-                heroTag: "playlist_invitation",
+                heroTag: "add_songs",
                 onPressed: () {
-                  print("send invitation");
+                  print("go to search screen");
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
+                    MaterialPageRoute(builder: (context) => SearchPage()),
                   );
                 },
                 label: Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Send invitation',
+                    'Add songs',
                     style: TextStyle(
                       fontSize: textScaleFactor * 20,
                       fontFamily: "Montserrat",
