@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
-import 'package:mixtape/screens/tape_creation.dart';
+import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/widgets/playlist_invitation_sent.dart';
 
 import '../widgets/playlist_invitation.dart';
@@ -160,7 +160,6 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                             color: Colors.white,
                             onPressed: () {
                               print("do you have friends");
-                              openPlaylistInvitationDialog(context);
                             },
                           ),
                         ),
