@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 
 class Song {
@@ -118,7 +119,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         print('Tapped on Card ${mixtape.title}');
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
+                          MaterialPageRoute(builder: (context) => TapeInfoScreen(tape_id: 1, spotify_id: 2)),
                         );
                       },
                       child: Card(
