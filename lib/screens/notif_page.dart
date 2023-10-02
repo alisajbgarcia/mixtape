@@ -139,7 +139,9 @@ class _NotifPage extends State<NotifPage> {
                           size: textScaleFactor * 20,
                           color: Colors.white,
                         ),
-                        onPressed: () => setState(() => notifInfo.remove(notif)),
+                        onPressed: () => {
+                          setState(() => notifInfo.remove(notif))
+                          },
                       ),
                     ]
                   ),

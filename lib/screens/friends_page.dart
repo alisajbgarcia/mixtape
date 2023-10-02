@@ -191,7 +191,92 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                         ),
                         //TODO: Search bar results
-                        
+                        Container(
+                          child: Column(
+                            children: cardData.map((friend) {
+                                  return InkWell(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                      onTap: () {
+                                        print('Search Friend Tapped: ${friend.username}');
+                                      },
+                                      child: Card(
+                                          color: MixTapeColors.light_gray,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                                          ),
+                                          elevation: 3.0,
+                                          margin: EdgeInsets.all(2.0),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(12.0),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(6),
+                                                    height: screenHeight * .07,
+                                                    color: MixTapeColors.dark_gray,
+                                                    child: Image.asset(friend.image),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
+                                                    height: screenHeight * .07,
+                                                    color: MixTapeColors.light_gray,
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Align(
+                                                          alignment: Alignment.center,
+                                                          child: Text(
+                                                            friend.username,
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              fontSize: (22 * textScaleFactor),
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Card(
+                                                          color: MixTapeColors.light_gray,
+                                                          elevation: 0.0,
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                color: MixTapeColors.light_gray,
+                                                child: TextButton(
+                                                  child: Text(
+                                                    '+',
+                                                    style: TextStyle(
+                                                      fontSize: (22 * textScaleFactor),                       
+                                                      color: Colors.white,
+                                                    ),
+                                                    ),
+                                                    onPressed: () {
+                                                      final snackBar = SnackBar(
+                                                        content: Text('Friend request sent to: ${friend.username}')
+                                                        
+                                                        );
+                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                      }
+                                                  )
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                      ),
+                                  );
+                              }).toList(),
+                            )
+                        ),
                       ],
                     )
                   : SizedBox() // Empty placeholder when not visible
