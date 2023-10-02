@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
-import 'package:mixtape/screens/tape_creation.dart';
+import 'package:mixtape/screens/search_page.dart';
 
 class PlaylistCreationScreen extends StatefulWidget {
   const PlaylistCreationScreen({super.key});
@@ -143,7 +143,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                   print("send invitation");
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TapeCreationPage()),
+                    MaterialPageRoute(builder: (context) => SearchPage()),
                   );
                 },
                 label: Padding(
