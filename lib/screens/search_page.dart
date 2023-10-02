@@ -39,11 +39,8 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  void addToPlaylist(String song) {
-    // Add the selected song to your playlist logic here
-    // For example, you can maintain a List<String> for your playlist
-    // and add the song to it when the user taps on it.
-    // playlist.add(song);
+  void addToTape(String song) {
+    // TODO
   }
 
   @override
@@ -158,7 +155,7 @@ class _SearchPageState extends State<SearchPage> {
                 return ListTile(
                   title: Text(searchResults[index]),
                   onTap: () {
-                    addToPlaylist(searchResults[index]);
+                    addToTape(searchResults[index]);
                   },
                 );
               },
