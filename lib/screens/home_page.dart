@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/playlist_creation.dart';
+import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
@@ -19,7 +21,8 @@ class PlaylistInfo {
 
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
+  bool light = true;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,15 +45,44 @@ class _HomePageState extends State<HomePage> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
+
     return Scaffold(
       backgroundColor: MixTapeColors.black,
       appBar: AppBar(
-        title: Text('Your Playlists',
-          style: TextStyle(
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w600,
-            fontSize: (25.0 * textScaleFactor),
-          ),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0,5,0,0),
+              child: Text('Your Playlists',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  fontSize: (25.0 * textScaleFactor),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Icon(
+                  light ? Icons.sunny : Icons.dark_mode,
+                  color: Colors.white,
+                ),
+                Switch(
+                  // This bool value toggles the switch.
+                  value: light,
+                  activeColor: MixTapeColors.green,
+                  onChanged: (bool value) {
+                    // This is called when the user toggles the switch.
+                    setState(() {
+                      light = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            ],
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
@@ -58,7 +90,7 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: screenHeight * .13,
         actions: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(screenHeight * .03),
             child: Image.asset('assets/blue_colored_logo.png'),
           )
         ],
@@ -67,15 +99,18 @@ class _HomePageState extends State<HomePage> {
         children: [
           Container(
             height: screenHeight * .67,
-            padding: EdgeInsets.fromLTRB(5, 0, 5, 30),
+            padding: EdgeInsets.fromLTRB(5, 10, 5, 30),
             child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
-              child: Container(
-                child: Column(
+              child: Column(
                   children: cardData.map((playlist) {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
                         print('Tapped on Card ${playlist.title}');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
+                        );
                       },
                       child: Card(
                           shape: RoundedRectangleBorder(
@@ -173,12 +208,19 @@ class _HomePageState extends State<HomePage> {
                     );
                   }).toList(),
                 ),
-              ),
             ),
           ),
           FloatingActionButton.extended(
+            heroTag: "playlist_creation",
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
+            ),
             onPressed: () {
-              // Add your button action here
+              print("here omg please");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
+              );
             },
             label: Text(
                 'Create a Playlist',
