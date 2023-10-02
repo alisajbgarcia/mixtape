@@ -5,8 +5,8 @@ import 'package:oauth2_client/oauth2_client.dart';
 
 class SpotifyOAuth2Client extends OAuth2Client {
   SpotifyOAuth2Client({required String redirectUri, required String customUriScheme}): super(
-      authorizeUrl: 'http://auth.localhost:8081/oauth2/authorize', //Your service's authorization url
-      tokenUrl: 'http://auth.localhost:8081/oauth2/token', //Your service access token url
+      authorizeUrl: 'http://auth.localhost:8081/oauth2/authorize',
+      tokenUrl: 'http://auth.localhost:8081/oauth2/token',
       redirectUri: redirectUri,
       customUriScheme: customUriScheme
   );
