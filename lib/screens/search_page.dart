@@ -83,7 +83,7 @@ class _SearchPageState extends State<SearchPage> {
                 suffixIcon: Icon(
                   Icons.search,
                   color: Colors.white,
-                  size: 15,
+                  size: screenSize.shortestSide * .1,
                 ), // The trailing icon
               ),
               onChanged: (value) {
