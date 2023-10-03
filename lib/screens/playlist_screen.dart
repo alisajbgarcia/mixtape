@@ -45,22 +45,17 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       Song("The Less I Know the Better", "Tame Impala", "Currents"),
       Song("Eventually", "Tame Impala", "Currents"),
       Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
+      Song("Treasure", "Bruno Mars", "Unorthodox Jukebox"),
+      Song("I was sad last night I'm OK Now", "tobi lou", "Live on ice"),
+      Song("Pepas", "Farruko", "Pepas"),
+      Song("Follow You", "Imagine Dragons", "Mercury - Act 1"),
     ];
 
     // Initialize cardData
     cardData = [
       MixTapeInfo('tame impala da goat', 'assets/green_colored_logo.png', 20, songs, "This is about tame impala"),
-      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, songs),
-      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, songs),
+      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, songs, "This playlist does in fact have the good stuff"),
+      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, songs, "Just another mixtape"),
     ];
   }
 

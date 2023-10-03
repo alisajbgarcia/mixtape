@@ -88,10 +88,10 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                     left: 0,
                     right: 0,
                     top:
-                    screenHeight * .20, // Adjust the top position as needed
+                    screenHeight * .22, // Adjust the top position as needed
                     child: Center(
                       child: Container(
-                        height: screenHeight * .1, // Set
+                        height: screenHeight * .06, // Set
                         width: screenWidth * .55,
                         decoration: BoxDecoration(
                           color: MixTapeColors.black.withOpacity(
@@ -108,15 +108,7 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                             child: Column(children: [
                               Text(
                                 widget.description,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                widget.description,
+                                softWrap: true,
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontFamily: 'Montserrat',
