@@ -20,15 +20,37 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: MixTapeColors.black,
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: screenHeight * .2),
               Image.asset(
                 'assets/green_colored_logo.png',
-                width: screenHeight * .4,
-                height: screenHeight * .4,
+                width: screenHeight * .25,
+                height: screenHeight * .25,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: screenHeight * .05),
+              Text(
+                "Welcome to",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w500,
+                  fontSize: textScaleFactor * 17,
+                ),
+              ),
+              SizedBox(height: screenHeight * .0091),
+              Text(
+                "MixTape",
+                style: TextStyle(
+                  letterSpacing: textScaleFactor * 1.2,
+                  color: Colors.white,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  fontSize: textScaleFactor * 45,
+                ),
+              ),
+              SizedBox(height: screenHeight * .055),
               FilledButton.icon(
                 onPressed: () {
                   print("login");
@@ -38,7 +60,10 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 },
                 style: FilledButton.styleFrom(
-                  backgroundColor: MixTapeColors.dark_gray,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  backgroundColor: Colors.black,
                   padding: EdgeInsets.all(10),
                   fixedSize: Size(screenWidth * .75, screenWidth * .25),
                 ),
