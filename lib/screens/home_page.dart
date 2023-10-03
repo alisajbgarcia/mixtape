@@ -3,6 +3,7 @@ import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
+import 'package:mixtape/screens/notif_page.dart';
 
 import '../utilities/navbar_pages.dart';
 
@@ -49,6 +50,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: MixTapeColors.black,
       appBar: AppBar(
+        leading: IconButton(
+          padding: EdgeInsets.all(10),
+          icon: ImageIcon(
+            AssetImage("assets/notif.png"),
+            size: textScaleFactor * 50
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NotifPage()),
+            );
+          }
+          ),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,6 +79,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Row(
               children: [
+                /*
                 Icon(
                   light ? Icons.sunny : Icons.dark_mode,
                   color: Colors.white,
@@ -80,6 +95,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 ),
+                */
               ],
             ),
             ],
@@ -210,7 +226,12 @@ class _HomePageState extends State<HomePage> {
                 ),
             ),
           ),
-          FloatingActionButton.extended(
+        ],
+      ),
+      floatingActionButton: Container(
+        alignment: Alignment.bottomCenter,
+        padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
+        child: FloatingActionButton.extended(
             heroTag: "playlist_creation",
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
@@ -233,7 +254,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.add),
             backgroundColor: MixTapeColors.green, // Change the button's color
           ),
-        ],
       ),
       bottomNavigationBar: NavBar(
         currentIndex: _selectedIndex,
