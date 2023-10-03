@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
+
 
 class Song {
   String title;
@@ -14,8 +16,9 @@ class MixTapeInfo {
   String image;
   int numSongs;
   List<Song> songs;
+  String description;
 
-  MixTapeInfo(this.title, this.image, this.numSongs, this.songs);
+  MixTapeInfo(this.title, this.image, this.numSongs, this.songs, [this.description = ""]);
 }
 
 class PlaylistScreen extends StatefulWidget {
@@ -41,13 +44,18 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     songs = [
       Song("The Less I Know the Better", "Tame Impala", "Currents"),
       Song("Eventually", "Tame Impala", "Currents"),
+      Song("Monster", "Eminem", "Currents"),
+      Song("Treasure", "Bruno Mars", "Unorthodox Jukebox"),
+      Song("I was sad last night I'm OK Now", "tobi lou", "Live on ice"),
+      Song("Pepas", "Farruko", "Pepas"),
+      Song("Follow You", "Imagine Dragons", "Mercury - Act 1"),
     ];
 
     // Initialize cardData
     cardData = [
-      MixTapeInfo('tame impala da goat', 'assets/green_colored_logo.png', 20, songs),
-      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, songs),
-      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, songs),
+      MixTapeInfo('tame impala da goat', 'assets/green_colored_logo.png', 20, songs, "This is about tame impala"),
+      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, songs, "This playlist does in fact have the good stuff"),
+      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, songs, "Just another mixtape"),
     ];
   }
 
@@ -118,7 +126,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         print('Tapped on Card ${mixtape.title}');
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
+                          MaterialPageRoute(builder: (context) => TapeInfoScreen(tape_id: 1, spotify_id: 2, title: mixtape.title, image: mixtape.image, songs: mixtape.songs, description: mixtape.description,)),
                         );
                       },
                       child: Card(
@@ -201,7 +209,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         height: screenHeight * .1,
                                       ),
                                       title: Text(
-                                        mixtape.songs[0].title,
+                                        mixtape.songs[1].title,
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w600,
@@ -210,7 +218,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        "${mixtape.songs[0].artist} • ${mixtape.songs[0].album}",
+                                        "${mixtape.songs[1].artist} • ${mixtape.songs[1].album}",
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w400,
