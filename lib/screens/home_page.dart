@@ -17,8 +17,10 @@ class PlaylistInfo {
   int numSongs;
   String friend;
   String friendProfile;
+  int hours;
+  int minutes;
 
-  PlaylistInfo(this.title, this.image, this.numSongs, this.friend, this.friendProfile);
+  PlaylistInfo(this.title, this.image, this.numSongs, this.friend, this.friendProfile, this.hours, this.minutes);
 }
 
 
@@ -36,9 +38,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<PlaylistInfo> cardData = [
-    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20, 'cmsale', 'assets/blue_colored_logo.png'),
-    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30, 'alexfrey2', 'assets/alex_profile_picture.png'),
-    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50, 'scoobydrew', 'assets/red_colored_logo.png'),
+    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20, 'cmsale', 'assets/blue_colored_logo.png', 3, 27),
+    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30, 'alexfrey2', 'assets/alex_profile_picture.png', 5, 42),
+    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50, 'scoobydrew', 'assets/red_colored_logo.png', 1, 17),
   ];
 
   @override
@@ -185,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ),
                                               Text(
-                                                '${3} hours, ${30} min',
+                                                '${playlist.hours} hours, ${playlist.minutes} min',
                                                 style: TextStyle(
                                                   color: Colors.grey[400],
                                                   fontSize: (12 * textScaleFactor),
