@@ -15,8 +15,10 @@ class PlaylistInfo {
   String title;
   String image;
   int numSongs;
+  String friend;
+  String friendProfile;
 
-  PlaylistInfo(this.title, this.image, this.numSongs);
+  PlaylistInfo(this.title, this.image, this.numSongs, this.friend, this.friendProfile);
 }
 
 
@@ -34,9 +36,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<PlaylistInfo> cardData = [
-    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20),
-    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30),
-    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50),
+    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20, 'cmsale', 'assets/blue_colored_logo.png'),
+    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30, 'alexfrey2', 'assets/alex_profile_picture.png'),
+    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50, 'scoobydrew', 'assets/red_colored_logo.png'),
   ];
 
   @override
@@ -91,7 +93,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           Padding(
             padding: EdgeInsets.all(screenHeight * .03),
-            child: Image.asset('assets/blue_colored_logo.png'),
+            child: Image.asset('assets/ish_profile_picture.png'),
           )
         ],
       ),
@@ -158,9 +160,9 @@ class _HomePageState extends State<HomePage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
-                                              Image.asset('assets/blue_colored_logo.png', width: 25, height: 25),
+                                              Image.asset(playlist.friendProfile, width: 25, height: 25),
                                               Text(
-                                                "with alexfrey2",
+                                                "with ${playlist.friend}",
                                                 style: TextStyle(
                                                   fontSize: (10 * textScaleFactor),
                                                   color: Colors.white,
