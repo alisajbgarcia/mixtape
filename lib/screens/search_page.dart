@@ -3,6 +3,14 @@ import 'package:mixtape/utilities/colors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+class Song {
+  String title;
+  String artist;
+  String album;
+
+  Song(this.title, this.artist, this.album);
+}
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -12,7 +20,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
-  List<String> searchResults = [];
+  List<Song> _searchResults = [];
 
   void searchSpotify(String query) async {
     // just here for proof of concept. obviously not using this
@@ -29,11 +37,9 @@ class _SearchPageState extends State<SearchPage> {
       List<dynamic> tracks = data['tracks']['items'];
 
       setState(() {
-        searchResults =
-            tracks.map((track) => (track['name']) as String).toList();
+        // nothin
       });
     } else {
-      // Handle API error here
       print('Error: ${response.statusCode}');
     }
   }
@@ -95,9 +101,15 @@ class _SearchPageState extends State<SearchPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FilledButton(
-                onPressed: () {
-                  // Add your button's action here
-                },
+                onPressed: () => setState(() =>
+                  _searchResults = [
+                    Song("Heartless", "Kanye West", "808s & Heartbreak"),
+                    Song("Heart to Heart", "Mac Demarco", "Here Comes The Cowboy"),
+                    Song("Heartbeat", "Childish Gambino", "Camp"),
+                    Song("Heartless", "The Weeknd", "After Hours"),
+                    Song("Heartbreak Anniversary", "Giveon", "Heartbreak Anniversary"),
+                  ]
+                ),
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -112,9 +124,15 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () {
-                  // Add your button's action here
-                },
+                onPressed: () => setState(() =>
+                _searchResults = [
+                  Song("Always", "Daniel Caesar", "NEVER ENOUGH"),
+                  Song("Blessed", "Daniel Caesar", "Freudian"),
+                  Song("Do You Like Me?", "Daniel Caesar", "NEVER ENOUGH"),
+                  Song("Let Me Go", "Daniel Caesar", "NEVER ENOUGH"),
+                  Song("Loose", "Daniel Caesar", "Freudian"),
+                ]
+                ),
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -129,9 +147,15 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () {
-                  // Add your button's action here
-                },
+                onPressed: () => setState(() =>
+                _searchResults = [
+                  Song("The Color Violet", "Torey Lanez", "Alone At Prom"),
+                  Song("Ballad of a Badman", "Torey Lanez", "Alone At Prom"),
+                  Song("\'87 Stingray", "Torey Lanez", "Alone At Prom"),
+                  Song("Pluto's Last Comet", "Torey Lanez", "Alone At Prom"),
+                  Song("Lady of Namek", "Torey Lanez", "Alone At Prom"),
+                ]
+                ),
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -148,16 +172,66 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: searchResults.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(searchResults[index]),
-                  onTap: () {
-                    addToTape(searchResults[index]);
-                  },
-                );
-              },
+            child: SingleChildScrollView(
+              child: Column(
+                children: _searchResults.map((song) {
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            12.0), // Adjust the radius as needed
+                      ),
+                      elevation: 0.0,
+                      color: MixTapeColors.dark_gray,
+                      margin: EdgeInsets.all(15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Container(
+                          color: MixTapeColors.dark_gray,
+                          height: screenHeight * .1,
+                          width: screenWidth * .9,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: screenWidth * .9,
+                                height: screenHeight * .07,
+                                color: MixTapeColors.dark_gray,
+                                child: Card(
+                                  elevation: 0.0,
+                                  color: MixTapeColors.dark_gray,
+                                  child: ListTile(
+                                    title: Text(
+                                      song.title,
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: textScaleFactor * 16,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      "${song.artist} • ${song.album}",
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                        fontSize: textScaleFactor * 12,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ],
