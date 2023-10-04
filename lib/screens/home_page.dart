@@ -6,22 +6,11 @@ import 'package:mixtape/widgets/navbar.dart';
 import 'package:mixtape/screens/notif_page.dart';
 
 import '../utilities/navbar_pages.dart';
+import '../models/PlaylistInfo.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
-}
-
-class PlaylistInfo {
-  String title;
-  String image;
-  int numSongs;
-  String friend;
-  String friendProfile;
-  int hours;
-  int minutes;
-
-  PlaylistInfo(this.title, this.image, this.numSongs, this.friend, this.friendProfile, this.hours, this.minutes);
 }
 
 
@@ -120,16 +109,17 @@ class _HomePageState extends State<HomePage> {
           Container(
             height: screenHeight * .67,
             padding: EdgeInsets.fromLTRB(5, 10, 5, 30),
-            child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
+            child: SingleChildScrollView(
               child: Column(
                   children: cardData.map((playlist) {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
                         print('Tapped on Card ${playlist.title}');
+                        print(playlist.title);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
+                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
                         );
                       },
                       child: Card(
@@ -137,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
                           ),
                           elevation: 3.0,
-                          margin: EdgeInsets.all(15.0),
+                          margin: EdgeInsets.all(10.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12.0),
                             child: Row(
@@ -146,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                   flex: 1,
                                   child: Container(
                                     padding: EdgeInsets.all(10),
-                                    height: screenHeight * .2,
+                                    height: screenHeight * .17,
                                     color: MixTapeColors.dark_gray,
                                     child: Image.asset(playlist.image),
                                   ),
@@ -155,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                                   flex: 2,
                                   child: Container(
                                     padding: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
-                                    height: screenHeight * .2,
+                                    height: screenHeight * .17,
                                     color: MixTapeColors.light_gray,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

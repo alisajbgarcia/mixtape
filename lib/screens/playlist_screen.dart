@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
+import '../models/PlaylistInfo.dart';
 
 
 class Song {
@@ -22,9 +23,8 @@ class MixTapeInfo {
 }
 
 class PlaylistScreen extends StatefulWidget {
-  final int playlistId;
-  final int spotify_id;
-  const PlaylistScreen({required this.playlistId, required this.spotify_id});
+  final PlaylistInfo playlist;
+  const PlaylistScreen({required this.playlist});
 
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();
@@ -101,7 +101,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(20.0),
                           child: Text(
-                            'ish and charlie like to party',
+                            widget.playlist.title,
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'Montserrat',
