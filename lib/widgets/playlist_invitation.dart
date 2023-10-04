@@ -47,40 +47,6 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
 
-    List<Widget> listTiles = [];
-    for (int i = 0; i < friends.length; i++) {
-      listTiles.add(
-        Container(
-          width: screenWidth * 0.7,
-          height: screenHeight * 0.05,
-          child: Center(
-            child: ListTile(
-              tileColor: selectedStates[i] ? MixTapeColors.mint : null,
-              onTap: () {
-                handleFriendSelection(i); // Handle friend selection
-                print("Tapped a friend: ${friends[i].name}");
-              },
-              selected: selectedStates[i],
-              contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 1),
-              leading: Icon(
-                Icons.person,
-                color: selectedStates[i] ? MixTapeColors.green : Colors.white,
-              ),
-              title: Text(
-                friends[i].name,
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Montserrat',
-                  fontSize: textScaleFactor * 20,
-                  color: selectedStates[i] ? MixTapeColors.green : Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
     return AlertDialog(
       backgroundColor: MixTapeColors.black,
       title: Text(
@@ -97,7 +63,39 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
+            Container(
+              width: screenWidth * 0.7,
+              height: screenHeight * 0.12,
+              child: Center(
+                child: ListView.builder(
+                  itemCount: friends.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      tileColor: selectedStates[index] ? MixTapeColors.mint : null,
+                      onTap: () {
+                        handleFriendSelection(index); // Handle friend selection
+                        print("Tapped a friend: ${friends[index].name}");
+                      },
+                      selected: selectedStates[index],
+                      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 1),
+                      leading: Icon(
+                        Icons.person,
+                        color: selectedStates[index] ? MixTapeColors.green : Colors.white,
+                      ),
+                      title: Text(
+                        friends[index].name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Montserrat',
+                          fontSize: textScaleFactor * 20,
+                          color: selectedStates[index] ? MixTapeColors.green : Colors.white,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
