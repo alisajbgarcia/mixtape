@@ -6,22 +6,11 @@ import 'package:mixtape/widgets/navbar.dart';
 import 'package:mixtape/screens/notif_page.dart';
 
 import '../utilities/navbar_pages.dart';
+import '../models/PlaylistInfo.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
-}
-
-class PlaylistInfo {
-  String title;
-  String image;
-  int numSongs;
-  String friend;
-  String friendProfile;
-  int hours;
-  int minutes;
-
-  PlaylistInfo(this.title, this.image, this.numSongs, this.friend, this.friendProfile, this.hours, this.minutes);
 }
 
 
@@ -120,16 +109,17 @@ class _HomePageState extends State<HomePage> {
           Container(
             height: screenHeight * .67,
             padding: EdgeInsets.fromLTRB(5, 10, 5, 30),
-            child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
+            child: SingleChildScrollView(
               child: Column(
                   children: cardData.map((playlist) {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
                         print('Tapped on Card ${playlist.title}');
+                        print(playlist.title);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
+                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
                         );
                       },
                       child: Card(
