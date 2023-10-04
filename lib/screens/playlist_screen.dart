@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
+import 'package:mixtape/screens/search_page.dart';
 import '../models/PlaylistInfo.dart';
+
 
 
 class Song {
@@ -278,10 +280,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 heroTag: "mixtape_creation",
                 onPressed: () {
                   print("create mixtape");
-                  /* Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
-                  ); */
+                    MaterialPageRoute(builder: (context) => SearchPage()),
+                  );
                 },
                 label: Padding(
                   padding: EdgeInsets.all(5.0),
