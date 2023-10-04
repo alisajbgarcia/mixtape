@@ -19,7 +19,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController searchController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
   List<Song> _searchResults = [];
 
   void searchSpotify(String query) async {
@@ -68,6 +68,7 @@ class _SearchPageState extends State<SearchPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _searchController,
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontFamily: "Montserrat",
@@ -86,11 +87,14 @@ class _SearchPageState extends State<SearchPage> {
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 ),
-                suffixIcon: Icon(
-                  Icons.search,
-                  color: Colors.white,
-                  size: screenSize.shortestSide * .1,
-                ), // The trailing icon
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.clear,
+                    color: Colors.white,
+                    size: screenSize.shortestSide * .1,
+                  ),
+                  onPressed: _searchController.clear,
+                ) // The trailing icon
               ),
               onChanged: (value) {
                 searchSpotify(value);
