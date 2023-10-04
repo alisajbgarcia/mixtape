@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
                           ),
                           elevation: 3.0,
-                          margin: EdgeInsets.all(15.0),
+                          margin: EdgeInsets.all(10.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12.0),
                             child: Row(
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                                   flex: 1,
                                   child: Container(
                                     padding: EdgeInsets.all(10),
-                                    height: screenHeight * .2,
+                                    height: screenHeight * .17,
                                     color: MixTapeColors.dark_gray,
                                     child: Image.asset(playlist.image),
                                   ),
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                                   flex: 2,
                                   child: Container(
                                     padding: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
-                                    height: screenHeight * .2,
+                                    height: screenHeight * .17,
                                     color: MixTapeColors.light_gray,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
