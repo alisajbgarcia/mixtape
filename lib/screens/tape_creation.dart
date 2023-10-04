@@ -36,19 +36,29 @@ class _TapeCreationScreenState extends State<TapeCreationScreen> {
           height: screenHeight,
           color: MixTapeColors.black,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(0, screenHeight * .1, 0, 0),
+            padding: EdgeInsets.fromLTRB(screenWidth * .01, screenHeight * .1, screenWidth * .01, 0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Create a MixTape", style: TextStyle(
                 color: Colors.white, fontFamily: "Montserrat", fontSize: 35, fontWeight: FontWeight.bold),),
+                SizedBox(height: screenHeight * .01),
+                Text("This mixtape will be added to ${widget.title}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                    color: Colors.white, fontFamily: "Montserrat", fontSize: 15,),),
+                SizedBox(height: screenHeight * .01),
+                Image.asset(widget.image,
+                  height: screenHeight * .1,
+                  width: screenHeight * .1,
+                ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
                         padding: EdgeInsets.fromLTRB(
-                            screenWidth * .1,
+                            screenWidth * .05,
                             screenHeight * .05,
-                            screenWidth * .1,
+                            screenWidth * .05,
                             screenHeight * .05),
                         child: Form(
                             key: _formKey,
