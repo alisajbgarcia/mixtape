@@ -18,6 +18,8 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
   List<Friend> friends = [
     Friend('alexfrey1'),
     Friend('alisajbgarcia'),
+    Friend('scoobydrew'),
+    Friend('cmsale'),
   ];
 
   late List<bool> selectedStates;
@@ -94,7 +96,9 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: listTiles,
+          children: [
+
+          ],
         ),
       ),
       actions: <Widget>[
