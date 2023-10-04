@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 
@@ -24,7 +25,9 @@ class MixTapeInfo {
 class PlaylistScreen extends StatefulWidget {
   final int playlistId;
   final int spotify_id;
-  const PlaylistScreen({required this.playlistId, required this.spotify_id});
+  final String title;
+  final String image;
+  const PlaylistScreen({required this.playlistId, required this.spotify_id, required this.title, required this.image});
 
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();
@@ -101,7 +104,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(20.0),
                           child: Text(
-                            'ish and charlie like to party',
+                            widget.title,
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'Montserrat',
@@ -278,10 +281,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 heroTag: "mixtape_creation",
                 onPressed: () {
                   print("create mixtape");
-                  /* Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
-                  ); */
+                    MaterialPageRoute(builder: (context) => TapeCreationScreen(playlistId: widget.playlistId, title: widget.title, image: widget.image)),
+                  );
                 },
                 label: Padding(
                   padding: EdgeInsets.all(5.0),

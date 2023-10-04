@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                         print('Tapped on Card ${playlist.title}');
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2)),
+                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2, title: playlist.title, image: playlist.image)),
                         );
                       },
                       child: Card(
