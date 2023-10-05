@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/home_page.dart';
+import 'package:mixtape/screens/login_page.dart';
 import 'package:mixtape/utilities/navbar_pages.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
@@ -99,6 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 onPressed: () {
                   print("logout");
+                  showAlertDialog(context, textScaleFactor);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,6 +140,52 @@ class _ProfilePageState extends State<ProfilePage> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context, double textScaleFactor) {
+
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text(
+          "Cancel",
+        style: TextStyle(color: MixTapeColors.green, fontSize: textScaleFactor * 16)
+      ),
+      onPressed:  () {
+        Navigator.pop(context, 'Cancel');
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Logout",
+          style: TextStyle(color: MixTapeColors.green, fontSize: textScaleFactor * 16)
+    ),
+      onPressed:  () {
+        const snackBar = SnackBar(
+          content: Text('Successfully Logged Out'),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      backgroundColor: MixTapeColors.dark_gray,
+      title: Text("Are you sure you would like to log out?",
+      style: TextStyle(color: Colors.white, fontSize: textScaleFactor * 20)),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

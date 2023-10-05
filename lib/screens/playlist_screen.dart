@@ -46,13 +46,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
     // Initialize songs
     songs = [
-      SongInfo("The Less I Know the Better", "Tame Impala", "Currents"),
-      SongInfo("Eventually", "Tame Impala", "Currents"),
-      SongInfo("Monster", "Eminem", "Currents"),
-      SongInfo("Treasure", "Bruno Mars", "Unorthodox Jukebox"),
-      SongInfo("I was sad last night I'm OK Now", "tobi lou", "Live on ice"),
-      SongInfo("Pepas", "Farruko", "Pepas"),
-      SongInfo("Follow You", "Imagine Dragons", "Mercury - Act 1"),
+      SongInfo("The Less I Know the Better", "Tame Impala", "Currents", 213),
+      SongInfo("Eventually", "Tame Impala", "Currents", 293),
+      SongInfo("Monster", "Eminem", "Currents", 299),
+      SongInfo("Treasure", "Bruno Mars", "Unorthodox Jukebox", 210),
+      SongInfo("I was sad last night I'm OK Now", "tobi lou", "Live on ice", 221),
+      SongInfo("Pepas", "Farruko", "Pepas", 177),
+      SongInfo("Follow You", "Imagine Dragons", "Mercury - Act 1", 210),
     ];
 
     // Initialize cardData
@@ -106,6 +106,37 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                           padding: EdgeInsets.all(20.0),
                           child: Text(
                             widget.playlist.title,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: screenHeight * .22, // Adjust the top position as needed
+                  child: Center(
+                    child: Container(
+                      height: screenHeight * .05, // Set
+                      width: screenWidth * .55,
+                      decoration: BoxDecoration(
+                        color: MixTapeColors.black.withOpacity(.5), // Set the background color to gray
+                        borderRadius: BorderRadius.circular(3), // Add rounded corners
+                      ),
+                      child:FittedBox(
+                        fit: BoxFit.scaleDown, // This makes the text shrink to fit
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "${getTotalNumSongs()} songs, ${getTotalTimeHHMM()}",
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'Montserrat',
@@ -306,5 +337,33 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         ),
       ),
     );
+  }
+
+  int getTotalNumSongs() {
+    int totalSongs = 0;
+    for (MixTapeInfo card in cardData) {
+      totalSongs += card.numSongs;
+    }
+    return totalSongs;
+  }
+
+  String getTotalTimeHHMM() {
+    double totalSeconds = 0;
+    for (MixTapeInfo card in cardData) {
+      for (SongInfo song in card.songs) {
+        totalSeconds += song.duration;
+      }
+    }
+    int hours = getHoursFromSeconds(totalSeconds);
+    int minutes = getMinutesFromSeconds(totalSeconds) - hours * 60;
+    return "${hours}h ${minutes}m";
+  }
+
+  int getHoursFromSeconds(double seconds) {
+    return (seconds / 3600).round();
+  }
+
+  int getMinutesFromSeconds(double seconds) {
+    return (seconds / 60).round();
   }
 }

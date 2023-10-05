@@ -108,11 +108,11 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                   _searchResults = [
-                    SongInfo("Heartless", "Kanye West", "808s & Heartbreak"),
-                    SongInfo("Heart to Heart", "Mac Demarco", "Here Comes The Cowboy"),
-                    SongInfo("Heartbeat", "Childish Gambino", "Camp"),
-                    SongInfo("Heartless", "The Weeknd", "After Hours"),
-                    SongInfo("Heartbreak Anniversary", "Giveon", "Heartbreak Anniversary"),
+                    SongInfo("Heartless", "Kanye West", "808s & Heartbreak", 232),
+                    SongInfo("Heart to Heart", "Mac Demarco", "Here Comes The Cowboy", 138),
+                    SongInfo("Heartbeat", "Childish Gambino", "Camp", 320),
+                    SongInfo("Heartless", "The Weeknd", "After Hours", 266),
+                    SongInfo("Heartbreak Anniversary", "Giveon", "Heartbreak Anniversary", 210),
                   ]
                 ),
                 style: FilledButton.styleFrom(
@@ -131,11 +131,11 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                 _searchResults = [
-                  SongInfo("Always", "Daniel Caesar", "NEVER ENOUGH"),
-                  SongInfo("Blessed", "Daniel Caesar", "Freudian"),
-                  SongInfo("Do You Like Me?", "Daniel Caesar", "NEVER ENOUGH"),
-                  SongInfo("Let Me Go", "Daniel Caesar", "NEVER ENOUGH"),
-                  SongInfo("Loose", "Daniel Caesar", "Freudian"),
+                  SongInfo("Always", "Daniel Caesar", "NEVER ENOUGH", 222),
+                  SongInfo("Blessed", "Daniel Caesar", "Freudian", 189),
+                  SongInfo("Do You Like Me?", "Daniel Caesar", "NEVER ENOUGH", 193),
+                  SongInfo("Let Me Go", "Daniel Caesar", "NEVER ENOUGH", 130),
+                  SongInfo("Loose", "Daniel Caesar", "Freudian", 201),
                 ]
                 ),
                 style: FilledButton.styleFrom(
@@ -154,11 +154,11 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                 _searchResults = [
-                  SongInfo("The Color Violet", "Torey Lanez", "Alone At Prom"),
-                  SongInfo("Ballad of a Badman", "Torey Lanez", "Alone At Prom"),
-                  SongInfo("\'87 Stingray", "Torey Lanez", "Alone At Prom"),
-                  SongInfo("Pluto's Last Comet", "Torey Lanez", "Alone At Prom"),
-                  SongInfo("Lady of Namek", "Torey Lanez", "Alone At Prom"),
+                  SongInfo("The Color Violet", "Torey Lanez", "Alone At Prom", 233),
+                  SongInfo("Ballad of a Badman", "Torey Lanez", "Alone At Prom", 221),
+                  SongInfo("\'87 Stingray", "Torey Lanez", "Alone At Prom", 287),
+                  SongInfo("Pluto's Last Comet", "Torey Lanez", "Alone At Prom", 193),
+                  SongInfo("Lady of Namek", "Torey Lanez", "Alone At Prom", 174),
                 ]
                 ),
                 style: FilledButton.styleFrom(
