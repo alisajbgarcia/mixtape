@@ -44,8 +44,27 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void initState() {
     super.initState();
 
-    // Initialize songs
-    songs = [
+    List<SongInfo> tameImpala = [
+      SongInfo("Be Above It", "Tame Impala", "Lonerism", 302),
+      SongInfo("Endors Toi", "Tame Impala", "Lonerism", 271),
+      SongInfo("Apocalypse Dreams", "Tame Impala", "Lonerism", 210),
+      SongInfo("Mind Mischief", "Tame Impala", "Lonerism", 215),
+      SongInfo("Music to Walk Home By", "Tame Impala", "Lonerism", 211),
+      SongInfo("Keep on Lying", "Tame Impala", "Lonerism", 177),
+      SongInfo("Elephant", "Tame Impala", "Lonerism", 210),
+    ];
+
+    List<SongInfo> rock = [
+      SongInfo("Someday", "The Strokes", "Is This It", 213),
+      SongInfo("Eleanor Rigby", "The Beatles", "Revolver", 293),
+      SongInfo("Easy", "HARBOUR", "Thoughts on Letting Go", 299),
+      SongInfo("Treasure", "Bruno Mars", "Unorthodox Jukebox", 210),
+      SongInfo("I was sad last night I'm OK Now", "tobi lou", "Live on ice", 221),
+      SongInfo("Pepas", "Farruko", "Pepas", 177),
+      SongInfo("Follow You", "Imagine Dragons", "Mercury - Act 1", 210),
+    ];
+
+    List<SongInfo> defaultTape = [
       SongInfo("The Less I Know the Better", "Tame Impala", "Currents", 213),
       SongInfo("Eventually", "Tame Impala", "Currents", 293),
       SongInfo("Monster", "Eminem", "Currents", 299),
@@ -55,11 +74,22 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       SongInfo("Follow You", "Imagine Dragons", "Mercury - Act 1", 210),
     ];
 
+    switch(widget.playlist.title) {
+      case "ish and charlie like to party":
+        songs = defaultTape;
+        break;
+      case "group running playlist":
+        songs = rock;
+        break;
+      default:
+        songs = tameImpala;
+    }
+
     // Initialize cardData
     cardData = [
       MixTapeInfo('tame impala da goat', 'assets/green_colored_logo.png', 20, songs, "This is about tame impala"),
-      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, songs, "This playlist does in fact have the good stuff"),
-      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, songs, "Just another mixtape"),
+      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, rock, "This playlist does in fact have the good stuff"),
+      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, defaultTape, "Just another mixtape"),
     ];
   }
 

@@ -149,13 +149,22 @@ class _HomePageState extends State<HomePage> {
                                     color: MixTapeColors.light_gray,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [
-                                        Text(
-                                          playlist.title,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: (22 * textScaleFactor),
-                                            color: Colors.white,
+                                        Container(
+                                          height: screenHeight * 0.06, // Limit the text height
+                                          child: FittedBox(
+                                            fit: BoxFit.scaleDown, // Text will automatically resize to fit the available space
+                                            child: Text(
+                                              playlist.title,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2, // Set the maximum number of lines to display
+                                              overflow: TextOverflow.ellipsis, // Truncate text with ellipsis if it overflows
+                                              style: TextStyle(
+                                                fontSize: (22 * textScaleFactor),
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         FilledButton(
