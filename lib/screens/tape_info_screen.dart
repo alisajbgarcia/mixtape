@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 
+import '../models/SongInfo.dart';
+
 class TapeInfoScreen extends StatefulWidget {
   final int tape_id;
   final int spotify_id;
   final String title;
   final String image;
-  final List<Song> songs;
+  final List<SongInfo> songs;
   final String description;
   const TapeInfoScreen(
       {required this.tape_id,

@@ -59,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: AssetImage('assets/green_colored_logo.png'),
+                            image: AssetImage('assets/ish_profile_picture.png'),
                           ))),
                 ),
                 Padding(

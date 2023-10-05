@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/models/SongInfo.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class Song {
-  String title;
-  String artist;
-  String album;
-
-  Song(this.title, this.artist, this.album);
-}
+// class Song {
+//   String title;
+//   String artist;
+//   String album;
+//
+//   Song(this.title, this.artist, this.album);
+// }
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -20,7 +21,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
-  List<Song> _searchResults = [];
+  List<SongInfo> _searchResults = [];
 
   void searchSpotify(String query) async {
     // just here for proof of concept. obviously not using this
@@ -107,11 +108,11 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                   _searchResults = [
-                    Song("Heartless", "Kanye West", "808s & Heartbreak"),
-                    Song("Heart to Heart", "Mac Demarco", "Here Comes The Cowboy"),
-                    Song("Heartbeat", "Childish Gambino", "Camp"),
-                    Song("Heartless", "The Weeknd", "After Hours"),
-                    Song("Heartbreak Anniversary", "Giveon", "Heartbreak Anniversary"),
+                    SongInfo("Heartless", "Kanye West", "808s & Heartbreak"),
+                    SongInfo("Heart to Heart", "Mac Demarco", "Here Comes The Cowboy"),
+                    SongInfo("Heartbeat", "Childish Gambino", "Camp"),
+                    SongInfo("Heartless", "The Weeknd", "After Hours"),
+                    SongInfo("Heartbreak Anniversary", "Giveon", "Heartbreak Anniversary"),
                   ]
                 ),
                 style: FilledButton.styleFrom(
@@ -130,11 +131,11 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                 _searchResults = [
-                  Song("Always", "Daniel Caesar", "NEVER ENOUGH"),
-                  Song("Blessed", "Daniel Caesar", "Freudian"),
-                  Song("Do You Like Me?", "Daniel Caesar", "NEVER ENOUGH"),
-                  Song("Let Me Go", "Daniel Caesar", "NEVER ENOUGH"),
-                  Song("Loose", "Daniel Caesar", "Freudian"),
+                  SongInfo("Always", "Daniel Caesar", "NEVER ENOUGH"),
+                  SongInfo("Blessed", "Daniel Caesar", "Freudian"),
+                  SongInfo("Do You Like Me?", "Daniel Caesar", "NEVER ENOUGH"),
+                  SongInfo("Let Me Go", "Daniel Caesar", "NEVER ENOUGH"),
+                  SongInfo("Loose", "Daniel Caesar", "Freudian"),
                 ]
                 ),
                 style: FilledButton.styleFrom(
@@ -153,11 +154,11 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                 _searchResults = [
-                  Song("The Color Violet", "Torey Lanez", "Alone At Prom"),
-                  Song("Ballad of a Badman", "Torey Lanez", "Alone At Prom"),
-                  Song("\'87 Stingray", "Torey Lanez", "Alone At Prom"),
-                  Song("Pluto's Last Comet", "Torey Lanez", "Alone At Prom"),
-                  Song("Lady of Namek", "Torey Lanez", "Alone At Prom"),
+                  SongInfo("The Color Violet", "Torey Lanez", "Alone At Prom"),
+                  SongInfo("Ballad of a Badman", "Torey Lanez", "Alone At Prom"),
+                  SongInfo("\'87 Stingray", "Torey Lanez", "Alone At Prom"),
+                  SongInfo("Pluto's Last Comet", "Torey Lanez", "Alone At Prom"),
+                  SongInfo("Lady of Namek", "Torey Lanez", "Alone At Prom"),
                 ]
                 ),
                 style: FilledButton.styleFrom(
@@ -180,6 +181,10 @@ class _SearchPageState extends State<SearchPage> {
               child: Column(
                 children: _searchResults.map((song) {
                   return InkWell(
+                    onTap: () {
+                      print("Clicked on ${song.title}");
+                      Navigator.pop(context, song);
+                    },
                     borderRadius: BorderRadius.circular(12.0),
                     child: Card(
                       shape: RoundedRectangleBorder(

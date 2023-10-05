@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
 import '../models/PlaylistInfo.dart';
+import '../models/SongInfo.dart';
 
 
 
-class Song {
-  String title;
-  String artist;
-  String album;
-
-  Song(this.title, this.artist, this.album);
-}
+// class Song {
+//   String title;
+//   String artist;
+//   String album;
+//
+//   Song(this.title, this.artist, this.album);
+// }
 
 class MixTapeInfo {
   String title;
   String image;
   int numSongs;
-  List<Song> songs;
+  List<SongInfo> songs;
   String description;
 
   MixTapeInfo(this.title, this.image, this.numSongs, this.songs, [this.description = ""]);
@@ -35,7 +37,7 @@ class PlaylistScreen extends StatefulWidget {
 class _PlaylistScreenState extends State<PlaylistScreen> {
 
   // API call to get playlist info
-  late List<Song> songs;
+  late List<SongInfo> songs;
   late List<MixTapeInfo> cardData;
 
   @override
@@ -44,13 +46,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
     // Initialize songs
     songs = [
-      Song("The Less I Know the Better", "Tame Impala", "Currents"),
-      Song("Eventually", "Tame Impala", "Currents"),
-      Song("Monster", "Eminem", "Currents"),
-      Song("Treasure", "Bruno Mars", "Unorthodox Jukebox"),
-      Song("I was sad last night I'm OK Now", "tobi lou", "Live on ice"),
-      Song("Pepas", "Farruko", "Pepas"),
-      Song("Follow You", "Imagine Dragons", "Mercury - Act 1"),
+      SongInfo("The Less I Know the Better", "Tame Impala", "Currents"),
+      SongInfo("Eventually", "Tame Impala", "Currents"),
+      SongInfo("Monster", "Eminem", "Currents"),
+      SongInfo("Treasure", "Bruno Mars", "Unorthodox Jukebox"),
+      SongInfo("I was sad last night I'm OK Now", "tobi lou", "Live on ice"),
+      SongInfo("Pepas", "Farruko", "Pepas"),
+      SongInfo("Follow You", "Imagine Dragons", "Mercury - Act 1"),
     ];
 
     // Initialize cardData
@@ -282,7 +284,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   print("create mixtape");
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SearchPage()),
+                    MaterialPageRoute(builder: (context) => TapeCreationScreen(playlist: widget.playlist)),
                   );
                 },
                 label: Padding(
