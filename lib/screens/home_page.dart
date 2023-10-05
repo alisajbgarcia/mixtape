@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Container(
             height: screenHeight * .67,
-            padding: EdgeInsets.fromLTRB(5, 10, 5, 30),
+            padding: EdgeInsets.fromLTRB(screenWidth * .005, screenWidth * .005, screenWidth * .005, 0),
             child: SingleChildScrollView(
               child: Column(
                   children: cardData.map((playlist) {
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
                           ),
                           elevation: 3.0,
-                          margin: EdgeInsets.all(10.0),
+                          margin: EdgeInsets.all(screenWidth * .03),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12.0),
                             child: Row(
@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                                 Expanded(
                                   flex: 1,
                                   child: Container(
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(screenWidth * .005),
                                     height: screenHeight * .17,
                                     color: MixTapeColors.dark_gray,
                                     child: Image.asset(playlist.image),
@@ -144,22 +144,20 @@ class _HomePageState extends State<HomePage> {
                                 Expanded(
                                   flex: 2,
                                   child: Container(
-                                    padding: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
+                                    padding: EdgeInsets.only(top: screenWidth * .01, bottom: screenWidth * .005, left: screenWidth * .01, right: screenWidth * .01),
                                     height: screenHeight * .17,
                                     color: MixTapeColors.light_gray,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [
                                         Container(
-                                          height: screenHeight * 0.06, // Limit the text height
+                                          padding: EdgeInsets.all(screenWidth * .015),
+                                          height: screenHeight * .035,
                                           child: FittedBox(
-                                            fit: BoxFit.scaleDown, // Text will automatically resize to fit the available space
+                                            fit: BoxFit.scaleDown,
                                             child: Text(
                                               playlist.title,
                                               textAlign: TextAlign.center,
-                                              maxLines: 2, // Set the maximum number of lines to display
-                                              overflow: TextOverflow.ellipsis, // Truncate text with ellipsis if it overflows
                                               style: TextStyle(
                                                 fontSize: (22 * textScaleFactor),
                                                 color: Colors.white,
