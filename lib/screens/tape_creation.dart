@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/models/PlaylistInfo.dart';
 import 'package:mixtape/screens/add_songs.dart';
 
 import '../utilities/colors.dart';
 
 class TapeCreationScreen extends StatefulWidget {
-  final int playlistId;
-  final String title;
-  final String image;
+  final PlaylistInfo playlist;
   const TapeCreationScreen({
-    required this.playlistId,
-    required this.title,
-    required this.image,
+    required this.playlist,
   });
 
   @override
@@ -43,12 +40,12 @@ class _TapeCreationScreenState extends State<TapeCreationScreen> {
                 Text("Create a MixTape", style: TextStyle(
                 color: Colors.white, fontFamily: "Montserrat", fontSize: 35, fontWeight: FontWeight.bold),),
                 SizedBox(height: screenHeight * .01),
-                Text("This mixtape will be added to ${widget.title}",
+                Text("This mixtape will be added to ${widget.playlist.title}, which is owned by you and ${widget.playlist.friend}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                     color: Colors.white, fontFamily: "Montserrat", fontSize: 15,),),
                 SizedBox(height: screenHeight * .01),
-                Image.asset(widget.image,
+                Image.asset(widget.playlist.image,
                   height: screenHeight * .1,
                   width: screenHeight * .1,
                 ),
@@ -161,8 +158,8 @@ class _TapeCreationScreenState extends State<TapeCreationScreen> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       AddSongsPage(
-                                                          playlistId:
-                                                              widget.playlistId,
+                                                          playlist:
+                                                              widget.playlist,
                                                           mixTapeName:
                                                               nameController
                                                                   .text,

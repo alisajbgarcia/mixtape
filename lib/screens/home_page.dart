@@ -3,20 +3,14 @@ import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
+import 'package:mixtape/screens/notif_page.dart';
 
 import '../utilities/navbar_pages.dart';
+import '../models/PlaylistInfo.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
-}
-
-class PlaylistInfo {
-  String title;
-  String image;
-  int numSongs;
-
-  PlaylistInfo(this.title, this.image, this.numSongs);
 }
 
 
@@ -34,9 +28,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<PlaylistInfo> cardData = [
-    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20),
-    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30),
-    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50),
+    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20, 'cmsale', 'assets/blue_colored_logo.png', 3, 27),
+    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30, 'alexfrey2', 'assets/alex_profile_picture.png', 5, 42),
+    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50, 'scoobydrew', 'assets/red_colored_logo.png', 1, 17),
   ];
 
   @override
@@ -49,6 +43,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: MixTapeColors.black,
       appBar: AppBar(
+        leading: IconButton(
+          padding: EdgeInsets.all(10),
+          icon: ImageIcon(
+            AssetImage("assets/notif.png"),
+            size: textScaleFactor * 50
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NotifPage()),
+            );
+          }
+          ),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,6 +72,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Row(
               children: [
+                /*
                 Icon(
                   light ? Icons.sunny : Icons.dark_mode,
                   color: Colors.white,
@@ -80,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 ),
+                */
               ],
             ),
             ],
@@ -91,7 +100,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           Padding(
             padding: EdgeInsets.all(screenHeight * .03),
-            child: Image.asset('assets/blue_colored_logo.png'),
+            child: Image.asset('assets/ish_profile_picture.png'),
           )
         ],
       ),
@@ -100,16 +109,17 @@ class _HomePageState extends State<HomePage> {
           Container(
             height: screenHeight * .67,
             padding: EdgeInsets.fromLTRB(5, 10, 5, 30),
-            child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
+            child: SingleChildScrollView(
               child: Column(
                   children: cardData.map((playlist) {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
                         print('Tapped on Card ${playlist.title}');
+                        print(playlist.title);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlistId: 1, spotify_id: 2, title: playlist.title, image: playlist.image)),
+                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
                         );
                       },
                       child: Card(
@@ -117,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
                           ),
                           elevation: 3.0,
-                          margin: EdgeInsets.all(15.0),
+                          margin: EdgeInsets.all(10.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12.0),
                             child: Row(
@@ -126,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                   flex: 1,
                                   child: Container(
                                     padding: EdgeInsets.all(10),
-                                    height: screenHeight * .2,
+                                    height: screenHeight * .17,
                                     color: MixTapeColors.dark_gray,
                                     child: Image.asset(playlist.image),
                                   ),
@@ -135,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                                   flex: 2,
                                   child: Container(
                                     padding: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
-                                    height: screenHeight * .2,
+                                    height: screenHeight * .17,
                                     color: MixTapeColors.light_gray,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,9 +168,9 @@ class _HomePageState extends State<HomePage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
-                                              Image.asset('assets/blue_colored_logo.png', width: 25, height: 25),
+                                              Image.asset(playlist.friendProfile, width: 25, height: 25),
                                               Text(
-                                                "with alexfrey2",
+                                                "with ${playlist.friend}",
                                                 style: TextStyle(
                                                   fontSize: (10 * textScaleFactor),
                                                   color: Colors.white,
@@ -183,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ),
                                               Text(
-                                                '${3} hours, ${30} min',
+                                                '${playlist.hours} hours, ${playlist.minutes} min',
                                                 style: TextStyle(
                                                   color: Colors.grey[400],
                                                   fontSize: (12 * textScaleFactor),
@@ -210,7 +220,12 @@ class _HomePageState extends State<HomePage> {
                 ),
             ),
           ),
-          FloatingActionButton.extended(
+        ],
+      ),
+      floatingActionButton: Container(
+        alignment: Alignment.bottomCenter,
+        padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
+        child: FloatingActionButton.extended(
             heroTag: "playlist_creation",
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
@@ -233,7 +248,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.add),
             backgroundColor: MixTapeColors.green, // Change the button's color
           ),
-        ],
       ),
       bottomNavigationBar: NavBar(
         currentIndex: _selectedIndex,

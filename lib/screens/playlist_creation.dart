@@ -74,10 +74,10 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
             Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(5, 20, 5, 0),
+                  padding: EdgeInsets.fromLTRB(5, 20, 5, screenHeight * .2),
                   child: Image.asset(
                     'assets/mixtape_image.png',
-                    scale: 1.01,
+                    scale: 1.02,
                   ),
                 ),
                 Positioned(
@@ -126,7 +126,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                 Positioned(
                   left: 0,
                   right: 0,
-                  top: screenHeight * .27,
+                  top: screenHeight * .24,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -160,6 +160,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                             color: Colors.white,
                             onPressed: () {
                               print("do you have friends");
+                              openPlaylistInvitationDialog(context);
                             },
                           ),
                         ),
@@ -186,7 +187,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                   label: Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Text(
-                      'Send invitation to $selectedFriend',
+                      'Invite $selectedFriend',
                       style: TextStyle(
                         fontSize: textScaleFactor * 20,
                         fontFamily: "Montserrat",

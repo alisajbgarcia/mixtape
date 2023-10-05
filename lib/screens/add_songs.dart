@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/models/PlaylistInfo.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/screens/search_page.dart';
 
+import '../models/SongInfo.dart';
 import '../utilities/colors.dart';
 
 class AddSongsPage extends StatefulWidget {
-  final int playlistId;
+  final PlaylistInfo playlist;
   final String mixTapeName;
   final String mixTapeDescription;
   const AddSongsPage({
-    required this.playlistId,
+    required this.playlist,
     required this.mixTapeName,
     required this.mixTapeDescription,
   });
@@ -20,7 +22,7 @@ class AddSongsPage extends StatefulWidget {
 }
 
 class _AddSongsPageState extends State<AddSongsPage> {
-  List<Song> _addedSongs = <Song>[];
+  List<SongInfo> _addedSongs = <SongInfo>[];
 
   @override
   Widget build(BuildContext context) {
@@ -118,13 +120,13 @@ class _AddSongsPageState extends State<AddSongsPage> {
                       heroTag: "submit_mixtape_creation",
                       onPressed: () {
                         //comment this out when finish implementing
-                        setState(() {
-                          _addedSongs.add(Song("Song", "Artist", "Album"));
-                        });
+                        // setState(() {
+                        //   _addedSongs.add(SongInfo("Song", "Artist", "Album"));
+                        // });
                         // Comment up to here
 
                         // Uncomment the following (untested)
-                        // _addSongFromSearchPage(context);
+                        _addSongFromSearchPage(context);
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),
@@ -164,7 +166,7 @@ class _AddSongsPageState extends State<AddSongsPage> {
                 label: Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Send Playlist',
+                    'Send MixTape',
                     style: TextStyle(
                       fontSize: textScaleFactor * 20,
                       fontFamily: "Montserrat",
@@ -172,7 +174,7 @@ class _AddSongsPageState extends State<AddSongsPage> {
                     ),
                   ),
                 ),
-                icon: Icon(Icons.add),
+                icon: Icon(Icons.send),
                 backgroundColor:
                     MixTapeColors.green, // Change the button's color
               ),
@@ -200,7 +202,7 @@ class _AddSongsPageState extends State<AddSongsPage> {
     if (!mounted) return;
 
 
-    if (pickedSong != null && pickedSong is Song) {
+    if (pickedSong != null && pickedSong is SongInfo) {
       setState(() {
         _addedSongs.add(pickedSong);
       });
