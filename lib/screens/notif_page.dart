@@ -93,7 +93,10 @@ class _NotifPage extends State<NotifPage> {
                           size: textScaleFactor * 50,
                           color: Colors.white,
                         ),
-                        onPressed: () => setState(() => notifInfo.remove(notif)),
+                        onPressed: () {
+                            setState(() => notifInfo.remove(notif));
+                            print('Friend Accepted');
+                        }
                       ),
                       IconButton(
                         padding: EdgeInsets.all(10),
@@ -102,7 +105,10 @@ class _NotifPage extends State<NotifPage> {
                           size: textScaleFactor * 20,
                           color: Colors.white,
                         ),
-                        onPressed: () => setState(() => notifInfo.remove(notif)),
+                        onPressed: () {
+                            setState(() => notifInfo.remove(notif));
+                            print('Friend Rejected');
+                        }
                       ),
                     ]
                   ),
@@ -130,7 +136,10 @@ class _NotifPage extends State<NotifPage> {
                           size: textScaleFactor * 50,
                           color: Colors.white,
                         ),
-                        onPressed: () => setState(() => notifInfo.remove(notif)),
+                        onPressed: () {
+                            setState(() => notifInfo.remove(notif));
+                            print('Playlist Accepted');
+                        }
                       ),
                       IconButton(
                         padding: EdgeInsets.all(10),
@@ -139,9 +148,10 @@ class _NotifPage extends State<NotifPage> {
                           size: textScaleFactor * 20,
                           color: Colors.white,
                         ),
-                        onPressed: () => {
-                          setState(() => notifInfo.remove(notif))
-                          },
+                        onPressed: () {
+                            setState(() => notifInfo.remove(notif));
+                            print('Playlist Rejected');
+                        }
                       ),
                     ]
                   ),
