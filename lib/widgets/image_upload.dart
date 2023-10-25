@@ -16,31 +16,94 @@ class _ImageUploadState extends State<ImageUpload> {
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
 
+    String photo_URL = 'assets/green_colored_logo.png';
+
     return AlertDialog(
       backgroundColor: MixTapeColors.black,
       title: Text(
-        'Invite a friend',
+        'Choose a photo for your playlist',
+        textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.white,
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w600,
-          fontSize: textScaleFactor * 20,
+          fontSize: textScaleFactor * 18,
         ),
       ),
       content: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              width: screenWidth * 0.7,
-              height: screenHeight * 0.12,
-              child: Center(
-                child: Text("Hello there", style: TextStyle(
-                  color: Colors.white,
-                )),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(screenWidth * .01),
+                  child: Container(
+                    width: screenWidth * .25,
+                    height: screenHeight * .05,
+                    child: FloatingActionButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      backgroundColor: MixTapeColors.light_gray,
+                      onPressed: () {
+                        print('image upload dialog');
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Upload',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: textScaleFactor * 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.all(screenWidth * .01),
+                  child: Container(
+                    width: screenWidth * .25,
+                    height: screenHeight * .05,
+                    child: FloatingActionButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      backgroundColor: MixTapeColors.light_gray,
+                      onPressed: () {
+                        print('image upload dialog');
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Default',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: textScaleFactor * 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
+
+            SizedBox(height: screenHeight * .04),
+
+            Container(
+              height: screenHeight * .17,
+              color: MixTapeColors.dark_gray,
+              child: Image.asset(photo_URL),
+            ),
+
+
           ],
         ),
       ),
@@ -60,7 +123,7 @@ class _ImageUploadState extends State<ImageUpload> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                'Close',
+                'Done',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w500,
