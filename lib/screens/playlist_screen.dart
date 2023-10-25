@@ -27,7 +27,7 @@ class MixTapeInfo {
 }
 
 class PlaylistScreen extends StatefulWidget {
-  final PlaylistInfo playlist;
+  final Playlist playlist;
   const PlaylistScreen({required this.playlist});
 
   @override
@@ -74,7 +74,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       SongInfo("Follow You", "Imagine Dragons", "Mercury - Act 1", 210),
     ];
 
-    switch(widget.playlist.title) {
+    switch(widget.playlist.name) {
       case "ish and charlie like to party":
         songs = defaultTape;
         break;
@@ -135,7 +135,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(20.0),
                           child: Text(
-                            widget.playlist.title,
+                            widget.playlist.name,
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'Montserrat',

@@ -5,7 +5,7 @@ import 'package:mixtape/screens/add_songs.dart';
 import '../utilities/colors.dart';
 
 class TapeCreationScreen extends StatefulWidget {
-  final PlaylistInfo playlist;
+  final Playlist playlist;
   const TapeCreationScreen({
     required this.playlist,
   });
@@ -40,12 +40,12 @@ class _TapeCreationScreenState extends State<TapeCreationScreen> {
                 Text("Create a MixTape", style: TextStyle(
                 color: Colors.white, fontFamily: "Montserrat", fontSize: 35, fontWeight: FontWeight.bold),),
                 SizedBox(height: screenHeight * .01),
-                Text("This mixtape will be added to ${widget.playlist.title}, which is owned by you and ${widget.playlist.friend}",
+                Text("This mixtape will be added to ${widget.playlist.name}, which is owned by you and ${widget.playlist.friend}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                     color: Colors.white, fontFamily: "Montserrat", fontSize: 15,),),
                 SizedBox(height: screenHeight * .01),
-                Image.asset(widget.playlist.image,
+                Image.asset(widget.playlist.coverPicURL,
                   height: screenHeight * .1,
                   width: screenHeight * .1,
                 ),

@@ -8,7 +8,7 @@ import '../models/SongInfo.dart';
 import '../utilities/colors.dart';
 
 class AddSongsPage extends StatefulWidget {
-  final PlaylistInfo playlist;
+  final Playlist playlist;
   final String mixTapeName;
   final String mixTapeDescription;
   const AddSongsPage({
