@@ -3,6 +3,7 @@ import 'package:mixtape/models/SongInfo.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:spotify/spotify.dart';
 
 // class Song {
 //   String title;
@@ -24,25 +25,23 @@ class _SearchPageState extends State<SearchPage> {
   List<SongInfo> _searchResults = [];
 
   void searchSpotify(String query) async {
-    // just here for proof of concept. obviously not using this
-    String apiKey = 'placeholder';
-    String apiUrl = 'https://api.spotify.com/v1/search?q=$query&type=track';
+    var credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e29921d605a9", "1f740b22a8984436bb87e41d7fa23295");
+    var spotify = SpotifyApi(credentials);
 
-    var response = await http.get(
-      Uri.parse(apiUrl),
-      headers: {'Authorization': 'Bearer $apiKey'},
-    );
+    var search = await spotify.search.get(query).first(5);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      List<dynamic> tracks = data['tracks']['items'];
+    _searchResults = [];
 
-      setState(() {
-        // nothin
+    search.forEach((pages) {
+      pages.items!.forEach((item) {
+        if (item is Track) {
+          _searchResults.add(SongInfo(item.name!,
+              item.artists!.first.name!,
+              item.album!.name!,
+              item.duration!.inSeconds.toDouble()));
+        }
       });
-    } else {
-      print('Error: ${response.statusCode}');
-    }
+    });
   }
 
   void addToTape(String song) {
@@ -97,23 +96,15 @@ class _SearchPageState extends State<SearchPage> {
                   onPressed: _searchController.clear,
                 ) // The trailing icon
               ),
-              onChanged: (value) {
-                searchSpotify(value);
-              },
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FilledButton(
-                onPressed: () => setState(() =>
-                  _searchResults = [
-                    SongInfo("Heartless", "Kanye West", "808s & Heartbreak", 232),
-                    SongInfo("Heart to Heart", "Mac Demarco", "Here Comes The Cowboy", 138),
-                    SongInfo("Heartbeat", "Childish Gambino", "Camp", 320),
-                    SongInfo("Heartless", "The Weeknd", "After Hours", 266),
-                    SongInfo("Heartbreak Anniversary", "Giveon", "Heartbreak Anniversary", 210),
-                  ]
+                onPressed: () => setState(() {
+                    searchSpotify(_searchController.text);
+                  }
                 ),
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
