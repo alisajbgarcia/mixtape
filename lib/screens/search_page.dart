@@ -41,21 +41,25 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void searchSpotifybyAlbum(String query) async {
+  Future<void> searchSpotifybyAlbum(String query) async {
     var search = await spotify.search.get(query).first(5);
 
     _searchResults = [];
 
     Album albumFound = new Album();
+    var album;
     for (var page in search) {
       for (var item in page.items!) {
-        if (item is Album) {
-          print(item.name);
-          albumFound = item;
+        if (item is AlbumSimple) {
+          album = item.id;
           break;
         }
       }
     }
+
+    albumFound = await spotify.albums.get(album);
+
+    print(albumFound.name);
 
     if (albumFound == null) return;
 
@@ -149,9 +153,13 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () => setState(() {
-                  searchSpotifybyAlbum(_searchController.text);
-                }),
+                onPressed: () {
+                  searchSpotify(_searchController.text).then((_) {
+                    setState(() {
+                      // set the state
+                    });
+                  });
+                },
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -166,9 +174,13 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () => setState(() => {
-                  searchSpotifybyAlbum(_searchController.text)
-                }),
+                onPressed: () {
+                  searchSpotifybyAlbum(_searchController.text).then((_) {
+                    setState(() {
+                      // set the state
+                    });
+                  });
+                },
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
