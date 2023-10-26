@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/models/SongInfo.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:spotify/spotify.dart';
 
 // class Song {
@@ -12,6 +11,9 @@ import 'package:spotify/spotify.dart';
 //
 //   Song(this.title, this.artist, this.album);
 // }
+
+SpotifyApiCredentials credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e29921d605a9", "1f740b22a8984436bb87e41d7fa23295");
+SpotifyApi spotify = SpotifyApi(credentials);
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -25,9 +27,6 @@ class _SearchPageState extends State<SearchPage> {
   List<SongInfo> _searchResults = [];
 
   void searchSpotify(String query) async {
-    var credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e29921d605a9", "1f740b22a8984436bb87e41d7fa23295");
-    var spotify = SpotifyApi(credentials);
-
     var search = await spotify.search.get(query).first(5);
 
     _searchResults = [];
@@ -44,8 +43,38 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void addToTape(String song) {
-    // TODO
+  void searchSpotifybyAlbum(String query) async {
+    var search = await spotify.search.get(query).first(5);
+
+    _searchResults = [];
+
+    search.forEach((pages) {
+      pages.items!.forEach((item) {
+        if (item is Track) {
+          _searchResults.add(SongInfo(item.name!,
+              item.artists!.first.name!,
+              item.album!.name!,
+              item.duration!.inSeconds.toDouble()));
+        }
+      });
+    });
+  }
+
+  void searchSpotifybyArtist(String query) async {
+    var search = await spotify.search.get(query).first(5);
+
+    _searchResults = [];
+
+    search.forEach((pages) {
+      pages.items!.forEach((item) {
+        if (item is Track) {
+          _searchResults.add(SongInfo(item.name!,
+              item.artists!.first.name!,
+              item.album!.name!,
+              item.duration!.inSeconds.toDouble()));
+        }
+      });
+    });
   }
 
   @override
@@ -93,7 +122,10 @@ class _SearchPageState extends State<SearchPage> {
                     color: Colors.white,
                     size: screenSize.shortestSide * .1,
                   ),
-                  onPressed: _searchController.clear,
+                  onPressed: () => setState(() {
+                    _searchController.clear;
+                    _searchResults = [];
+                  })
                 ) // The trailing icon
               ),
             ),
