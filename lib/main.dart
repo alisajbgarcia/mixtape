@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/login_page.dart';
+import 'package:mixtape/services/services_container.dart';
 
+void main() async {
+  var services = await ServicesContainer.initialize();
 
-
-void main() {
   runApp(
-    MaterialApp(
-      initialRoute: '/home', // Specify the initial route
-      routes: {
-        '/home': (context) => LoginPage(), // Define the home screen
-        // Add other routes here
-      },
-    ),
+    ServicesProvider(
+      services: services,
+      child: MaterialApp(
+        initialRoute: '/home', // Specify the initial route
+        routes: {
+          '/home': (context) => LoginPage(), // Define the home screen
+          // Add other routes here
+        },
+      ),
+    )
   );
 }
 
