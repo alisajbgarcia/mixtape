@@ -6,7 +6,7 @@ import 'package:mixtape/widgets/navbar.dart';
 import 'package:mixtape/screens/notif_page.dart';
 
 import '../utilities/navbar_pages.dart';
-import '../models/PlaylistInfo.dart';
+import '../models/playlist.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,10 +27,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<PlaylistInfo> cardData = [
-    PlaylistInfo('ish and charlie like to party', 'assets/green_colored_logo.png', 20, 'cmsale', 'assets/blue_colored_logo.png', 3, 27),
-    PlaylistInfo('group running playlist', 'assets/blue_colored_logo.png', 30, 'alexfrey2', 'assets/alex_profile_picture.png', 5, 42),
-    PlaylistInfo('trombone tunes', 'assets/red_colored_logo.png', 50, 'scoobydrew', 'assets/red_colored_logo.png', 1, 17),
+  List<Playlist> cardData = [
+    Playlist('ish and charlie like to party', 'assets/green_colored_logo.png', 20, 'cmsale', 'assets/blue_colored_logo.png', 3, 27),
+    Playlist('group running playlist', 'assets/blue_colored_logo.png', 30, 'alexfrey2', 'assets/alex_profile_picture.png', 5, 42),
+    Playlist('trombone tunes', 'assets/red_colored_logo.png', 50, 'scoobydrew', 'assets/red_colored_logo.png', 1, 17),
   ];
 
   @override
@@ -115,8 +115,7 @@ class _HomePageState extends State<HomePage> {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
-                        print('Tapped on Card ${playlist.title}');
-                        print(playlist.title);
+                        print('Tapped on Card ${playlist.name}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
@@ -138,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                                     padding: EdgeInsets.all(screenWidth * .005),
                                     height: screenHeight * .17,
                                     color: MixTapeColors.dark_gray,
-                                    child: Image.asset(playlist.image),
+                                    child: Image.network(playlist.coverPicURL),
                                   ),
                                 ),
                                 Expanded(
@@ -156,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                                           child: FittedBox(
                                             fit: BoxFit.scaleDown,
                                             child: Text(
-                                              playlist.title,
+                                              playlist.name,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: (22 * textScaleFactor),
@@ -175,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
-                                              Image.asset(playlist.friendProfile, width: 25, height: 25),
+                                              Image.asset(playlist.initiator, width: 25, height: 25),
                                               Text(
                                                 "with ${playlist.friend}",
                                                 style: TextStyle(

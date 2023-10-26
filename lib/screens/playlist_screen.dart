@@ -3,7 +3,7 @@ import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
-import '../models/PlaylistInfo.dart';
+import '../models/playlist.dart';
 import '../models/SongInfo.dart';
 
 
@@ -27,7 +27,7 @@ class MixTapeInfo {
 }
 
 class PlaylistScreen extends StatefulWidget {
-  final PlaylistInfo playlist;
+  final Playlist playlist;
   const PlaylistScreen({required this.playlist});
 
   @override

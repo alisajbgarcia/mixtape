@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mixtape/models/PlaylistInfo.dart';
+import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/screens/search_page.dart';
@@ -8,7 +8,7 @@ import '../models/SongInfo.dart';
 import '../utilities/colors.dart';
 
 class AddSongsPage extends StatefulWidget {
-  final PlaylistInfo playlist;
+  final Playlist playlist;
   final String mixTapeName;
   final String mixTapeDescription;
   const AddSongsPage({

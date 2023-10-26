@@ -180,7 +180,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   handleLogout(void Function() onComplete, {void Function(Object)? onError}) {
-    authenticationService.logout().then((value) => onComplete(), onError: onError);
+    authenticationService.logout()
+        .then((value) => onComplete(), onError: onError);
   }
 
   showAlertDialog(BuildContext context, double textScaleFactor) {

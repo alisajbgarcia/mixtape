@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mixtape/models/PlaylistInfo.dart';
+import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/add_songs.dart';
 
 import '../utilities/colors.dart';
 
 class TapeCreationScreen extends StatefulWidget {
-  final PlaylistInfo playlist;
+  final Playlist playlist;
   const TapeCreationScreen({
     required this.playlist,
   });
