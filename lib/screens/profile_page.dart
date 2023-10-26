@@ -86,14 +86,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 10),
                       child: Container(
-                          width: MediaQuery.of(context).size.width * .5,
-                          height: MediaQuery.of(context).size.width * .5,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/ish_profile_picture.png'),
-                              ))),
+                        width: MediaQuery.of(context).size.width * .5,
+                        height: MediaQuery.of(context).size.width * .5,
+                        child: Image.network(profile.profilePicURL),
+                        /*decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/ish_profile_picture.png'),
+                          ),
+                        ), */
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .01),
