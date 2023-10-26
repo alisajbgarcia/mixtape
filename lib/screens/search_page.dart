@@ -41,7 +41,6 @@ class _SearchPageState extends State<SearchPage> {
       });
     });
 
-
   }
 
   Future<void> searchSpotifybyAlbum(String query) async {
@@ -76,22 +75,7 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  void searchSpotifybyArtist(String query) async {
-    var search = await spotify.search.get(query).first(1);
 
-    _searchResults = [];
-
-    search.forEach((pages) {
-      pages.items!.forEach((item) {
-        if (item is Track) {
-          _searchResults.add(SongInfo(item.name!,
-              item.artists!.first.name!,
-              item.album!.name!,
-              item.duration!.inSeconds.toDouble()));
-        }
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
