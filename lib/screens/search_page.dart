@@ -26,7 +26,7 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
   List<SongInfo> _searchResults = [];
 
-  void searchSpotify(String query) async {
+  Future<void> searchSpotify(String query) async {
     var search = await spotify.search.get(query).first(5);
 
     _searchResults = [];
@@ -41,6 +41,8 @@ class _SearchPageState extends State<SearchPage> {
         }
       });
     });
+
+
   }
 
   void searchSpotifybyAlbum(String query) async {
@@ -48,20 +50,31 @@ class _SearchPageState extends State<SearchPage> {
 
     _searchResults = [];
 
-    search.forEach((pages) {
-      pages.items!.forEach((item) {
-        if (item is Track) {
-          _searchResults.add(SongInfo(item.name!,
-              item.artists!.first.name!,
-              item.album!.name!,
-              item.duration!.inSeconds.toDouble()));
+    Album albumFound = new Album();
+    for (var page in search) {
+      for (var item in page.items!) {
+        if (item is Album) {
+          print(item.name);
+          albumFound = item;
+          break;
         }
-      });
-    });
+      }
+    }
+
+    if (albumFound == null) return;
+
+    var albumSongs = albumFound.tracks;
+
+    for(var song in albumSongs!) {
+      _searchResults.add(SongInfo(song.name!,
+          song.artists!.first.name!,
+          albumFound.name!,
+          song.duration!.inSeconds.toDouble()));
+    }
   }
 
   void searchSpotifybyArtist(String query) async {
-    var search = await spotify.search.get(query).first(5);
+    var search = await spotify.search.get(query).first(1);
 
     _searchResults = [];
 
@@ -122,10 +135,7 @@ class _SearchPageState extends State<SearchPage> {
                     color: Colors.white,
                     size: screenSize.shortestSide * .1,
                   ),
-                  onPressed: () => setState(() {
-                    _searchController.clear;
-                    _searchResults = [];
-                  })
+                  onPressed: _searchController.clear
                 ) // The trailing icon
               ),
             ),
@@ -134,10 +144,13 @@ class _SearchPageState extends State<SearchPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FilledButton(
-                onPressed: () => setState(() {
-                    searchSpotify(_searchController.text);
-                  }
-                ),
+                onPressed: () {
+                  searchSpotify(_searchController.text).then((_) {
+                    setState(() {
+                      // set the state
+                    });
+                  });
+                },
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -152,15 +165,9 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () => setState(() =>
-                _searchResults = [
-                  SongInfo("Always", "Daniel Caesar", "NEVER ENOUGH", 222),
-                  SongInfo("Blessed", "Daniel Caesar", "Freudian", 189),
-                  SongInfo("Do You Like Me?", "Daniel Caesar", "NEVER ENOUGH", 193),
-                  SongInfo("Let Me Go", "Daniel Caesar", "NEVER ENOUGH", 130),
-                  SongInfo("Loose", "Daniel Caesar", "Freudian", 201),
-                ]
-                ),
+                onPressed: () => setState(() {
+                  searchSpotifybyAlbum(_searchController.text);
+                }),
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -175,15 +182,9 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () => setState(() =>
-                _searchResults = [
-                  SongInfo("The Color Violet", "Torey Lanez", "Alone At Prom", 233),
-                  SongInfo("Ballad of a Badman", "Torey Lanez", "Alone At Prom", 221),
-                  SongInfo("\'87 Stingray", "Torey Lanez", "Alone At Prom", 287),
-                  SongInfo("Pluto's Last Comet", "Torey Lanez", "Alone At Prom", 193),
-                  SongInfo("Lady of Namek", "Torey Lanez", "Alone At Prom", 174),
-                ]
-                ),
+                onPressed: () => setState(() => {
+                  searchSpotifybyAlbum(_searchController.text)
+                }),
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
