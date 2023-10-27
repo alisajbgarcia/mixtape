@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:mixtape/models/json_serializable.dart';
 import 'package:mixtape/models/profile.dart';
 import 'package:mixtape/models/track_info.dart';
 
@@ -47,6 +48,23 @@ class Mixtape {
       "creator": creator,
       "songIDs": jsonEncode(songIDs),
       "songs": jsonEncode(songs),
+    };
+  }
+}
+
+class MixtapeCreateDTO extends JsonSerializable {
+  String name;
+  String description;
+  List<String> songIDs;
+
+  MixtapeCreateDTO(this.name, this.description, this.songIDs);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "description": description,
+      "songIDs": jsonEncode(songIDs),
     };
   }
 }
