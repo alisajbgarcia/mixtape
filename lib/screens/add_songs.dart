@@ -4,7 +4,7 @@ import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/screens/search_page.dart';
 
-import '../models/SongInfo.dart';
+import '../models/track_info.dart';
 import '../utilities/colors.dart';
 
 class AddSongsPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class AddSongsPage extends StatefulWidget {
 }
 
 class _AddSongsPageState extends State<AddSongsPage> {
-  List<SongInfo> _addedSongs = <SongInfo>[];
+  List<TrackInfo> _addedSongs = <TrackInfo>[];
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class _AddSongsPageState extends State<AddSongsPage> {
                                         color: MixTapeColors.dark_gray,
                                         child: ListTile(
                                           title: Text(
-                                            song.title,
+                                            song.name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w600,
@@ -93,7 +93,7 @@ class _AddSongsPageState extends State<AddSongsPage> {
                                             ),
                                           ),
                                           subtitle: Text(
-                                            "${song.artist} • ${song.album}",
+                                            "${song.artistNames[0]} • ${song.albumName}",
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w400,
@@ -202,7 +202,7 @@ class _AddSongsPageState extends State<AddSongsPage> {
     if (!mounted) return;
 
 
-    if (pickedSong != null && pickedSong is SongInfo) {
+    if (pickedSong != null && pickedSong is TrackInfo) {
       setState(() {
         _addedSongs.add(pickedSong);
       });

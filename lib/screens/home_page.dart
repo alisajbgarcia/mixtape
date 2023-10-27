@@ -7,6 +7,7 @@ import 'package:mixtape/screens/notif_page.dart';
 import '../models/profile.dart';
 import '../models/mixtape.dart';
 
+import '../models/track_info.dart';
 import '../services/authentication_service.dart';
 import '../services/profile_service.dart';
 import '../services/services_container.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   late Mixtape sampleMixtape;
   late List<Mixtape> mixtapes;
   late List<Playlist> cardData;
+  late List<TrackInfo> tracks;
 
   late ProfileService profileService;
   late AuthenticationService authenticationService;
@@ -46,10 +48,11 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'assets/blue_colored_logo.png');
     songIds = ['id', 'id', 'id'];
-    sampleMixtape = Mixtape('id', 'playlistId', 'name', 'description', 'creatorId', 'parentplaylistid', songIds);
-    mixtapes = [Mixtape('id', 'playlistId', 'name', 'description', 'creatorId', 'parentplaylistid', songIds)];
+    DateTime date = DateTime.now();
+    sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: exampleProfile, songIDs: songIds, songs: tracks);
+    mixtapes = [sampleMixtape, sampleMixtape];
     cardData = [
-      Playlist('ID', 'spotifyID', 'ish and charlie like to party', exampleProfile, 'description', 'assets/blue_colored_logo.png', mixtapes),
+      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: exampleProfile, target: exampleProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes),
     ];
 
     profileService = ServicesContainer.of(context).profileService;

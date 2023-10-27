@@ -11,4 +11,13 @@ class Profile {
     displayName = items["displayName"] as String,
     spotifyUID = items["spotifyUID"] as String,
     profilePicURL = items["profilePicURL"] as String;
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "displayName": displayName,
+      "spotifyUID": spotifyUID,
+      "profilePicURL": profilePicURL,
+    };
+  }
 }
