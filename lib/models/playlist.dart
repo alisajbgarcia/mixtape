@@ -14,4 +14,13 @@ class Playlist {
 
   Playlist(this.id, this.spotifyID, this.name, this.initiator,
       this.description, this.coverPicURL, this.mixtapes);
+
+  Playlist.fromJson(Map<String, dynamic> items)
+      : id = items["id"] as String,
+        spotifyID = items["spotifyID"] as String,
+        name = items["name"] as String,
+        initiator = items["initiator"] as Profile,
+        description = items["description"] as String,
+        coverPicURL = items["coverPicURL"] as String,
+        mixtapes = items["mixtapes"] as List<Mixtape>;
 }

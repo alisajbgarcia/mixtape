@@ -7,6 +7,9 @@ import 'package:mixtape/screens/notif_page.dart';
 import '../models/profile.dart';
 import '../models/mixtape.dart';
 
+import '../services/authentication_service.dart';
+import '../services/profile_service.dart';
+import '../services/services_container.dart';
 import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
 
@@ -24,6 +27,10 @@ class _HomePageState extends State<HomePage> {
   late Mixtape sampleMixtape;
   late List<Mixtape> mixtapes;
   late List<Playlist> cardData;
+
+  late ProfileService profileService;
+  late AuthenticationService authenticationService;
+  late Future<Profile> currentProfile;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -44,6 +51,12 @@ class _HomePageState extends State<HomePage> {
     cardData = [
       Playlist('ID', 'spotifyID', 'ish and charlie like to party', exampleProfile, 'description', 'assets/blue_colored_logo.png', mixtapes),
     ];
+
+    profileService = ServicesContainer.of(context).profileService;
+    authenticationService = ServicesContainer.of(context).authService;
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+    });
   }
 
   @override
@@ -117,129 +130,141 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            height: screenHeight * .67,
-            padding: EdgeInsets.fromLTRB(screenWidth * .005, screenWidth * .005, screenWidth * .005, 0),
-            child: SingleChildScrollView(
-              child: Column(
-                  children: cardData.map((playlist) {
-                    return InkWell(
-                      borderRadius: BorderRadius.circular(12.0),
-                      onTap: () {
-                        print('Tapped on Card ${playlist.name}');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
-                        );
-                      },
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
-                          ),
-                          elevation: 3.0,
-                          margin: EdgeInsets.all(screenWidth * .03),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.all(screenWidth * .005),
-                                    height: screenHeight * .17,
-                                    color: MixTapeColors.dark_gray,
-                                    child: Image.asset(playlist.coverPicURL),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    padding: EdgeInsets.only(top: screenWidth * .01, bottom: screenWidth * .005, left: screenWidth * .01, right: screenWidth * .01),
-                                    height: screenHeight * .17,
-                                    color: MixTapeColors.light_gray,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(screenWidth * .015),
-                                          height: screenHeight * .035,
-                                          child: FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            child: Text(
-                                              playlist.name,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: (22 * textScaleFactor),
-                                                color: Colors.white,
+      body: FutureBuilder(
+        future: currentProfile,
+        builder: (context, profileSnapshot) {
+          if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // null assert is hella ugly, but the compiler doesn't appear to tell
+          // that this won't be null because of the early return
+          final profile = profileSnapshot.data!;
+          return Column(
+            children: [
+              Container(
+                height: screenHeight * .67,
+                padding: EdgeInsets.fromLTRB(screenWidth * .005, screenWidth * .005, screenWidth * .005, 0),
+                child: SingleChildScrollView(
+                  child: Column(
+                      children: cardData.map((playlist) {
+                        return InkWell(
+                          borderRadius: BorderRadius.circular(12.0),
+                          onTap: () {
+                            print('Tapped on Card ${playlist.name}');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
+                            );
+                          },
+                          child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                              ),
+                              elevation: 3.0,
+                              margin: EdgeInsets.all(screenWidth * .03),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.all(screenWidth * .005),
+                                        height: screenHeight * .17,
+                                        color: MixTapeColors.dark_gray,
+                                        child: Image.asset(playlist.coverPicURL),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        padding: EdgeInsets.only(top: screenWidth * .01, bottom: screenWidth * .005, left: screenWidth * .01, right: screenWidth * .01),
+                                        height: screenHeight * .17,
+                                        color: MixTapeColors.light_gray,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(screenWidth * .015),
+                                              height: screenHeight * .035,
+                                              child: FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                  playlist.name,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: (22 * textScaleFactor),
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                            FilledButton(
+                                              style: FilledButton.styleFrom(
+                                                backgroundColor: MixTapeColors.dark_gray,
+                                                padding: EdgeInsets.all(0),
+                                                fixedSize: Size(150, 15),
+                                              ),
+                                              onPressed: null,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  Image.asset(playlist.coverPicURL, width: 25, height: 25),
+                                                  Text(
+                                                    "with ${playlist.initiator.displayName}",
+                                                    style: TextStyle(
+                                                      fontSize: (10 * textScaleFactor),
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Card(
+                                              color: MixTapeColors.light_gray,
+                                              elevation: 0.0,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "${10} songs",
+                                                    style: TextStyle(
+                                                      fontSize: (12 * textScaleFactor),
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${2} hours, ${32} min',
+                                                    style: TextStyle(
+                                                      color: Colors.grey[400],
+                                                      fontSize: (12 * textScaleFactor),
+                                                    ),
+                                                  ),
+                                                  Image.asset(
+                                                    'assets/spotify/Spotify_Icon_RGB_Green.png',
+                                                    height: screenHeight * .03,
+                                                    width: screenHeight * .03,
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        FilledButton(
-                                          style: FilledButton.styleFrom(
-                                            backgroundColor: MixTapeColors.dark_gray,
-                                            padding: EdgeInsets.all(0),
-                                            fixedSize: Size(150, 15),
-                                          ),
-                                          onPressed: null,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Image.asset(playlist.coverPicURL, width: 25, height: 25),
-                                              Text(
-                                                "with ${playlist.initiator.displayName}",
-                                                style: TextStyle(
-                                                  fontSize: (10 * textScaleFactor),
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Card(
-                                          color: MixTapeColors.light_gray,
-                                          elevation: 0.0,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "${10} songs",
-                                                style: TextStyle(
-                                                  fontSize: (12 * textScaleFactor),
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              Text(
-                                                '${2} hours, ${32} min',
-                                                style: TextStyle(
-                                                  color: Colors.grey[400],
-                                                  fontSize: (12 * textScaleFactor),
-                                                ),
-                                              ),
-                                              Image.asset(
-                                                'assets/spotify/Spotify_Icon_RGB_Green.png',
-                                                height: screenHeight * .03,
-                                                width: screenHeight * .03,
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )
-                      ),
-                    );
-                  }).toList(),
+                              )
+                          ),
+                        );
+                      }).toList(),
+                    ),
                 ),
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        }
       ),
       floatingActionButton: Container(
         alignment: Alignment.bottomCenter,

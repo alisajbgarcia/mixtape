@@ -1,4 +1,3 @@
-
 class Profile {
   String id;
   String displayName;
