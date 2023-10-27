@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mixtape/models/PlaylistInfo.dart';
+import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/add_songs.dart';
 
 import '../utilities/colors.dart';
@@ -40,7 +40,7 @@ class _TapeCreationScreenState extends State<TapeCreationScreen> {
                 Text("Create a MixTape", style: TextStyle(
                 color: Colors.white, fontFamily: "Montserrat", fontSize: 35, fontWeight: FontWeight.bold),),
                 SizedBox(height: screenHeight * .01),
-                Text("This mixtape will be added to ${widget.playlist.name}, which is owned by you and ${widget.playlist.friend}",
+                Text("This mixtape will be added to ${widget.playlist.name}, which is owned by you and ${widget.playlist.initiator.displayName}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                     color: Colors.white, fontFamily: "Montserrat", fontSize: 15,),),
