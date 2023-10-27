@@ -4,6 +4,8 @@ import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 import 'package:mixtape/screens/notif_page.dart';
+import '../models/profile.dart';
+import '../models/mixtape.dart';
 
 import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
@@ -17,6 +19,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   bool light = true;
+  late Profile exampleProfile;
+  late List<String> songIds;
+  late Mixtape sampleMixtape;
+  late List<Mixtape> mixtapes;
+  late List<Playlist> cardData;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -27,11 +34,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<Playlist> cardData = [
-    Playlist('ish and charlie like to party', 'assets/green_colored_logo.png', 20, 'cmsale', 'assets/blue_colored_logo.png', 3, 27),
-    Playlist('group running playlist', 'assets/blue_colored_logo.png', 30, 'alexfrey2', 'assets/alex_profile_picture.png', 5, 42),
-    Playlist('trombone tunes', 'assets/red_colored_logo.png', 50, 'scoobydrew', 'assets/red_colored_logo.png', 1, 17),
-  ];
+  @override
+  void initState(){
+    super.initState();
+    exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'assets/blue_colored_logo.png');
+    songIds = ['id', 'id', 'id'];
+    sampleMixtape = Mixtape('id', 'playlistId', 'name', 'description', 'creatorId', 'parentplaylistid', songIds);
+    mixtapes = [Mixtape('id', 'playlistId', 'name', 'description', 'creatorId', 'parentplaylistid', songIds)];
+    cardData = [
+      Playlist('ID', 'spotifyID', 'ish and charlie like to party', exampleProfile, 'description', 'assets/blue_colored_logo.png', mixtapes),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                                     padding: EdgeInsets.all(screenWidth * .005),
                                     height: screenHeight * .17,
                                     color: MixTapeColors.dark_gray,
-                                    child: Image.network(playlist.coverPicURL),
+                                    child: Image.asset(playlist.coverPicURL),
                                   ),
                                 ),
                                 Expanded(
@@ -174,9 +187,9 @@ class _HomePageState extends State<HomePage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
-                                              Image.asset(playlist.initiator, width: 25, height: 25),
+                                              Image.asset(playlist.coverPicURL, width: 25, height: 25),
                                               Text(
-                                                "with ${playlist.friend}",
+                                                "with ${playlist.initiator.displayName}",
                                                 style: TextStyle(
                                                   fontSize: (10 * textScaleFactor),
                                                   color: Colors.white,
@@ -192,14 +205,14 @@ class _HomePageState extends State<HomePage> {
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                "${playlist.numSongs} songs",
+                                                "${10} songs",
                                                 style: TextStyle(
                                                   fontSize: (12 * textScaleFactor),
                                                   color: Colors.white,
                                                 ),
                                               ),
                                               Text(
-                                                '${playlist.hours} hours, ${playlist.minutes} min',
+                                                '${2} hours, ${32} min',
                                                 style: TextStyle(
                                                   color: Colors.grey[400],
                                                   fontSize: (12 * textScaleFactor),
