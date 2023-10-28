@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'assets/blue_colored_logo.png');
     songIds = ['id', 'id', 'id'];
+    tracks = [TrackInfo(id: 'id', name: 'name', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/blue_colored_logo.png')];
     DateTime date = DateTime.now();
     sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: exampleProfile, songIDs: songIds, songs: tracks);
     mixtapes = [sampleMixtape, sampleMixtape];
