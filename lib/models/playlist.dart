@@ -12,6 +12,8 @@ class Playlist {
   Profile target;
   String description;
   String coverPicURL;
+  int totalDurationMS;
+  int songCount;
 
   List<Mixtape> mixtapes;
 
@@ -23,7 +25,9 @@ class Playlist {
       required this.target,
       required this.description,
       required this.coverPicURL,
-      required this.mixtapes});
+      required this.mixtapes,
+      required this.totalDurationMS,
+      required this.songCount});
 
   factory Playlist.fromJson(Map<String, dynamic> json) {
     return Playlist(
@@ -35,6 +39,8 @@ class Playlist {
       description: json["description"],
       coverPicURL: json["coverPicURL"],
       mixtapes: List<Mixtape>.of(json["mixtapes"].map((item) => Mixtape.fromJson(item))),
+      totalDurationMS: json["totalDurationMS"],
+      songCount: json["songCount"],
     );
   }
 
