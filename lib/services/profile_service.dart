@@ -12,4 +12,8 @@ class ProfileService extends AbstractService {
     return super.get("/api/v1/profile/me", Profile.fromJson);
   }
 
+  Future<List<Profile>> getFriendsForCurrentUser() async {
+    return getMany("/api/v1/profile/me/friendship/friends", Profile.fromJson);
+  }
+
 }
