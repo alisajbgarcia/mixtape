@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/widgets/playlist_invitation_sent.dart';
+import 'package:mixtape/widgets/image_upload.dart';
 
 import '../widgets/playlist_invitation.dart';
 
@@ -21,6 +22,16 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   void dispose() {
     _textController.dispose(); // Dispose of the controller when the widget is disposed.
     super.dispose();
+  }
+
+  // Function to open the ImageUpload alert dialog
+  void openImageUploadDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ImageUpload();
+      },
+    );
   }
 
   // Function to open the PlaylistInvitation alert dialog
@@ -142,7 +153,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                               icon: Icon(Icons.add_photo_alternate_outlined),
                               color: Colors.white,
                               onPressed: () {
-                                print("here my goodness");
+                                openImageUploadDialog(context);
                               },
                             ),
                           ),

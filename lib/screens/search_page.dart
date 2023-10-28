@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mixtape/models/SongInfo.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import '../models/track_info.dart';
 
 // class Song {
 //   String title;
@@ -21,7 +22,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
-  List<SongInfo> _searchResults = [];
+  List<TrackInfo> _searchResults = [];
 
   void searchSpotify(String query) async {
     // just here for proof of concept. obviously not using this
@@ -108,11 +109,7 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                   _searchResults = [
-                    SongInfo("Heartless", "Kanye West", "808s & Heartbreak", 232),
-                    SongInfo("Heart to Heart", "Mac Demarco", "Here Comes The Cowboy", 138),
-                    SongInfo("Heartbeat", "Childish Gambino", "Camp", 320),
-                    SongInfo("Heartless", "The Weeknd", "After Hours", 266),
-                    SongInfo("Heartbreak Anniversary", "Giveon", "Heartbreak Anniversary", 210),
+                    TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
                   ]
                 ),
                 style: FilledButton.styleFrom(
@@ -131,11 +128,8 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                 _searchResults = [
-                  SongInfo("Always", "Daniel Caesar", "NEVER ENOUGH", 222),
-                  SongInfo("Blessed", "Daniel Caesar", "Freudian", 189),
-                  SongInfo("Do You Like Me?", "Daniel Caesar", "NEVER ENOUGH", 193),
-                  SongInfo("Let Me Go", "Daniel Caesar", "NEVER ENOUGH", 130),
-                  SongInfo("Loose", "Daniel Caesar", "Freudian", 201),
+                  TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
+
                 ]
                 ),
                 style: FilledButton.styleFrom(
@@ -154,11 +148,8 @@ class _SearchPageState extends State<SearchPage> {
               FilledButton(
                 onPressed: () => setState(() =>
                 _searchResults = [
-                  SongInfo("The Color Violet", "Torey Lanez", "Alone At Prom", 233),
-                  SongInfo("Ballad of a Badman", "Torey Lanez", "Alone At Prom", 221),
-                  SongInfo("\'87 Stingray", "Torey Lanez", "Alone At Prom", 287),
-                  SongInfo("Pluto's Last Comet", "Torey Lanez", "Alone At Prom", 193),
-                  SongInfo("Lady of Namek", "Torey Lanez", "Alone At Prom", 174),
+                  TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
+
                 ]
                 ),
                 style: FilledButton.styleFrom(
@@ -182,7 +173,7 @@ class _SearchPageState extends State<SearchPage> {
                 children: _searchResults.map((song) {
                   return InkWell(
                     onTap: () {
-                      print("Clicked on ${song.title}");
+                      print("Clicked on ${song.name}");
                       Navigator.pop(context, song);
                     },
                     borderRadius: BorderRadius.circular(12.0),
@@ -213,7 +204,7 @@ class _SearchPageState extends State<SearchPage> {
                                   color: MixTapeColors.dark_gray,
                                   child: ListTile(
                                     title: Text(
-                                      song.title,
+                                      song.name,
                                       style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w600,
@@ -222,7 +213,7 @@ class _SearchPageState extends State<SearchPage> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      "${song.artist} • ${song.album}",
+                                      "${song.artistNames[0]} • ${song.albumName}",
                                       style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w400,

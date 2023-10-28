@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/models/track_info.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 
-import '../models/SongInfo.dart';
 
 class TapeInfoScreen extends StatefulWidget {
   final int tape_id;
   final int spotify_id;
   final String title;
   final String image;
-  final List<SongInfo> songs;
+  final List<TrackInfo> songs;
   final String description;
   const TapeInfoScreen(
       {required this.tape_id,
@@ -159,7 +159,7 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                                       color: MixTapeColors.dark_gray,
                                       child: ListTile(
                                         title: Text(
-                                          song.title,
+                                          song.name,
                                           style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w600,
@@ -168,7 +168,7 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                                           ),
                                         ),
                                         subtitle: Text(
-                                          "${song.artist} • ${song.album}",
+                                          "${song.artistNames[0]} • ${song.albumName}",
                                           style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w400,

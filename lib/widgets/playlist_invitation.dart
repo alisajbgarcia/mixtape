@@ -23,7 +23,7 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
   ];
 
   late List<bool> selectedStates;
-  String selectedFriend = ""; // Define selectedFriend as an instance variable
+  String selectedFriend = "";
 
   @override
   void initState() {

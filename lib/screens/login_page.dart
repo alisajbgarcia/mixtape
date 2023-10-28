@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/services/authentication_service.dart';
+import 'package:mixtape/services/services_container.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/home_page.dart';
 
@@ -10,6 +12,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  late AuthenticationService _authService;
+
+  bool hasError = false;
+  String? errorMsg;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final services = ServicesContainer.of(context);
+    _authService = services.authService;
+  }
+
+  void onLogin() {
+    _authService.login().then((success) => {
+      if (success) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
+      } else {
+        hasError = true
+      }
+    }, onError: (err) {
+      hasError = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -54,10 +82,14 @@ class _LoginPageState extends State<LoginPage> {
               FilledButton.icon(
                 onPressed: () {
                   print("login");
+
+                  onLogin();
+
+                  /*
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
-                  );
+                  );*/
                 },
                 style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -82,6 +114,9 @@ class _LoginPageState extends State<LoginPage> {
                   textAlign: TextAlign.center,
                 ),
               ),
+              if (hasError) ...[
+                Text(errorMsg ?? 'Failed to login')
+              ]
             ],
           ),
         ));
