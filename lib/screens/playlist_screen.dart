@@ -42,9 +42,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
     List<TrackInfo> rock = [
       TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
     ];
 
     List<TrackInfo> defaultTape = [
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
       TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
     ];
 
