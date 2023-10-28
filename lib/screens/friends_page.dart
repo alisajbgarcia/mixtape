@@ -98,9 +98,11 @@ class _FriendsPageState extends State<FriendsPage> {
           if (friendsSnapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(); // Display a loading indicator while waiting for data.
           } else {
-            List<Profile>? cardData = friendsSnapshot.data;
-            if(cardData == null) {
+            List<Profile> cardData;
+            if(!friendsSnapshot.hasData) {
               cardData = dummydata;
+            } else {
+              cardData = friendsSnapshot.data!;
             }
             return Stack(
               children: [
