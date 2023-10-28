@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: exampleProfile, songIDs: songIds, songs: tracks);
     mixtapes = [sampleMixtape, sampleMixtape];
     cardData = [
-      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: exampleProfile, target: exampleProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes),
+      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: exampleProfile, target: exampleProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 2000, songCount: 5),
     ];
 
     profileService = ServicesContainer.of(context).profileService;
