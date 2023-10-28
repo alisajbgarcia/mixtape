@@ -149,6 +149,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   ),
                 ),
                 Positioned(
+                  left: screenWidth * .8,
+                  top: screenHeight * .05,
+                  child: IconButton(
+                    icon: const Icon(Icons.delete),
+                    color: Colors.white,
+                    iconSize: textScaleFactor * 30,
+                    onPressed: () {
+                      //TODO: delete playlist
+                      print('Pressed Delete');
+                    },
+                  ),
+                ),
+                Positioned(
                   left: 0,
                   right: 0,
                   top: screenHeight * .22, // Adjust the top position as needed
