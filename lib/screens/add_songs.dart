@@ -3,8 +3,12 @@ import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/screens/search_page.dart';
+import 'package:mixtape/services/mixtape_service.dart';
+import 'package:mixtape/services/services_container.dart';
 
+import '../models/mixtape.dart';
 import '../models/track_info.dart';
+import '../services/authentication_service.dart';
 import '../utilities/colors.dart';
 
 class AddSongsPage extends StatefulWidget {
@@ -23,6 +27,15 @@ class AddSongsPage extends StatefulWidget {
 
 class _AddSongsPageState extends State<AddSongsPage> {
   List<TrackInfo> _addedSongs = <TrackInfo>[];
+  late AuthenticationService authenticationService;
+  late MixtapeService mixtapeService;
+
+  @override
+  void initState() {
+    super.initState();
+    mixtapeService = ServicesContainer.of(context).mixtapeService;
+    authenticationService = ServicesContainer.of(context).authService;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +169,13 @@ class _AddSongsPageState extends State<AddSongsPage> {
                 ),
                 heroTag: "submit_mixtape_creation",
                 onPressed: () {
-                  MixTapeInfo mixTape = MixTapeInfo(widget.mixTapeName, "", _addedSongs.length, _addedSongs, widget.mixTapeDescription);
-                  print("Title: ${mixTape.title}, NumSongs: ${mixTape.numSongs}, Description: ${mixTape.description}");
+                  // MixTapeInfo mixTape = MixTapeInfo(widget.mixTapeName, "", _addedSongs.length, _addedSongs, widget.mixTapeDescription);
+                  List<String> songIDs = [];
+                  for (TrackInfo song in _addedSongs) {
+                    songIDs.add(song.id);
+                  }
+                  mixtapeService.createMixtapeInPlaylistForCurrentUser(widget.playlist.id, name: widget.mixTapeName, description: widget.mixTapeDescription, songIDs: songIDs);
+                  // print("Title: ${mixTape.title}, NumSongs: ${mixTape.numSongs}, Description: ${mixTape.description}");
                   Navigator.push(
                       context,
                       MaterialPageRoute(

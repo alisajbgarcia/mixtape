@@ -8,14 +8,12 @@ class TapeInfoScreen extends StatefulWidget {
   final int tape_id;
   final int spotify_id;
   final String title;
-  final String image;
   final List<TrackInfo> songs;
   final String description;
   const TapeInfoScreen(
       {required this.tape_id,
       required this.spotify_id,
       required this.title,
-      required this.image,
       required this.songs,
       required this.description});
 

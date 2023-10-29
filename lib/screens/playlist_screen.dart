@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/models/mixtape.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
 import '../models/playlist.dart';
 import '../models/track_info.dart';
+import '../services/authentication_service.dart';
+import '../services/mixtape_service.dart';
+import '../services/services_container.dart';
 
 class MixTapeInfo {
   String title;
@@ -28,11 +32,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
   // API call to get playlist info
   late List<TrackInfo> songs;
-  late List<MixTapeInfo> cardData;
+  late Future<List<Mixtape>> cardData;
+  late AuthenticationService authenticationService;
+  late MixtapeService mixtapeService;
 
   @override
   void initState() {
     super.initState();
+
+    mixtapeService = ServicesContainer.of(context).mixtapeService;
+    authenticationService = ServicesContainer.of(context).authService;
+    setState(() {
+      cardData = mixtapeService.getMixtapesForPlaylistCurrentUser(widget.playlist.id);
+    });
 
     List<TrackInfo> tameImpala = [
       TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
@@ -61,12 +73,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         songs = tameImpala;
     }
 
-    // Initialize cardData
-    cardData = [
-      MixTapeInfo('tame impala da goat', 'assets/green_colored_logo.png', 20, songs, "This is about tame impala"),
-      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, rock, "This playlist does in fact have the good stuff"),
-      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, defaultTape, "Just another mixtape"),
-    ];
+    // // Initialize cardData
+    // cardData = [
+    //   MixTapeInfo('tame impala da goat', 'assets/green_colored_logo.png', 20, songs, "This is about tame impala"),
+    //   MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, rock, "This playlist does in fact have the good stuff"),
+    //   MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, defaultTape, "Just another mixtape"),
+    // ];
   }
 
 
@@ -76,8 +88,22 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
+
     return Scaffold(
-      body: Container(
+      body: FutureBuilder(
+          future: cardData,
+          builder: (context, profileSnapshot) {
+
+            if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            // null assert is hella ugly, but the compiler doesn't appear to tell
+            // that this won't be null because of the early return
+            final cardData = profileSnapshot.data!;
+
+
+            return Container(
         width: screenWidth,
         height: screenHeight,
         color: MixTapeColors.black,
@@ -164,10 +190,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
-                        print('Tapped on Card ${mixtape.title}');
+                        print('Tapped on Card ${mixtape.name}');
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => TapeInfoScreen(tape_id: 1, spotify_id: 2, title: mixtape.title, image: mixtape.image, songs: mixtape.songs, description: mixtape.description,)),
+                          MaterialPageRoute(builder: (context) => TapeInfoScreen(tape_id: 1, spotify_id: 2, title: mixtape.name, songs: mixtape.songs, description: mixtape.description,)),
                         );
                       },
                       child: Card(
@@ -190,7 +216,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(20, 20, 10, 0),
                                   child: Text(
-                                    mixtape.title,
+                                    mixtape.name,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: (21 * textScaleFactor),
@@ -208,7 +234,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     color: MixTapeColors.dark_gray,
                                     child: ListTile(
                                       leading: Image.asset(
-                                        mixtape.image,
+                                        mixtape.songs[0].albumImageURL,
                                         width: screenWidth * .1,
                                         height: screenHeight * .1,
                                       ),
@@ -245,7 +271,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     color: MixTapeColors.dark_gray,
                                     child: ListTile(
                                       leading: Image.asset(
-                                        mixtape.image,
+                                        mixtape.songs[1].albumImageURL,
                                         width: screenWidth * .1,
                                         height: screenHeight * .1,
                                       ),
@@ -341,27 +367,33 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             ),
           ],
         ),
-      ),
+      );}
+            ),
     );
   }
 
   int getTotalNumSongs() {
-    int totalSongs = 0;
-    for (MixTapeInfo card in cardData) {
-      totalSongs += card.numSongs;
-    }
-    return totalSongs;
+    //TODO: COME BACK AND FIX THIS
+    // int totalSongs = 0;
+    // for (MixTapeInfo card in cardData) {
+    //   totalSongs += card.numSongs;
+    // }
+    // return totalSongs;
+    return 100;
   }
 
   String getTotalTimeHHMM() {
-    double totalSeconds = 0;
-    for (MixTapeInfo card in cardData) {
-      for (TrackInfo song in card.songs) {
-        totalSeconds += 5;
-      }
-    }
-    int hours = getHoursFromSeconds(totalSeconds);
-    int minutes = getMinutesFromSeconds(totalSeconds) - hours * 60;
+    //TODO: COME BACK AND FIX THIS
+    // double totalSeconds = 0;
+    // for (MixTapeInfo card in cardData) {
+    //   for (TrackInfo song in card.songs) {
+    //     totalSeconds += 5;
+    //   }
+    // }
+    // int hours = getHoursFromSeconds(totalSeconds);
+    // int minutes = getMinutesFromSeconds(totalSeconds) - hours * 60;
+    int hours = 1;
+    int minutes = 1;
     return "${hours}h ${minutes}m";
   }
 
