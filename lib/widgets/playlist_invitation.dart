@@ -41,9 +41,7 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
   @override
   void initState() {
     super.initState();
-    if(widget.userFriends == null) {
-      friends = dummydata;
-    }
+    friends = widget.userFriends;
     selectedStates = List.generate(friends.length, (index) => false);
   }
 

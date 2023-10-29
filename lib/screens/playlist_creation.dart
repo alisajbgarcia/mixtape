@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
@@ -25,6 +27,8 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   late ProfileService profileService;
   late AuthenticationService authenticationService;
   late Future<Profile> currentProfile;
+  late Future<List<Profile>> friends;
+  late List<Profile> userFriends;
 
   @override
   void initState() {
@@ -34,6 +38,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     authenticationService = ServicesContainer.of(context).authService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
+      friends = profileService.getFriendsForCurrentUser();
     });
   }
 
@@ -98,153 +103,179 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
 
+    List<Profile> dummydata = [
+      Profile('id', 'alexfrey1', 'spotifyUID', 'assets/green_colored_logo.png'),
+      Profile('id', 'alisajbgarcia', 'spotifyUID', 'assets/green_colored_logo.png'),
+      Profile('id', 'zestythomae', 'spotifyUID', 'assets/green_colored_logo.png'),
+      Profile('id', 'cmsale', 'spotifyUID', 'assets/green_colored_logo.png'),
+    ];
+
     // Callback function to handle the selected friend
     void handleFriendSelection(String friendName) {
       setState(() {
         selectedFriend = friendName;
       });
     }
-    return Scaffold(
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        color: MixTapeColors.black,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Stack(
+    return FutureBuilder(
+      future: friends,
+      builder: (context, friendsSnapshot) {
+        if(!friendsSnapshot.hasData || friendsSnapshot.hasError) {
+          userFriends = dummydata;
+          print("here got dang it");
+        } else {
+          userFriends = friendsSnapshot.data!;
+        }
+        return Scaffold(
+          body: Container(
+            width: screenWidth,
+            height: screenHeight,
+            color: MixTapeColors.black,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 20, 5, screenHeight * .2),
-                  child: Image.asset(
-                    'assets/mixtape_image.png',
-                    scale: 1.02,
-                  ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: screenHeight * .06, // Adjust the top position as needed
-                  child: Center(
-                    child: Container(
-                      height: screenHeight * .05, // Set
-                      width: screenWidth * .55,
-                      decoration: BoxDecoration(
-                        color: MixTapeColors.black.withOpacity(.5), // Set the background color to gray
-                        borderRadius: BorderRadius.circular(3), // Add rounded corners
+                Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 20, 5, screenHeight * .2),
+                      child: Image.asset(
+                        'assets/mixtape_image.png',
+                        scale: 1.02,
                       ),
-                      child: SingleChildScrollView(
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: textScaleFactor * 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
-                              border: InputBorder.none,
-                              focusColor: Colors.white,
-                              hintText: "Name",
-                              hintStyle: TextStyle(
-                                fontFamily: 'Montserrat',
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: screenHeight * .06,
+                      // Adjust the top position as needed
+                      child: Center(
+                        child: Container(
+                          height: screenHeight * .05, // Set
+                          width: screenWidth * .55,
+                          decoration: BoxDecoration(
+                            color: MixTapeColors.black.withOpacity(.5),
+                            // Set the background color to gray
+                            borderRadius: BorderRadius.circular(
+                                3), // Add rounded corners
+                          ),
+                          child: SingleChildScrollView(
+                            child: TextField(
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontFamily: "Montserrat",
                                 fontSize: textScaleFactor * 15,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
                               ),
-                              suffixIcon: Icon(
-                                Icons.create_rounded,
-                                color: Colors.white,
-                                size: 15,
-                              ), // The trailing icon
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.fromLTRB(
+                                    10, 15, 0, 0),
+                                border: InputBorder.none,
+                                focusColor: Colors.white,
+                                hintText: "Name",
+                                hintStyle: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: textScaleFactor * 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                                suffixIcon: Icon(
+                                  Icons.create_rounded,
+                                  color: Colors.white,
+                                  size: 15,
+                                ), // The trailing icon
+                              ),
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                    Positioned(
+                        left: 0,
+                        right: 0,
+                        top: screenHeight * .24,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    screenWidth * .05, 0, 0, 0),
+                                child: Container(
+                                  decoration: ShapeDecoration(
+                                    color: MixTapeColors.light_gray,
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(
+                                        Icons.add_photo_alternate_outlined),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      openImageUploadDialog(context);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            Flexible(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    0, 0, screenWidth * .05, 0),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.person_add_alt_rounded,
+                                    size: screenHeight * .04,
+                                  ),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    print("do you have friends");
+                                    print("i got here dang it");
+                                    openPlaylistInvitationDialog(
+                                        context, userFriends);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                  ],
+                ),
+
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * 0.05),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    // This will scale the child down if it overflows
+                    child: FloatingActionButton.extended(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      heroTag: "playlist_invitation",
+                      onPressed: () {
+                        print("send invitation");
+                        openPlaylistInvitationSentDialog(context);
+                      },
+                      label: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          'Invite $selectedFriend',
+                          style: TextStyle(
+                            fontSize: textScaleFactor * 20,
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      backgroundColor: MixTapeColors.green,
                     ),
                   ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: screenHeight * .24,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(screenWidth * .05, 0, 0, 0),
-                          child: Container(
-                            decoration: ShapeDecoration(
-                              color: MixTapeColors.light_gray,
-                              shape: CircleBorder(),
-                            ),
-                            child: IconButton(
-                              icon: Icon(Icons.add_photo_alternate_outlined),
-                              color: Colors.white,
-                              onPressed: () {
-                                openImageUploadDialog(context);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, screenWidth * .05, 0),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.person_add_alt_rounded,
-                              size: screenHeight * .04,
-                            ),
-                            color: Colors.white,
-                            onPressed: () async {
-                              print("do you have friends");
-                              List<Profile> userFriends = await profileService.getFriendsForCurrentUser();
-                              print("i got here dang it");
-                              openPlaylistInvitationDialog(context, userFriends);
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
                 ),
               ],
             ),
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * 0.05),
-              child: FittedBox(
-                fit: BoxFit.scaleDown, // This will scale the child down if it overflows
-                child: FloatingActionButton.extended(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  heroTag: "playlist_invitation",
-                  onPressed: () {
-                    print("send invitation");
-                    openPlaylistInvitationSentDialog(context);
-                  },
-                  label: Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      'Invite $selectedFriend',
-                      style: TextStyle(
-                        fontSize: textScaleFactor * 20,
-                        fontFamily: "Montserrat",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  backgroundColor: MixTapeColors.green,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 }
