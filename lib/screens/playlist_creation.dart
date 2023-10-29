@@ -4,6 +4,10 @@ import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/widgets/playlist_invitation_sent.dart';
 import 'package:mixtape/widgets/image_upload.dart';
 
+import '../models/profile.dart';
+import '../services/authentication_service.dart';
+import '../services/profile_service.dart';
+import '../services/services_container.dart';
 import '../widgets/playlist_invitation.dart';
 
 class PlaylistCreationScreen extends StatefulWidget {
@@ -17,6 +21,21 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   TextEditingController _textController = TextEditingController();
   String _textFieldValue = "";
   String selectedFriend = "";
+  String playlistPhoto = "";
+  late ProfileService profileService;
+  late AuthenticationService authenticationService;
+  late Future<Profile> currentProfile;
+
+  @override
+  void initState() {
+    super.initState();
+
+    profileService = ServicesContainer.of(context).profileService;
+    authenticationService = ServicesContainer.of(context).authService;
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+    });
+  }
 
   @override
   void dispose() {
@@ -29,13 +48,23 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ImageUpload();
+        return ImageUpload(
+          playlistPhotoURL: (String photoURL) {
+            setState(() {
+              playlistPhoto = photoURL;
+              print("playlist photo");
+            });
+            print(playlistPhoto);
+          },
+        );
       },
     );
   }
 
   // Function to open the PlaylistInvitation alert dialog
-  void openPlaylistInvitationDialog(BuildContext context) {
+  void openPlaylistInvitationDialog(BuildContext context, List<Profile> userFriends) {
+    print('here');
+    print(userFriends);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -46,6 +75,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
             });
             print('Selected friend!: $friendName');
           },
+          userFriends: userFriends
         );
       },
     );
@@ -169,9 +199,11 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                               size: screenHeight * .04,
                             ),
                             color: Colors.white,
-                            onPressed: () {
+                            onPressed: () async {
                               print("do you have friends");
-                              openPlaylistInvitationDialog(context);
+                              List<Profile> userFriends = await profileService.getFriendsForCurrentUser();
+                              print("i got here dang it");
+                              openPlaylistInvitationDialog(context, userFriends);
                             },
                           ),
                         ),
