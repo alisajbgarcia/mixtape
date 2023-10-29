@@ -6,8 +6,10 @@ import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/widgets/playlist_invitation_sent.dart';
 import 'package:mixtape/widgets/image_upload.dart';
 
+import '../models/playlist.dart';
 import '../models/profile.dart';
 import '../services/authentication_service.dart';
+import '../services/playlist_service.dart';
 import '../services/profile_service.dart';
 import '../services/services_container.dart';
 import '../widgets/playlist_invitation.dart';
@@ -24,11 +26,15 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   String _textFieldValue = "";
   String selectedFriend = "";
   String playlistPhoto = "";
+
   late ProfileService profileService;
   late AuthenticationService authenticationService;
+  late PlaylistService playlistService;
+
   late Future<Profile> currentProfile;
   late Future<List<Profile>> friends;
   late List<Profile> userFriends;
+  late Playlist newPlaylist;
 
   @override
   void initState() {
@@ -36,6 +42,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
 
     profileService = ServicesContainer.of(context).profileService;
     authenticationService = ServicesContainer.of(context).authService;
+    playlistService = ServicesContainer.of(context).playlistService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
       friends = profileService.getFriendsForCurrentUser();
@@ -159,6 +166,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                           ),
                           child: SingleChildScrollView(
                             child: TextField(
+                              controller: _textController,
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontFamily: "Montserrat",
@@ -229,7 +237,6 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                                   color: Colors.white,
                                   onPressed: () {
                                     print("do you have friends");
-                                    print("i got here dang it");
                                     openPlaylistInvitationDialog(
                                         context, userFriends);
                                   },
@@ -252,9 +259,24 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       heroTag: "playlist_invitation",
-                      onPressed: () {
+                      onPressed: () async {
                         print("send invitation");
                         openPlaylistInvitationSentDialog(context);
+                        _textFieldValue = _textController.text;
+                        newPlaylist = Playlist(
+                          id: 'id',
+                          spotifyID: 'spotifyId',
+                          name: _textFieldValue,
+                          initiator: await currentProfile,
+                          target: await currentProfile,
+                          description: "",
+                          coverPicURL: playlistPhoto,
+                          mixtapes: [],
+                          totalDurationMS: 0,
+                          songCount: 0
+                        );
+                        print(newPlaylist.name);
+                        print(newPlaylist.initiator.displayName);
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),
