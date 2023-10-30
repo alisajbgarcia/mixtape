@@ -20,7 +20,7 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
   List<TrackInfo> _searchResults = [];
 
-  void searchSpotify(String query) async {
+  Future<void> searchSpotify(String query) async {
     var search = await spotify.search.get(query).first(5);
 
     _searchResults = [];
@@ -46,20 +46,30 @@ class _SearchPageState extends State<SearchPage> {
 
     _searchResults = [];
 
-    search.forEach((pages) {
-      pages.items!.forEach((item) {
-        if (item is Track) {
-          _searchResults.add(TrackInfo(
-              name: item.name!,
-              id: item.id!,
-              artistNames: item.artists!.map((e) => e.name!).toList(),
-              albumName: item.album!.name!,
-              albumImageURL: 'assets/green_colored_logo.png'
-            )
-          );
+    Album albumFound = new Album();
+    for (var page in search) {
+      for (var item in page.items!) {
+        if (item is Album) {
+          print(item.name);
+          albumFound = item;
+          break;
         }
-      });
-    });
+      }
+    }
+
+    if (albumFound == null) return;
+
+    var albumSongs = albumFound.tracks;
+
+    for(var song in albumSongs!) {
+      _searchResults.add(TrackInfo(
+          name: song.name!,
+          id: song.id!,
+          artistNames: song.artists!.map((e) => e.name!).toList(),
+          albumName: albumFound.name!,
+          albumImageURL: 'assets/green_colored_logo.png'
+      ));
+    }
   }
 
 
@@ -118,10 +128,13 @@ class _SearchPageState extends State<SearchPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FilledButton(
-                onPressed: () => setState(() {
-                  searchSpotify(_searchController.text);
-                }
-                ),
+                onPressed: () {
+                  searchSpotify(_searchController.text).then((_) {
+                    setState(() {
+                      // set the state
+                    });
+                  });
+                },
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -136,12 +149,9 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () => setState(() =>
-                _searchResults = [
-                  TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
-
-                ]
-                ),
+                onPressed: () => setState(() {
+                  searchSpotifybyAlbum(_searchController.text);
+                }),
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -156,12 +166,9 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () => setState(() =>
-                _searchResults = [
-                  TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
-
-                ]
-                ),
+                onPressed: () => setState(() => {
+                  searchSpotifybyAlbum(_searchController.text)
+                }),
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
