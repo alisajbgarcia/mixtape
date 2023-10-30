@@ -155,10 +155,39 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     icon: const Icon(Icons.delete),
                     color: Colors.white,
                     iconSize: textScaleFactor * 30,
-                    onPressed: () {
-                      //TODO: delete playlist
-                      print('Pressed Delete');
-                    },
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                          backgroundColor: MixTapeColors.black,
+                          //title: const Text('Remove Friend?'),
+                          content: const Text('Would you like to delete this playlist?',
+                          style: TextStyle(
+                                fontSize: (22),
+                                color: Colors.white,
+                               ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'CANCEL'),
+                              child: const Text('CANCEL',
+                              style: TextStyle(
+                                              fontSize: (22),
+                                              color: Colors.white,
+                               ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'YES'),
+                              child: const Text('YES',
+                                style: TextStyle(
+                                                fontSize: (22),
+                                                color: Colors.white,
+                                ),
+                               ),
+                            ),
+                          ],
+                        ),
+                    ),
                   ),
                 ),
                 Positioned(

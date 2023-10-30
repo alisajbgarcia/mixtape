@@ -20,7 +20,7 @@ class NotifInfo {
 class _NotifPage extends State<NotifPage> {
   int _selectedIndex = 0;
   bool isFilterVisible = false;
-  String filterValue = 'OFF';
+  String filterValue = 'Off';
 
   void _onItemTapped(int index) {
     setState(() {
