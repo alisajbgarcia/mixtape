@@ -4,8 +4,6 @@ import 'package:spotify/spotify.dart';
 
 import '../models/track_info.dart';
 
-// works
-
 SpotifyApiCredentials credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e29921d605a9", "1f740b22a8984436bb87e41d7fa23295");
 SpotifyApi spotify = SpotifyApi(credentials);
 
