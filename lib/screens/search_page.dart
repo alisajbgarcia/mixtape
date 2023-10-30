@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
+import 'package:spotify/spotify.dart';
 import '../models/track_info.dart';
 
-// class Song {
-//   String title;
-//   String artist;
-//   String album;
-//
-//   Song(this.title, this.artist, this.album);
-// }
+SpotifyApiCredentials credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e29921d605a9", "1f740b22a8984436bb87e41d7fa23295");
+SpotifyApi spotify = SpotifyApi(credentials);
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -24,31 +17,62 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
   List<TrackInfo> _searchResults = [];
 
-  void searchSpotify(String query) async {
-    // just here for proof of concept. obviously not using this
-    String apiKey = 'placeholder';
-    String apiUrl = 'https://api.spotify.com/v1/search?q=$query&type=track';
+  Future<void> searchSpotify(String query) async {
+    var search = await spotify.search.get(query).first(5);
 
-    var response = await http.get(
-      Uri.parse(apiUrl),
-      headers: {'Authorization': 'Bearer $apiKey'},
-    );
+    _searchResults = [];
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      List<dynamic> tracks = data['tracks']['items'];
-
-      setState(() {
-        // nothin
+    search.forEach((pages) {
+      pages.items!.forEach((item) {
+        if (item is Track) {
+          _searchResults.add(TrackInfo(
+              name: item.name!,
+              id: item.id!,
+              artistNames: item.artists!.map((e) => e.name!).toList(),
+              albumName: item.album!.name!,
+              albumImageURL: 'assets/green_colored_logo.png'
+            )
+          );
+        }
       });
-    } else {
-      print('Error: ${response.statusCode}');
+    });
+
+  }
+
+  Future<void> searchSpotifybyAlbum(String query) async {
+    var search = await spotify.search.get(query).first(5);
+
+    _searchResults = [];
+
+    Album albumFound = new Album();
+    var album;
+    for (var page in search) {
+      for (var item in page.items!) {
+        if (item is AlbumSimple) {
+          album = item.id;
+          break;
+        }
+      }
+    }
+
+    albumFound = await spotify.albums.get(album);
+
+    if (albumFound == null) return;
+
+    var albumSongs = albumFound.tracks;
+
+    for(var song in albumSongs!) {
+      _searchResults.add(TrackInfo(
+          name: song.name!,
+          id: song.id!,
+          artistNames: song.artists!.map((e) => e.name!).toList(),
+          albumName: albumFound.name!,
+          albumImageURL: 'assets/green_colored_logo.png'
+      ));
     }
   }
 
-  void addToTape(String song) {
-    // TODO
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,39 +103,38 @@ class _SearchPageState extends State<SearchPage> {
                 color: Colors.white,
               ),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
-                border: InputBorder.none,
-                focusColor: Colors.white,
-                hintText: "Search for songs by...",
-                hintStyle: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: textScaleFactor * 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.clear,
+                  contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+                  border: InputBorder.none,
+                  focusColor: Colors.white,
+                  hintText: "Search for songs by...",
+                  hintStyle: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: textScaleFactor * 15,
+                    fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    size: screenSize.shortestSide * .1,
                   ),
-                  onPressed: _searchController.clear,
-                ) // The trailing icon
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.clear,
+                      color: Colors.white,
+                      size: screenSize.shortestSide * .1,
+                    ),
+                    onPressed: _searchController.clear,
+                  ) // The trailing icon
               ),
-              onChanged: (value) {
-                searchSpotify(value);
-              },
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FilledButton(
-                onPressed: () => setState(() =>
-                  _searchResults = [
-                    TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
-                  ]
-                ),
+                onPressed: () {
+                  searchSpotify(_searchController.text).then((_) {
+                    setState(() {
+                      // set the state
+                    });
+                  });
+                },
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -126,12 +149,13 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () => setState(() =>
-                _searchResults = [
-                  TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
-
-                ]
-                ),
+                onPressed: () {
+                  searchSpotify(_searchController.text).then((_) {
+                    setState(() {
+                      // set the state
+                    });
+                  });
+                },
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
@@ -146,12 +170,13 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               FilledButton(
-                onPressed: () => setState(() =>
-                _searchResults = [
-                  TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
-
-                ]
-                ),
+                onPressed: () {
+                  searchSpotifybyAlbum(_searchController.text).then((_) {
+                    setState(() {
+                      // set the state
+                    });
+                  });
+                },
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
