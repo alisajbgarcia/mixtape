@@ -24,7 +24,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   bool light = true;
-  late Profile exampleProfile;
+  late Profile targetProfile;
+  late Profile initiatorProfile;
   late List<String> songIds;
   late Mixtape sampleMixtape;
   late List<Mixtape> mixtapes;
@@ -47,14 +48,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
+    targetProfile = Profile('id', 'cmsale', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
+    initiatorProfile = Profile('id', 'alisajbgarcia', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
     songIds = ['id', 'id', 'id'];
     tracks = [TrackInfo(id: 'id', name: 'name', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/blue_colored_logo.png')];
     DateTime date = DateTime.now();
-    sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: exampleProfile, songIDs: songIds, songs: tracks);
+    sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: targetProfile, songIDs: songIds, songs: tracks);
     mixtapes = [sampleMixtape, sampleMixtape];
     dummydata = [
-      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: exampleProfile, target: exampleProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 9120000, songCount: 5),
+      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: initiatorProfile, target: targetProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 9120000, songCount: 5),
     ];
 
     playlistService = ServicesContainer.of(context).playlistService;
