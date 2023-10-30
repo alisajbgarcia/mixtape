@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 
+import '../models/profile.dart';
+import '../services/authentication_service.dart';
+import '../services/profile_service.dart';
+import '../services/services_container.dart';
+
 class Friend {
   String name;
   Friend(this.name);
@@ -8,18 +13,26 @@ class Friend {
 
 class PlaylistInvitation extends StatefulWidget {
   final Function(String) onFriendSelected;
+  final List<Profile> userFriends;
 
-  PlaylistInvitation({required this.onFriendSelected});
+  PlaylistInvitation({required this.onFriendSelected, required this.userFriends});
+
   @override
   _PlaylistInvitationState createState() => _PlaylistInvitationState();
 }
 
 class _PlaylistInvitationState extends State<PlaylistInvitation> {
-  List<Friend> friends = [
-    Friend('alexfrey1'),
-    Friend('alisajbgarcia'),
-    Friend('scoobydrew'),
-    Friend('cmsale'),
+  late ProfileService profileService;
+  late AuthenticationService authenticationService;
+  late Future<Profile> currentProfile;
+  late Future<List<Profile>> profileFriends;
+  late List<Profile> friends;
+
+  List<Profile> dummydata = [
+    Profile('id', 'alexfrey1', 'spotifyUID', 'assets/green_colored_logo.png'),
+    Profile('id', 'alisajbgarcia', 'spotifyUID', 'assets/green_colored_logo.png'),
+    Profile('id', 'zestythomae', 'spotifyUID', 'assets/green_colored_logo.png'),
+    Profile('id', 'cmsale', 'spotifyUID', 'assets/green_colored_logo.png'),
   ];
 
   late List<bool> selectedStates;
@@ -28,12 +41,13 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
   @override
   void initState() {
     super.initState();
+    friends = widget.userFriends;
     selectedStates = List.generate(friends.length, (index) => false);
   }
 
   void handleFriendSelection(int friendIndex) {
     setState(() {
-      selectedFriend = friends[friendIndex].name;
+      selectedFriend = friends[friendIndex].displayName;
       for (int i = 0; i < friends.length; i++) {
         selectedStates[i] = (i == friendIndex);
       }
@@ -74,7 +88,7 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
                       tileColor: selectedStates[index] ? MixTapeColors.mint : null,
                       onTap: () {
                         handleFriendSelection(index); // Handle friend selection
-                        print("Tapped a friend: ${friends[index].name}");
+                        print("Tapped a friend: ${friends[index].displayName}");
                       },
                       selected: selectedStates[index],
                       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 1),
@@ -83,7 +97,7 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
                         color: selectedStates[index] ? MixTapeColors.green : Colors.white,
                       ),
                       title: Text(
-                        friends[index].name,
+                        friends[index].displayName,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Montserrat',

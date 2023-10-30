@@ -7,6 +7,16 @@ import 'package:mixtape/screens/search_page.dart';
 import '../models/track_info.dart';
 import '../utilities/colors.dart';
 
+class MixTapeInfo {
+  String title;
+  String image;
+  int numSongs;
+  List<TrackInfo> songs;
+  String description;
+
+  MixTapeInfo(this.title, this.image, this.numSongs, this.songs, [this.description = ""]);
+}
+
 class AddSongsPage extends StatefulWidget {
   final Playlist playlist;
   final String mixTapeName;

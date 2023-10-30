@@ -9,6 +9,7 @@ import '../models/mixtape.dart';
 
 import '../models/track_info.dart';
 import '../services/authentication_service.dart';
+import '../services/playlist_service.dart';
 import '../services/profile_service.dart';
 import '../services/services_container.dart';
 import '../utilities/navbar_pages.dart';
@@ -27,12 +28,12 @@ class _HomePageState extends State<HomePage> {
   late List<String> songIds;
   late Mixtape sampleMixtape;
   late List<Mixtape> mixtapes;
-  late List<Playlist> cardData;
+  late List<Playlist> dummydata;
   late List<TrackInfo> tracks;
 
-  late ProfileService profileService;
+  late PlaylistService playlistService;
   late AuthenticationService authenticationService;
-  late Future<Profile> currentProfile;
+  late Future<List<Playlist>> playlists;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -52,14 +53,14 @@ class _HomePageState extends State<HomePage> {
     DateTime date = DateTime.now();
     sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: exampleProfile, songIDs: songIds, songs: tracks);
     mixtapes = [sampleMixtape, sampleMixtape];
-    cardData = [
-      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: exampleProfile, target: exampleProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 2000, songCount: 5),
+    dummydata = [
+      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: exampleProfile, target: exampleProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 9120000, songCount: 5),
     ];
 
-    profileService = ServicesContainer.of(context).profileService;
+    playlistService = ServicesContainer.of(context).playlistService;
     authenticationService = ServicesContainer.of(context).authService;
     setState(() {
-      currentProfile = profileService.getCurrentProfile();
+      playlists = playlistService.getPlaylistsForCurrentUser();
     });
   }
 
@@ -135,15 +136,19 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: FutureBuilder(
-        future: currentProfile,
-        builder: (context, profileSnapshot) {
-          if (!profileSnapshot.hasData || profileSnapshot.hasError) {
-            return const Center(child: CircularProgressIndicator());
+        future: playlists,
+        builder: (context, playlistsSnapshot) {
+          List<Playlist> cardData;
+          if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
+            //return const Center(child: CircularProgressIndicator());
+            cardData = dummydata;
+            print('oops');
+          } else {
+            cardData = playlistsSnapshot.data!;
           }
 
           // null assert is hella ugly, but the compiler doesn't appear to tell
           // that this won't be null because of the early return
-          final profile = profileSnapshot.data!;
           return Column(
             children: [
               Container(
@@ -216,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                                                 children: [
                                                   Image.asset(playlist.coverPicURL, width: 25, height: 25),
                                                   Text(
-                                                    "with ${playlist.initiator.displayName}",
+                                                    "with ${playlist.target.displayName}",
                                                     style: TextStyle(
                                                       fontSize: (10 * textScaleFactor),
                                                       color: Colors.white,
@@ -232,14 +237,14 @@ class _HomePageState extends State<HomePage> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "${10} songs",
+                                                    "${playlist.songCount} songs",
                                                     style: TextStyle(
                                                       fontSize: (12 * textScaleFactor),
                                                       color: Colors.white,
                                                     ),
                                                   ),
                                                   Text(
-                                                    '${2} hours, ${32} min',
+                                                    '${getTotalTimeHHMM(playlist.totalDurationMS)}',
                                                     style: TextStyle(
                                                       color: Colors.grey[400],
                                                       fontSize: (12 * textScaleFactor),
@@ -302,5 +307,19 @@ class _HomePageState extends State<HomePage> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  String getTotalTimeHHMM(int totalDurationMS) {
+    int hours = getHoursFromMS(totalDurationMS);
+    int minutes = getMinutesFromMS(totalDurationMS) - hours * 60;
+    return "${hours}h ${minutes}m";
+  }
+
+  int getHoursFromMS(int milliseconds) {
+    return (milliseconds / 3600000).truncate();
+  }
+
+  int getMinutesFromMS(int milliseconds) {
+    return (milliseconds / 60000).truncate();
   }
 }

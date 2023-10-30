@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:mixtape/models/profile.dart';
 
+import 'json_serializable.dart';
 import 'mixtape.dart';
 
-class Playlist {
+class Playlist implements JsonSerializable{
   String id;
   String spotifyID; // unused :(
   String name;

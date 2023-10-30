@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 
 class ImageUpload extends StatefulWidget {
-  const ImageUpload({super.key});
+  final Function(String) playlistPhotoURL;
+  ImageUpload({required this.playlistPhotoURL});
 
   @override
   State<ImageUpload> createState() => _ImageUploadState();
 }
 
 class _ImageUploadState extends State<ImageUpload> {
+  String playlistPhoto = "";
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -77,6 +80,8 @@ class _ImageUploadState extends State<ImageUpload> {
                       ),
                       backgroundColor: MixTapeColors.light_gray,
                       onPressed: () {
+                        playlistPhoto = photo_URL;
+                        this.widget.playlistPhotoURL(playlistPhoto);
                         print('image upload dialog');
                         Navigator.of(context).pop();
                       },
