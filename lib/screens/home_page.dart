@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'assets/blue_colored_logo.png');
+    exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
     songIds = ['id', 'id', 'id'];
     tracks = [TrackInfo(id: 'id', name: 'name', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/blue_colored_logo.png')];
     DateTime date = DateTime.now();

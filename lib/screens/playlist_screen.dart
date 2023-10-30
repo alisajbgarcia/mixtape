@@ -39,7 +39,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void initState() {
     super.initState();
 
-    exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'assets/blue_colored_logo.png');
+    exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
     createdAt = DateTime.now();
     songIds = ['id', 'id', 'id'];
 
@@ -152,6 +152,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       ),
                     ),
                   ),
+                ),
+                Positioned(
+                  left: screenWidth * .04,
+                  top: screenHeight * .25, // Adjust the top position as needed
+                  //child: Text('here', style: TextStyle(color: Colors.white)),
+                  child: Image.network(widget.playlist.initiator.profilePicURL, width: screenWidth * .01, height: screenWidth * .01),
+                ),
+                Positioned(
+                  left: screenWidth * .75,
+                  right: 0,
+                  top: screenHeight * .25, // Adjust the top position as needed
+                  //child: Text('here', style: TextStyle(color: Colors.white)),
+                  child: Image.network(widget.playlist.initiator.profilePicURL, width: screenWidth * .01, height: screenWidth * .01),
                 ),
               ],
             ),
