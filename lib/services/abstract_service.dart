@@ -79,7 +79,10 @@ class AbstractService {
 
   T decodeSingle<T>(String content, T Function(Map<String, dynamic>) parserFactory) => parserFactory(jsonDecode(content));
 
-  List<T> decodeMany<T>(String content, T Function(Map<String, dynamic>) parserFactory) => List<T>.of(jsonDecode(content).map((item) => parserFactory(item)));
+  List<T> decodeMany<T>(String content, T Function(Map<String, dynamic>) parserFactory) {
+    final entityList = (jsonDecode(content) as Iterable<dynamic>).map((item) => item as Map<String, dynamic>);
+    return List<T>.of(entityList.map((item) => parserFactory(item)));
+  }
 
   String _sanitizeUri(String uri) {
     if (uri.startsWith('/')) {
