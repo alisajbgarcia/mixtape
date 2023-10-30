@@ -6,6 +6,9 @@ import '../models/track_info.dart';
 
 
 
+SpotifyApiCredentials credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e29921d605a9", "1f740b22a8984436bb87e41d7fa23295");
+SpotifyApi spotify = SpotifyApi(credentials);
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -18,9 +21,6 @@ class _SearchPageState extends State<SearchPage> {
   List<TrackInfo> _searchResults = [];
 
   void searchSpotify(String query) async {
-    var credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e29921d605a9", "1f740b22a8984436bb87e41d7fa23295");
-    var spotify = SpotifyApi(credentials);
-
     var search = await spotify.search.get(query).first(5);
 
     _searchResults = [];
@@ -34,16 +34,35 @@ class _SearchPageState extends State<SearchPage> {
               artistNames: item.artists!.map((e) => e.name!).toList(),
               albumName: item.album!.name!,
               albumImageURL: 'assets/green_colored_logo.png'
-          )
+            )
           );
         }
       });
     });
   }
 
-  void addToTape(String song) {
-    // TODO
+  void searchSpotifybyAlbum(String query) async {
+    var search = await spotify.search.get(query).first(5);
+
+    _searchResults = [];
+
+    search.forEach((pages) {
+      pages.items!.forEach((item) {
+        if (item is Track) {
+          _searchResults.add(TrackInfo(
+              name: item.name!,
+              id: item.id!,
+              artistNames: item.artists!.map((e) => e.name!).toList(),
+              albumName: item.album!.name!,
+              albumImageURL: 'assets/green_colored_logo.png'
+            )
+          );
+        }
+      });
+    });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
