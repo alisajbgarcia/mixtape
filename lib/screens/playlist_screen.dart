@@ -156,15 +156,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 Positioned(
                   left: screenWidth * .04,
                   top: screenHeight * .25, // Adjust the top position as needed
-                  //child: Text(widget.playlist.target.displayName, style: TextStyle(color: Colors.white)),
-                  child: Image.network(widget.playlist.initiator.profilePicURL, width: screenHeight * .06, height: screenHeight * .06),
+                  //child: Text('here', style: TextStyle(color: Colors.white)),
+                  child: Image.network(widget.playlist.initiator.profilePicURL, width: screenWidth * .1, height: screenWidth * .1),
                 ),
                 Positioned(
                   left: screenWidth * .75,
                   right: 0,
                   top: screenHeight * .25, // Adjust the top position as needed
                   //child: Text('here', style: TextStyle(color: Colors.white)),
-                  child: Image.network(widget.playlist.initiator.profilePicURL, width: screenHeight * .06, height: screenHeight * .06),
+                  child: Image.network(exampleProfile.profilePicURL, width: screenWidth * .1, height: screenWidth * .1),
                 ),
               ],
             ),
