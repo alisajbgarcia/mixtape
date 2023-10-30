@@ -92,6 +92,7 @@ class _FriendsPageState extends State<FriendsPage> {
         elevation: 0.0,
         toolbarHeight: screenHeight * .13,
       ),
+     
       body: FutureBuilder(
         future: friends,
         builder: (context, friendsSnapshot) {
@@ -105,19 +106,49 @@ class _FriendsPageState extends State<FriendsPage> {
               cardData = friendsSnapshot.data!;
             }
             return Stack(
-              children: [
-                Container(
-                  height: screenHeight * .67,
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 30),
-                  child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
-                    child: Container(
-                      child: Column(
-                        children: cardData.map((friend) {
-                          return InkWell(
-                            borderRadius: BorderRadius.circular(12.0),
-                            onTap: () {
-                              print('Tapped on Friend ${friend.displayName}');
-                            },
+                children: [
+                  Container(
+                    height: screenHeight * .67,
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 30),
+                    child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
+                      child: Container(
+                        child: Column(
+                          children: cardData.map((friend) {
+                            return InkWell(
+                              borderRadius: BorderRadius.circular(12.0),
+                              onTap: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  backgroundColor: MixTapeColors.black,
+                                  //title: const Text('Remove Friend?'),
+                                  content: const Text('Would you like to remove this user as a friend?',
+                                  style: TextStyle(
+                                        fontSize: (22),
+                                        color: Colors.white,
+                                       ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, 'CANCEL'),
+                                      child: const Text('CANCEL',
+                                      style: TextStyle(
+                                                      fontSize: (22),
+                                                      color: Colors.white,
+                                       ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, 'YES'),
+                                      child: const Text('YES',
+                                      style: TextStyle(
+                                                      fontSize: (22),
+                                                      color: Colors.white,
+                                       ),
+                                       ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             child: Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(

@@ -123,6 +123,48 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   ),
                 ),
                 Positioned(
+                  left: screenWidth * .8,
+                  top: screenHeight * .05,
+                  child: IconButton(
+                    icon: const Icon(Icons.delete),
+                    color: Colors.white,
+                    iconSize: textScaleFactor * 30,
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                          backgroundColor: MixTapeColors.black,
+                          //title: const Text('Remove Friend?'),
+                          content: const Text('Would you like to delete this playlist?',
+                          style: TextStyle(
+                                fontSize: (22),
+                                color: Colors.white,
+                               ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'CANCEL'),
+                              child: const Text('CANCEL',
+                              style: TextStyle(
+                                              fontSize: (22),
+                                              color: Colors.white,
+                               ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'YES'),
+                              child: const Text('YES',
+                                style: TextStyle(
+                                                fontSize: (22),
+                                                color: Colors.white,
+                                ),
+                               ),
+                            ),
+                          ],
+                        ),
+                    ),
+                  ),
+                ),
+                Positioned(
                   left: 0,
                   right: 0,
                   top: screenHeight * .22, // Adjust the top position as needed
