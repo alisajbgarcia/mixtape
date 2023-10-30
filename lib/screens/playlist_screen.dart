@@ -3,31 +3,23 @@ import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
-import '../models/PlaylistInfo.dart';
-import '../models/SongInfo.dart';
-
-
-
-// class Song {
-//   String title;
-//   String artist;
-//   String album;
-//
-//   Song(this.title, this.artist, this.album);
-// }
+import '../models/mixtape.dart';
+import '../models/playlist.dart';
+import '../models/profile.dart';
+import '../models/track_info.dart';
 
 class MixTapeInfo {
   String title;
   String image;
   int numSongs;
-  List<SongInfo> songs;
+  List<TrackInfo> songs;
   String description;
 
   MixTapeInfo(this.title, this.image, this.numSongs, this.songs, [this.description = ""]);
 }
 
 class PlaylistScreen extends StatefulWidget {
-  final PlaylistInfo playlist;
+  final Playlist playlist;
   const PlaylistScreen({required this.playlist});
 
   @override
@@ -37,59 +29,41 @@ class PlaylistScreen extends StatefulWidget {
 class _PlaylistScreenState extends State<PlaylistScreen> {
 
   // API call to get playlist info
-  late List<SongInfo> songs;
-  late List<MixTapeInfo> cardData;
+  late List<TrackInfo> songs;
+  late List<Mixtape> cardData;
+  late Profile exampleProfile;
+  late DateTime createdAt;
+  late List<String> songIds;
 
   @override
   void initState() {
     super.initState();
 
-    List<SongInfo> tameImpala = [
-      SongInfo("Be Above It", "Tame Impala", "Lonerism", 302),
-      SongInfo("Endors Toi", "Tame Impala", "Lonerism", 271),
-      SongInfo("Apocalypse Dreams", "Tame Impala", "Lonerism", 210),
-      SongInfo("Mind Mischief", "Tame Impala", "Lonerism", 215),
-      SongInfo("Music to Walk Home By", "Tame Impala", "Lonerism", 211),
-      SongInfo("Keep on Lying", "Tame Impala", "Lonerism", 177),
-      SongInfo("Elephant", "Tame Impala", "Lonerism", 210),
+    exampleProfile = Profile('id', 'cmsale', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
+    createdAt = DateTime.now();
+    songIds = ['id', 'id', 'id'];
+
+    List<TrackInfo> tameImpala = [
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
     ];
 
-    List<SongInfo> rock = [
-      SongInfo("Someday", "The Strokes", "Is This It", 213),
-      SongInfo("Eleanor Rigby", "The Beatles", "Revolver", 293),
-      SongInfo("Easy", "HARBOUR", "Thoughts on Letting Go", 299),
-      SongInfo("Treasure", "Bruno Mars", "Unorthodox Jukebox", 210),
-      SongInfo("I was sad last night I'm OK Now", "tobi lou", "Live on ice", 221),
-      SongInfo("Pepas", "Farruko", "Pepas", 177),
-      SongInfo("Follow You", "Imagine Dragons", "Mercury - Act 1", 210),
+    List<TrackInfo> rock = [
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
     ];
 
-    List<SongInfo> defaultTape = [
-      SongInfo("The Less I Know the Better", "Tame Impala", "Currents", 213),
-      SongInfo("Eventually", "Tame Impala", "Currents", 293),
-      SongInfo("Monster", "Eminem", "Currents", 299),
-      SongInfo("Treasure", "Bruno Mars", "Unorthodox Jukebox", 210),
-      SongInfo("I was sad last night I'm OK Now", "tobi lou", "Live on ice", 221),
-      SongInfo("Pepas", "Farruko", "Pepas", 177),
-      SongInfo("Follow You", "Imagine Dragons", "Mercury - Act 1", 210),
+    List<TrackInfo> defaultTape = [
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
+      TrackInfo(id: '123', name: 'hello there', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/green_colored_logo.png' ),
     ];
 
-    switch(widget.playlist.title) {
-      case "ish and charlie like to party":
-        songs = defaultTape;
-        break;
-      case "group running playlist":
-        songs = rock;
-        break;
-      default:
-        songs = tameImpala;
-    }
+    songs = tameImpala;
 
     // Initialize cardData
     cardData = [
-      MixTapeInfo('tame impala da goat', 'assets/green_colored_logo.png', 20, songs, "This is about tame impala"),
-      MixTapeInfo('good stuff', 'assets/blue_colored_logo.png', 30, rock, "This playlist does in fact have the good stuff"),
-      MixTapeInfo('another mixtape', 'assets/red_colored_logo.png', 50, defaultTape, "Just another mixtape"),
+       Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: createdAt, description: 'description', creator: exampleProfile, songIDs: songIds, songs: songs),
     ];
   }
 
@@ -135,7 +109,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(20.0),
                           child: Text(
-                            widget.playlist.title,
+                            widget.playlist.name,
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'Montserrat',
@@ -208,7 +182,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(20.0),
                           child: Text(
-                            "${getTotalNumSongs()} songs, ${getTotalTimeHHMM()}",
+                            "${widget.playlist.songCount} songs, ${getTotalTimeHHMM(widget.playlist.totalDurationMS)}",
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'Montserrat',
@@ -221,6 +195,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     ),
                   ),
                 ),
+                Positioned(
+                  left: screenWidth * .04,
+                  top: screenHeight * .25, // Adjust the top position as needed
+                  //child: Text('here', style: TextStyle(color: Colors.white)),
+                  child: Image.network(widget.playlist.initiator.profilePicURL, width: screenWidth * .1, height: screenWidth * .1),
+                ),
+                Positioned(
+                  left: screenWidth * .75,
+                  right: 0,
+                  top: screenHeight * .25, // Adjust the top position as needed
+                  //child: Text('here', style: TextStyle(color: Colors.white)),
+                  child: Image.network(exampleProfile.profilePicURL, width: screenWidth * .1, height: screenWidth * .1),
+                ),
               ],
             ),
             Expanded(
@@ -230,10 +217,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     return InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () {
-                        print('Tapped on Card ${mixtape.title}');
+                        print('Tapped on Card ${mixtape.name}');
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => TapeInfoScreen(tape_id: 1, spotify_id: 2, title: mixtape.title, image: mixtape.image, songs: mixtape.songs, description: mixtape.description,)),
+                          MaterialPageRoute(builder: (context) => TapeInfoScreen(tape_id: 1, spotify_id: 2, title: mixtape.name, image: 'assets/blue_colored_logo.png', songs: mixtape.songs, description: mixtape.description,)),
                         );
                       },
                       child: Card(
@@ -256,7 +243,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(20, 20, 10, 0),
                                   child: Text(
-                                    mixtape.title,
+                                    mixtape.name,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: (21 * textScaleFactor),
@@ -274,12 +261,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     color: MixTapeColors.dark_gray,
                                     child: ListTile(
                                       leading: Image.asset(
-                                        mixtape.image,
+                                        'assets/blue_colored_logo.png',
                                         width: screenWidth * .1,
                                         height: screenHeight * .1,
                                       ),
                                       title: Text(
-                                        mixtape.songs[0].title,
+                                        mixtape.songs[0].name,
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w600,
@@ -288,7 +275,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        "${mixtape.songs[0].artist} • ${mixtape.songs[0].album}",
+                                        "${mixtape.songs[0].artistNames[0]} • ${mixtape.songs[0].albumName}",
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w400,
@@ -311,12 +298,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     color: MixTapeColors.dark_gray,
                                     child: ListTile(
                                       leading: Image.asset(
-                                        mixtape.image,
+                                        'assets/blue_colored_logo.png',
                                         width: screenWidth * .1,
                                         height: screenHeight * .1,
                                       ),
                                       title: Text(
-                                        mixtape.songs[1].title,
+                                        mixtape.songs[1].name,
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w600,
@@ -325,7 +312,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        "${mixtape.songs[1].artist} • ${mixtape.songs[1].album}",
+                                        "${mixtape.songs[1].artistNames[0]} • ${mixtape.songs[1].albumName}",
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w400,
@@ -411,31 +398,17 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     );
   }
 
-  int getTotalNumSongs() {
-    int totalSongs = 0;
-    for (MixTapeInfo card in cardData) {
-      totalSongs += card.numSongs;
-    }
-    return totalSongs;
-  }
-
-  String getTotalTimeHHMM() {
-    double totalSeconds = 0;
-    for (MixTapeInfo card in cardData) {
-      for (SongInfo song in card.songs) {
-        totalSeconds += song.duration;
-      }
-    }
-    int hours = getHoursFromSeconds(totalSeconds);
-    int minutes = getMinutesFromSeconds(totalSeconds) - hours * 60;
+  String getTotalTimeHHMM(int totalDurationMS) {
+    int hours = getHoursFromMS(totalDurationMS);
+    int minutes = getMinutesFromMS(totalDurationMS) - hours * 60;
     return "${hours}h ${minutes}m";
   }
 
-  int getHoursFromSeconds(double seconds) {
-    return (seconds / 3600).round();
+  int getHoursFromMS(int milliseconds) {
+    return (milliseconds / 3600000).truncate();
   }
 
-  int getMinutesFromSeconds(double seconds) {
-    return (seconds / 60).round();
+  int getMinutesFromMS(int milliseconds) {
+    return (milliseconds / 60000).truncate();
   }
 }

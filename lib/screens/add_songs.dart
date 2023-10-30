@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:mixtape/models/PlaylistInfo.dart';
+import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/screens/search_page.dart';
 
-import '../models/SongInfo.dart';
+import '../models/track_info.dart';
 import '../utilities/colors.dart';
 
+class MixTapeInfo {
+  String title;
+  String image;
+  int numSongs;
+  List<TrackInfo> songs;
+  String description;
+
+  MixTapeInfo(this.title, this.image, this.numSongs, this.songs, [this.description = ""]);
+}
+
 class AddSongsPage extends StatefulWidget {
-  final PlaylistInfo playlist;
+  final Playlist playlist;
   final String mixTapeName;
   final String mixTapeDescription;
   const AddSongsPage({
@@ -22,7 +32,7 @@ class AddSongsPage extends StatefulWidget {
 }
 
 class _AddSongsPageState extends State<AddSongsPage> {
-  List<SongInfo> _addedSongs = <SongInfo>[];
+  List<TrackInfo> _addedSongs = <TrackInfo>[];
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +94,7 @@ class _AddSongsPageState extends State<AddSongsPage> {
                                         color: MixTapeColors.dark_gray,
                                         child: ListTile(
                                           title: Text(
-                                            song.title,
+                                            song.name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w600,
@@ -93,13 +103,26 @@ class _AddSongsPageState extends State<AddSongsPage> {
                                             ),
                                           ),
                                           subtitle: Text(
-                                            "${song.artist} • ${song.album}",
+                                            "${song.artistNames[0]} • ${song.albumName}",
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w400,
                                               color: Colors.white,
                                               fontSize: textScaleFactor * 12,
                                             ),
+                                          ),
+                                          trailing: IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                              size: screenSize.shortestSide * .05,
+                                            ),
+                                              onPressed: () {
+                                                _addedSongs.remove(song);
+                                                  setState(() {
+                                                    // set the state
+                                                  });
+                                              }
                                           ),
                                         ),
                                       ),
@@ -189,6 +212,8 @@ class _AddSongsPageState extends State<AddSongsPage> {
   // FINISH IMPLEMENTATION ONCE ISH'S SCREEN IS MERGED IN
   // TODO: HAVEN'T TESTED, EXPECTS THAT SEARCH SCREEN WILL EXECUTE Navigator.pop(context, Song(title, artist, album)); WHEN ADDING SONG
   Future<void> _addSongFromSearchPage(BuildContext context) async {
+    final double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
     final pickedSong = await Navigator.push(
@@ -202,9 +227,22 @@ class _AddSongsPageState extends State<AddSongsPage> {
     if (!mounted) return;
 
 
-    if (pickedSong != null && pickedSong is SongInfo) {
+    if (pickedSong != null && pickedSong is TrackInfo) {
       setState(() {
         _addedSongs.add(pickedSong);
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 1), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                backgroundColor: MixTapeColors.dark_gray,
+                title: Text(
+                    "Song added!",
+                    style: TextStyle(color: Colors.white, fontSize: textScaleFactor * 20)),
+              );
+            });
       });
     }
   }
