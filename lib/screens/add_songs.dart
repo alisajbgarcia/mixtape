@@ -101,12 +101,22 @@ class _AddSongsPageState extends State<AddSongsPage> {
                                               fontSize: textScaleFactor * 12,
                                             ),
                                           ),
+                                          trailing: IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                              size: screenSize.shortestSide * .05,
+                                            ),
+                                              onPressed: () {
+                                                _addedSongs.remove(song);
+                                                  setState(() {
+                                                    // set the state
+                                                  });
+                                              }
+                                          ),
                                         ),
                                       ),
                                     ),
-                                    Container(
-
-                                    )
                                   ],
                                 ),
                               ),
