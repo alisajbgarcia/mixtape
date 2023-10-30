@@ -104,6 +104,9 @@ class _AddSongsPageState extends State<AddSongsPage> {
                                         ),
                                       ),
                                     ),
+                                    Container(
+
+                                    )
                                   ],
                                 ),
                               ),
@@ -189,6 +192,8 @@ class _AddSongsPageState extends State<AddSongsPage> {
   // FINISH IMPLEMENTATION ONCE ISH'S SCREEN IS MERGED IN
   // TODO: HAVEN'T TESTED, EXPECTS THAT SEARCH SCREEN WILL EXECUTE Navigator.pop(context, Song(title, artist, album)); WHEN ADDING SONG
   Future<void> _addSongFromSearchPage(BuildContext context) async {
+    final double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
     final pickedSong = await Navigator.push(
@@ -205,6 +210,19 @@ class _AddSongsPageState extends State<AddSongsPage> {
     if (pickedSong != null && pickedSong is SongInfo) {
       setState(() {
         _addedSongs.add(pickedSong);
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 1), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                backgroundColor: MixTapeColors.dark_gray,
+                title: Text(
+                    "Song added!",
+                    style: TextStyle(color: Colors.white, fontSize: textScaleFactor * 20)),
+              );
+            });
       });
     }
   }
