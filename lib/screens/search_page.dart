@@ -57,8 +57,6 @@ class _SearchPageState extends State<SearchPage> {
 
     albumFound = await spotify.albums.get(album);
 
-    print(albumFound.name);
-
     if (albumFound == null) return;
 
     var albumSongs = albumFound.tracks;
