@@ -64,9 +64,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
           playlistPhotoURL: (String photoURL) {
             setState(() {
               playlistPhoto = photoURL;
-              print('back from image upload');
             });
-            print(playlistPhoto);
           },
           photoURL: playlistPhoto,
         );
@@ -76,8 +74,6 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
 
   // Function to open the PlaylistInvitation alert dialog
   void openPlaylistInvitationDialog(BuildContext context, List<Profile> userFriends) {
-    print('here');
-    print(userFriends);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -250,7 +246,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                   ],
                 ),
 
-                Padding(
+                selectedFriend.isNotEmpty ? Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * 0.05),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
@@ -293,7 +289,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                       backgroundColor: MixTapeColors.green,
                     ),
                   ),
-                ),
+                ) : Container(),
               ],
             ),
           ),
