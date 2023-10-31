@@ -146,7 +146,9 @@ class _HomePageState extends State<HomePage> {
             cardData = dummydata;
             print('oops');
           } else {
+            //return CircularProgressIndicator();
             cardData = playlistsSnapshot.data!;
+            cardData = dummydata;
           }
 
           // null assert is hella ugly, but the compiler doesn't appear to tell
