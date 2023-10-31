@@ -34,8 +34,9 @@ class AbstractService {
 
   /// Like get, except return a list of items. the parser factory parses each
   /// item in the list
-  Future<List<T>> getMany<T>(String uri, T Function(Map<String, dynamic>) parserFactory) async {
+  Future<List<T>> getMany<T>(String uri, T Function(Map<String, dynamic>) parserFactory, { Map<String, dynamic>? paramMap }) async {
     uri = _sanitizeUri(uri);
+    uri = _addParamsToUri(uri, paramMap);
 
     final response = await helper.get("$baseUrl/$uri");
     if (response.statusCode != 200) {
@@ -80,13 +81,22 @@ class AbstractService {
   T decodeSingle<T>(String content, T Function(Map<String, dynamic>) parserFactory) => parserFactory(jsonDecode(content));
 
   List<T> decodeMany<T>(String content, T Function(Map<String, dynamic>) parserFactory) {
-    final entityList = (jsonDecode(content) as Iterable<dynamic>).map((item) => item as Map<String, dynamic>);
-    return List<T>.of(entityList.map((item) => parserFactory(item)));
+    Iterable<Map<String, dynamic>> objectIterable = jsonDecode(content).map((item) => item as Map<String, dynamic>);
+    return List<T>.of(objectIterable.map(parserFactory));
   }
 
   String _sanitizeUri(String uri) {
     if (uri.startsWith('/')) {
       uri = uri.substring(1);
+    }
+
+    return uri;
+  }
+
+  String _addParamsToUri(String uri, Map<String, dynamic>? paramMap) {
+    if (paramMap != null) {
+      Map<String, String> paramStrings = paramMap.map((key, value) => MapEntry(key, value.toString()));
+      uri = Uri(path: uri, queryParameters: paramStrings).toString();
     }
 
     return uri;
