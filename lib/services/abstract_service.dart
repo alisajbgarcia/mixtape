@@ -34,8 +34,9 @@ class AbstractService {
 
   /// Like get, except return a list of items. the parser factory parses each
   /// item in the list
-  Future<List<T>> getMany<T>(String uri, T Function(Map<String, dynamic>) parserFactory) async {
+  Future<List<T>> getMany<T>(String uri, T Function(Map<String, dynamic>) parserFactory, { Map<String, dynamic>? paramMap }) async {
     uri = _sanitizeUri(uri);
+    uri = _addParamsToUri(uri, paramMap);
 
     final response = await helper.get("$baseUrl/$uri");
     if (response.statusCode != 200) {
@@ -84,6 +85,15 @@ class AbstractService {
   String _sanitizeUri(String uri) {
     if (uri.startsWith('/')) {
       uri = uri.substring(1);
+    }
+
+    return uri;
+  }
+
+  String _addParamsToUri(String uri, Map<String, dynamic>? paramMap) {
+    if (paramMap != null) {
+      Map<String, String> paramStrings = paramMap.map((key, value) => MapEntry(key, value.toString()));
+      uri = UriData.fromString(uri, parameters: paramStrings).contentAsString();
     }
 
     return uri;
