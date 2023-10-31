@@ -34,7 +34,9 @@ class _HomePageState extends State<HomePage> {
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
+  late ProfileService profileService;
   late Future<List<Playlist>> playlists;
+  late Future<Profile> profile;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -59,9 +61,12 @@ class _HomePageState extends State<HomePage> {
       Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: initiatorProfile, target: targetProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 9120000, songCount: 5),
     ];
 
+    profileService = ServicesContainer.of(context).profileService;
     playlistService = ServicesContainer.of(context).playlistService;
     authenticationService = ServicesContainer.of(context).authService;
+
     setState(() {
+      profile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
     });
   }
@@ -131,9 +136,22 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         toolbarHeight: screenHeight * .13,
         actions: [
-          Padding(
-            padding: EdgeInsets.all(screenHeight * .03),
-            child: Image.asset('assets/ish_profile_picture.png'),
+          FutureBuilder(
+            future: profile,
+            builder: (context, profileSnapshot) {
+              final profile = profileSnapshot.data!;
+              return Padding(
+                padding: EdgeInsets.all(screenHeight * .03),
+                child: ClipOval(
+                  child: Image.network(
+                    profile.profilePicURL,
+                    width: screenWidth * .15,
+                    height: screenWidth * .15,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            }
           )
         ],
       ),
@@ -144,13 +162,11 @@ class _HomePageState extends State<HomePage> {
           if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
             //return const Center(child: CircularProgressIndicator());
             cardData = dummydata;
-            print('oops');
           } else {
             //return CircularProgressIndicator();
-            cardData = playlistsSnapshot.data!;
-            //cardData = dummydata;
+            cardData = dummydata;
+            //cardData = playlistsSnapshot.data!;
           }
-
           // null assert is hella ugly, but the compiler doesn't appear to tell
           // that this won't be null because of the early return
           return Column(
