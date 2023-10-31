@@ -64,10 +64,11 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
           playlistPhotoURL: (String photoURL) {
             setState(() {
               playlistPhoto = photoURL;
-              print("playlist photo");
+              print('back from image upload');
             });
             print(playlistPhoto);
           },
+          photoURL: playlistPhoto,
         );
       },
     );

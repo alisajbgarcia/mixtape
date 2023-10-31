@@ -6,7 +6,8 @@ import 'package:mixtape/utilities/colors.dart';
 
 class ImageUpload extends StatefulWidget {
   final Function(String) playlistPhotoURL;
-  ImageUpload({required this.playlistPhotoURL});
+  String photoURL;
+  ImageUpload({required this.playlistPhotoURL, required this.photoURL});
 
   @override
   State<ImageUpload> createState() => _ImageUploadState();
@@ -24,13 +25,15 @@ class _ImageUploadState extends State<ImageUpload> {
         setState(() {
           imageFile = File(pickedImage.path);
           playlistPhoto = pickedImage.path;
+          this.widget.playlistPhotoURL(playlistPhoto);
+          widget.photoURL = playlistPhoto;
         });
         return playlistPhoto;
       } else {
         print('User didnt pick any image.');
       }
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
     }
   }
 
@@ -75,7 +78,7 @@ class _ImageUploadState extends State<ImageUpload> {
                       onPressed: () async {
                         print('image upload dialog');
                         playlistPhoto = await _pickImagefromGallery();
-                        setState(() {});
+                        widget.playlistPhotoURL(playlistPhoto);
                         //Navigator.of(context).pop();
                       },
                       child: Text(
@@ -125,9 +128,9 @@ class _ImageUploadState extends State<ImageUpload> {
             Container(
               height: screenHeight * .17,
               color: MixTapeColors.dark_gray,
-              child: imageFile != null ?
+              child: widget.photoURL.length > 0 || playlistPhoto.length > 0 ?
               Image(
-                image: FileImage(imageFile!),
+                image: FileImage(File(widget.photoURL)),
                 width: screenWidth * .4,
                 height: screenWidth * .4,
                 fit: BoxFit.cover,
@@ -154,7 +157,10 @@ class _ImageUploadState extends State<ImageUpload> {
               ),
               backgroundColor: MixTapeColors.green,
               onPressed: () {
-                print('done');
+                print(playlistPhoto.length);
+                if(widget.photoURL.length == 0) {
+                  widget.playlistPhotoURL(playlistPhoto);
+                }
                 Navigator.of(context).pop();
               },
               child: Text(
