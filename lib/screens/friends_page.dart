@@ -65,7 +65,7 @@ class _FriendsPageState extends State<FriendsPage> {
     }
 
   List<Profile> dummydata = [
-    Profile('zestythomae', 'andrew thomae', 'spotifyuid', 'assets/green_colored_logo.png'),
+    Profile('zestythomae', 'andrew thomae', 'spotifyuid', ''),
   ];
 
   @override
@@ -166,7 +166,15 @@ class _FriendsPageState extends State<FriendsPage> {
                                           padding: EdgeInsets.all(10),
                                           height: screenHeight * .07,
                                           color: MixTapeColors.dark_gray,
-                                          child: Image.network(friend.profilePicURL),
+                                          child: friend.profilePicURL.isNotEmpty ?
+                                          Image.network(friend.profilePicURL) :
+                                          Container(
+                                            child: Icon(
+                                              Icons.person_2_rounded,
+                                              color: Colors.white70,
+                                              size: screenWidth * .1,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       Expanded(
