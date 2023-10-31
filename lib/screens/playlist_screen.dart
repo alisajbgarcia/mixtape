@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
+import 'package:mixtape/services/services_container.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
 import '../models/mixtape.dart';
 import '../models/playlist.dart';
 import '../models/profile.dart';
 import '../models/track_info.dart';
+
+import '../services/playlist_service.dart';
+
 
 class MixTapeInfo {
   String title;
@@ -34,6 +38,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   late Profile exampleProfile;
   late DateTime createdAt;
   late List<String> songIds;
+  late PlaylistService playlistService;
 
   @override
   void initState() {
@@ -65,8 +70,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     cardData = [
        Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: createdAt, description: 'description', creator: exampleProfile, songIDs: songIds, songs: songs),
     ];
+
+    playlistService = ServicesContainer.of(context).playlistService;
   }
 
+  _onDeletePlaylist(String playlistId) {
+    playlistService.deletePlaylist(playlistId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +161,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () => Navigator.pop(context, 'YES'),
+                              onPressed: () => {Navigator.pop(context, 'YES'),
+                                _onDeletePlaylist(widget.playlist.id)
+                              },
                               child: const Text('YES',
                                 style: TextStyle(
                                                 fontSize: (22),

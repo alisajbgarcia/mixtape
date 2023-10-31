@@ -16,4 +16,10 @@ class PlaylistService extends AbstractService {
   Future<Playlist> createPlaylistAndInvitation(Playlist playlist) async {
     return post<Playlist, Playlist>("/api/v1/profile/<profileId>/playlist", playlist, Playlist.fromJson);
   }
+
+  Future<void> deletePlaylist(String playlistId) async {
+    return delete("/api/v1/profile/me/playlist/$playlistId");
+  }
+
+
 }

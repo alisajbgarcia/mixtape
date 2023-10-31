@@ -5,13 +5,16 @@ import 'package:mixtape/services/profile_service.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 
 import 'authentication_service.dart';
+import 'notification_service.dart';
+
 
 class ServicesContainer {
   AuthenticationService authService;
   ProfileService profileService;
   PlaylistService playlistService;
+  NotificationService notificationService;
 
-  ServicesContainer(this.authService, this.profileService, this.playlistService);
+  ServicesContainer(this.authService, this.profileService, this.playlistService, this.notificationService);
 
   static Future<ServicesContainer> initialize({String baseUrl = "https://api.getmixtapeapplication.com"}) async {
     final mixtapeClientSpec = MixtapeOAuth2Client(redirectUri: 'com.mixtape://callback');
@@ -26,8 +29,9 @@ class ServicesContainer {
     final authService = AuthenticationService(helper);
     final profileService = ProfileService(helper, baseUrl);
     final playlistService = PlaylistService(helper, baseUrl);
+    final notificationService = NotificationService(helper, baseUrl);
 
-    return ServicesContainer(authService, profileService, playlistService);
+    return ServicesContainer(authService, profileService, playlistService, notificationService);
   }
 
   static ServicesContainer of(BuildContext context) {
