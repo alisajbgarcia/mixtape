@@ -12,4 +12,9 @@ class PlaylistService extends AbstractService {
   Future<Playlist> getPlaylistForCurrentUser(String playlistId) async {
     return get("/api/v1/profile/me/playlist/$playlistId", Playlist.fromJson);
   }
+
+  Future<Playlist> createPlaylistForCurrentUser({required String name, required String description, required String coverPicURL, required String requestedUserID}) async {
+    final createDTO = CreatePlaylistDTO(name, description, coverPicURL, requestedUserID);
+    return post("/api/v1/profile/me/playlist", createDTO, Playlist.fromJson);
+  }
 }

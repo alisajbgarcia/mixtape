@@ -4,6 +4,9 @@ import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/widgets/playlist_invitation_sent.dart';
 import 'package:mixtape/widgets/image_upload.dart';
 
+import '../services/authentication_service.dart';
+import '../services/playlist_service.dart';
+import '../services/services_container.dart';
 import '../widgets/playlist_invitation.dart';
 
 class PlaylistCreationScreen extends StatefulWidget {
@@ -17,6 +20,16 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   TextEditingController _textController = TextEditingController();
   String _textFieldValue = "";
   String selectedFriend = "";
+
+  // late PlaylistService playlistService;
+  // late AuthenticationService authenticationService;
+  //
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   playlistService = ServicesContainer.of(context).playlistService;
+  //   authenticationService = ServicesContainer.of(context).authService;
+  // }
 
   @override
   void dispose() {
@@ -194,6 +207,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                   onPressed: () {
                     print("send invitation");
                     openPlaylistInvitationSentDialog(context);
+                    // playlistService.createPlaylistForCurrentUser(name: "name of playlist", description: "desc", coverPicURL: "assets/green_colored_logo.png", requestedUserID: "abe7e5b2-7915-4d01-8d9e-8672b0efb139");
                   },
                   label: Padding(
                     padding: EdgeInsets.all(5.0),
