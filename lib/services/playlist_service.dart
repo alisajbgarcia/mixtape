@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/services/abstract_service.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
@@ -14,6 +15,10 @@ class PlaylistService extends AbstractService {
   }
 
   Future<Playlist> createPlaylistAndInvitation(Playlist playlist) async {
-    return post<Playlist, Playlist>("/api/v1/profile/<profileId>/playlist", playlist, Playlist.fromJson);
+    return post<Playlist, Playlist>("/api/v1/profile/me/playlist", playlist, Playlist.fromJson);
+  }
+
+  Future<Playlist> setProfilePicForPlaylist(String playlistId, XFile uploadFile) {
+    return putXFile("/api/v1/profile/me/playlist/$playlistId/cover-pic", uploadFile, "file", Playlist.fromJson);
   }
 }

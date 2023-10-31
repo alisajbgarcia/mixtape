@@ -2,7 +2,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/models/json_serializable.dart';
+import 'package:mixtape/services/file_upload_http_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 
 /// Provides common network actions for interfaces. Basically, use the http
@@ -76,6 +78,18 @@ class AbstractService {
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
+  }
+
+  Future<R> putXFile<R>(String uri, XFile file, String fileId, R Function(Map<String, dynamic>) parserFactory) async {
+    final fileUploadClient = XFileUploadHttpClient(fileId, null);
+    uri = _sanitizeUri(uri);
+    
+    final response = await helper.put("$baseUrl/$uri", body: file, httpClient: fileUploadClient);
+    if (response.statusCode != 200) {
+      return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
+    }
+    
+    return decodeSingle(response.body, parserFactory);
   }
 
   T decodeSingle<T>(String content, T Function(Map<String, dynamic>) parserFactory) => parserFactory(jsonDecode(content));
