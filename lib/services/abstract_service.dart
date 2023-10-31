@@ -48,7 +48,7 @@ class AbstractService {
 
   Future<R> post<T extends JsonSerializable, R>(String uri, T body, R Function(Map<String, dynamic>) responseConverter) async {
     uri = _sanitizeUri(uri);
-    final bodyMap = body.toJson();
+    final bodyMap = jsonEncode(body.toJson());
 
     final response = await helper.post("$baseUrl/$uri", body: bodyMap, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
     if (response.statusCode != 200) {
@@ -60,7 +60,7 @@ class AbstractService {
 
   Future<R> put<T extends JsonSerializable, R>(String uri, T body, R Function(Map<String, dynamic>) responseConverter) async {
     uri = _sanitizeUri(uri);
-    final bodyMap = body.toJson();
+    final bodyMap = jsonEncode(body.toJson());
 
     final response = await helper.put("$baseUrl/$uri", body: bodyMap, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
     if (response.statusCode != 200) {
@@ -96,7 +96,7 @@ class AbstractService {
   String _addParamsToUri(String uri, Map<String, dynamic>? paramMap) {
     if (paramMap != null) {
       Map<String, String> paramStrings = paramMap.map((key, value) => MapEntry(key, value.toString()));
-      uri = UriData.fromString(uri, parameters: paramStrings).contentAsString();
+      uri = Uri(path: uri, queryParameters: paramStrings).toString();
     }
 
     return uri;
