@@ -11,6 +11,16 @@ import '../models/track_info.dart';
 import '../services/authentication_service.dart';
 import '../utilities/colors.dart';
 
+class MixTapeInfo {
+  String title;
+  String image;
+  int numSongs;
+  List<TrackInfo> songs;
+  String description;
+
+  MixTapeInfo(this.title, this.image, this.numSongs, this.songs, [this.description = ""]);
+}
+
 class AddSongsPage extends StatefulWidget {
   final Playlist playlist;
   final String mixTapeName;
@@ -114,6 +124,19 @@ class _AddSongsPageState extends State<AddSongsPage> {
                                               fontSize: textScaleFactor * 12,
                                             ),
                                           ),
+                                          trailing: IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                              size: screenSize.shortestSide * .05,
+                                            ),
+                                              onPressed: () {
+                                                _addedSongs.remove(song);
+                                                  setState(() {
+                                                    // set the state
+                                                  });
+                                              }
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -207,6 +230,8 @@ class _AddSongsPageState extends State<AddSongsPage> {
   // FINISH IMPLEMENTATION ONCE ISH'S SCREEN IS MERGED IN
   // TODO: HAVEN'T TESTED, EXPECTS THAT SEARCH SCREEN WILL EXECUTE Navigator.pop(context, Song(title, artist, album)); WHEN ADDING SONG
   Future<void> _addSongFromSearchPage(BuildContext context) async {
+    final double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
     final pickedSong = await Navigator.push(
@@ -223,6 +248,19 @@ class _AddSongsPageState extends State<AddSongsPage> {
     if (pickedSong != null && pickedSong is TrackInfo) {
       setState(() {
         _addedSongs.add(pickedSong);
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 1), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                backgroundColor: MixTapeColors.dark_gray,
+                title: Text(
+                    "Song added!",
+                    style: TextStyle(color: Colors.white, fontSize: textScaleFactor * 20)),
+              );
+            });
       });
     }
   }

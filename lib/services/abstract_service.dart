@@ -34,8 +34,9 @@ class AbstractService {
 
   /// Like get, except return a list of items. the parser factory parses each
   /// item in the list
-  Future<List<T>> getMany<T>(String uri, T Function(Map<String, dynamic>) parserFactory) async {
+  Future<List<T>> getMany<T>(String uri, T Function(Map<String, dynamic>) parserFactory, { Map<String, dynamic>? paramMap }) async {
     uri = _sanitizeUri(uri);
+    uri = _addParamsToUri(uri, paramMap);
 
     final response = await helper.get("$baseUrl/$uri");
     if (response.statusCode != 200) {
@@ -47,22 +48,19 @@ class AbstractService {
 
   Future<R> post<T extends JsonSerializable, R>(String uri, T body, R Function(Map<String, dynamic>) responseConverter) async {
     uri = _sanitizeUri(uri);
-    final bodyMap = jsonEncode(body);
+    final bodyMap = jsonEncode(body.toJson());
 
     final response = await helper.post("$baseUrl/$uri", body: bodyMap, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
-    print("Response: ");
-    print(response.body);
 
     return decodeSingle(response.body, responseConverter);
   }
 
   Future<R> put<T extends JsonSerializable, R>(String uri, T body, R Function(Map<String, dynamic>) responseConverter) async {
     uri = _sanitizeUri(uri);
-    // final bodyMap = body.toJson();
-    final bodyMap = jsonEncode(body);
+    final bodyMap = jsonEncode(body.toJson());
 
     final response = await helper.put("$baseUrl/$uri", body: bodyMap, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
     if (response.statusCode != 200) {
@@ -82,11 +80,23 @@ class AbstractService {
 
   T decodeSingle<T>(String content, T Function(Map<String, dynamic>) parserFactory) => parserFactory(jsonDecode(content));
 
-  List<T> decodeMany<T>(String content, T Function(Map<String, dynamic>) parserFactory) => List<T>.of(jsonDecode(content).map((item) => parserFactory(item)));
+  List<T> decodeMany<T>(String content, T Function(Map<String, dynamic>) parserFactory) {
+    Iterable<Map<String, dynamic>> objectIterable = jsonDecode(content).map((item) => item as Map<String, dynamic>);
+    return List<T>.of(objectIterable.map(parserFactory));
+  }
 
   String _sanitizeUri(String uri) {
     if (uri.startsWith('/')) {
       uri = uri.substring(1);
+    }
+
+    return uri;
+  }
+
+  String _addParamsToUri(String uri, Map<String, dynamic>? paramMap) {
+    if (paramMap != null) {
+      Map<String, String> paramStrings = paramMap.map((key, value) => MapEntry(key, value.toString()));
+      uri = Uri(path: uri, queryParameters: paramStrings).toString();
     }
 
     return uri;
