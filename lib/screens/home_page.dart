@@ -35,7 +35,9 @@ class _HomePageState extends State<HomePage> {
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
+  late ProfileService profileService;
   late Future<List<Playlist>> playlists;
+  late Future<Profile> currentProfile;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -62,7 +64,9 @@ class _HomePageState extends State<HomePage> {
 
     playlistService = ServicesContainer.of(context).playlistService;
     authenticationService = ServicesContainer.of(context).authService;
+    profileService = ServicesContainer.of(context).profileService;
     setState(() {
+      currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
     });
   }
@@ -223,19 +227,68 @@ class _HomePageState extends State<HomePage> {
                                                 fixedSize: Size(150, 15),
                                               ),
                                               onPressed: null,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Image.asset(playlist.coverPicURL, width: 25, height: 25),
-                                                  Text(
-                                                    "with ${playlist.target.displayName}",
-                                                    style: TextStyle(
-                                                      fontSize: (10 * textScaleFactor),
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              child: FutureBuilder(
+                                                future: currentProfile,
+                                                builder: (context, profileSnapshot) {
+                                                  if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                                                    return Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        Image.asset('assets/green_colored_logo.png',
+                                                            width: 25,
+                                                            height: 25
+                                                        ),
+                                                        Text(
+                                                          "loading friend",
+                                                          style: TextStyle(
+                                                            fontSize: (10 * textScaleFactor),
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  }
+                                                  final profile = profileSnapshot.data!;
+                                                  return Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      if (profile.id == playlist.initiator.id)
+                                                        CachedNetworkImage(
+                                                            imageUrl: playlist.target.profilePicURL,
+                                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                                            width: 25,
+                                                            height: 25
+                                                        ),
+                                                      if (profile.id == playlist.initiator.id)
+                                                        Text(
+                                                          "with ${playlist.target.displayName}",
+                                                          style: TextStyle(
+                                                            fontSize: (10 * textScaleFactor),
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      if (profile.id == playlist.target.id)
+                                                        CachedNetworkImage(
+                                                            imageUrl: playlist.initiator.profilePicURL,
+                                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                                            width: 25,
+                                                            height: 25
+                                                        ),
+                                                      if (profile.id == playlist.target.id)
+                                                        Text(
+                                                          "with ${playlist.initiator.displayName}",
+                                                          style: TextStyle(
+                                                            fontSize: (10 * textScaleFactor),
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                    ],
+                                                  );
+                                                },
+                                              )
+
                                             ),
                                             Card(
                                               color: MixTapeColors.light_gray,
