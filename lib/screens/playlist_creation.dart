@@ -112,6 +112,17 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     return null;
   }
 
+  // function to create a new playlist and upload a corresponding coverPic
+  Future<Playlist?> createPlaylist(Playlist newPlaylist) async {
+      Playlist playlist = await playlistService.createPlaylistAndInvitation(newPlaylist);
+      if(playlist != null) {
+        print('playlist successfully created wahoo');
+      } else {
+        print('womp womp');
+      }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -120,12 +131,6 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
 
-    List<Profile> dummydata = [
-      Profile('id', 'alexfrey1', 'spotifyUID', 'assets/green_colored_logo.png'),
-      Profile('id', 'alisajbgarcia', 'spotifyUID', 'assets/green_colored_logo.png'),
-      Profile('id', 'zestythomae', 'spotifyUID', 'assets/green_colored_logo.png'),
-      Profile('id', 'cmsale', 'spotifyUID', 'assets/green_colored_logo.png'),
-    ];
 
     // Callback function to handle the selected friend
     void handleFriendSelection(String friendName) {
@@ -137,8 +142,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
       future: friends,
       builder: (context, friendsSnapshot) {
         if(!friendsSnapshot.hasData || friendsSnapshot.hasError) {
-          userFriends = dummydata;
-          print("here got dang it");
+          return CircularProgressIndicator();
         } else {
           userFriends = friendsSnapshot.data!;
         }
@@ -281,12 +285,12 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                           initiator: await currentProfile,
                           target: playlistTargetProfile,
                           description: "",
-                          coverPicURL: playlistPhoto,
+                          coverPicURL: "",
                           mixtapes: [],
                           totalDurationMS: 0,
                           songCount: 0
                         );
-                        print(newPlaylist.target.displayName);
+                        createPlaylist(newPlaylist);
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),
