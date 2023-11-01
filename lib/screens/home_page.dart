@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   late AuthenticationService authenticationService;
   late ProfileService profileService;
   late Future<List<Playlist>> playlists;
-  late Future<Profile> profile;
+  late Future<Profile> currentProfile;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -64,9 +65,8 @@ class _HomePageState extends State<HomePage> {
     profileService = ServicesContainer.of(context).profileService;
     playlistService = ServicesContainer.of(context).playlistService;
     authenticationService = ServicesContainer.of(context).authService;
-
     setState(() {
-      profile = profileService.getCurrentProfile();
+      currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
     });
   }
@@ -94,47 +94,42 @@ class _HomePageState extends State<HomePage> {
             );
           }
           ),
-        title: Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width - 200, // Adjust the width as needed
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0,5,0,0),
-                child: Text('Your Playlists',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    fontSize: (25.0 * textScaleFactor),
-                  ),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0,5,0,0),
+              child: Text('Your Playlists',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  fontSize: (25.0 * textScaleFactor),
                 ),
               ),
-              Row(
-                children: [
-                  /*
-                  Icon(
-                    light ? Icons.sunny : Icons.dark_mode,
-                    color: Colors.white,
-                  ),
-                  Switch(
-                    // This bool value toggles the switch.
-                    value: light,
-                    activeColor: MixTapeColors.green,
-                    onChanged: (bool value) {
-                      // This is called when the user toggles the switch.
-                      setState(() {
-                        light = value;
-                      });
-                    },
-                  ),
-                  */
-                ],
-              ),
+            ),
+            Row(
+              children: [
+                /*
+                Icon(
+                  light ? Icons.sunny : Icons.dark_mode,
+                  color: Colors.white,
+                ),
+                Switch(
+                  // This bool value toggles the switch.
+                  value: light,
+                  activeColor: MixTapeColors.green,
+                  onChanged: (bool value) {
+                    // This is called when the user toggles the switch.
+                    setState(() {
+                      light = value;
+                    });
+                  },
+                ),
+                */
               ],
-          ),
+            ),
+            ],
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
@@ -142,7 +137,7 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: screenHeight * .13,
         actions: [
           FutureBuilder(
-            future: profile,
+            future: currentProfile,
             builder: (context, profileSnapshot) {
               if (!profileSnapshot.hasData || profileSnapshot.hasError) {
                 //return const Center(child: CircularProgressIndicator());
@@ -171,13 +166,13 @@ class _HomePageState extends State<HomePage> {
         builder: (context, playlistsSnapshot) {
           List<Playlist> cardData;
           if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
-            //return const Center(child: CircularProgressIndicator());
-            cardData = dummydata;
+            return const Center(child: CircularProgressIndicator());
+            // cardData = dummydata;
+            // print('oops');
           } else {
-            //return CircularProgressIndicator();
-            cardData = dummydata;
-            //cardData = playlistsSnapshot.data!;
+            cardData = playlistsSnapshot.data!;
           }
+
           // null assert is hella ugly, but the compiler doesn't appear to tell
           // that this won't be null because of the early return
           return Column(
@@ -213,7 +208,11 @@ class _HomePageState extends State<HomePage> {
                                         padding: EdgeInsets.all(screenWidth * .005),
                                         height: screenHeight * .17,
                                         color: MixTapeColors.dark_gray,
-                                        child: Image.asset(playlist.coverPicURL),
+                                        child: CachedNetworkImage(
+                                          imageUrl: playlist.coverPicURL,
+                                          placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                          errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                        ),
                                       ),
                                     ),
                                     Expanded(
@@ -247,19 +246,68 @@ class _HomePageState extends State<HomePage> {
                                                 fixedSize: Size(150, 15),
                                               ),
                                               onPressed: null,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Image.asset(playlist.coverPicURL, width: 25, height: 25),
-                                                  Text(
-                                                    "with ${playlist.target.displayName}",
-                                                    style: TextStyle(
-                                                      fontSize: (10 * textScaleFactor),
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              child: FutureBuilder(
+                                                future: currentProfile,
+                                                builder: (context, profileSnapshot) {
+                                                  if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                                                    return Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        Image.asset('assets/green_colored_logo.png',
+                                                            width: 25,
+                                                            height: 25
+                                                        ),
+                                                        Text(
+                                                          "loading friend",
+                                                          style: TextStyle(
+                                                            fontSize: (10 * textScaleFactor),
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  }
+                                                  final profile = profileSnapshot.data!;
+                                                  return Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      if (profile.id == playlist.initiator.id)
+                                                        CachedNetworkImage(
+                                                            imageUrl: playlist.target.profilePicURL,
+                                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                                            width: 25,
+                                                            height: 25
+                                                        ),
+                                                      if (profile.id == playlist.initiator.id)
+                                                        Text(
+                                                          "with ${playlist.target.displayName}",
+                                                          style: TextStyle(
+                                                            fontSize: (10 * textScaleFactor),
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      if (profile.id == playlist.target.id)
+                                                        CachedNetworkImage(
+                                                            imageUrl: playlist.initiator.profilePicURL,
+                                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                                            width: 25,
+                                                            height: 25
+                                                        ),
+                                                      if (profile.id == playlist.target.id)
+                                                        Text(
+                                                          "with ${playlist.initiator.displayName}",
+                                                          style: TextStyle(
+                                                            fontSize: (10 * textScaleFactor),
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                    ],
+                                                  );
+                                                },
+                                              )
+
                                             ),
                                             Card(
                                               color: MixTapeColors.light_gray,

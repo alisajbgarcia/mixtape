@@ -65,7 +65,7 @@ class _FriendsPageState extends State<FriendsPage> {
     }
 
   List<Profile> dummydata = [
-    Profile('zestythomae', 'andrew thomae', 'spotifyuid', ''),
+    Profile('zestythomae', 'andrew thomae', 'spotifyuid', 'assets/green_colored_logo.png'),
   ];
 
   @override
@@ -92,7 +92,7 @@ class _FriendsPageState extends State<FriendsPage> {
         elevation: 0.0,
         toolbarHeight: screenHeight * .13,
       ),
-     
+
       body: FutureBuilder(
         future: friends,
         builder: (context, friendsSnapshot) {

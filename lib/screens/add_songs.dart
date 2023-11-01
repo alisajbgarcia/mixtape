@@ -3,8 +3,12 @@ import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/screens/search_page.dart';
+import 'package:mixtape/services/mixtape_service.dart';
+import 'package:mixtape/services/services_container.dart';
 
+import '../models/mixtape.dart';
 import '../models/track_info.dart';
+import '../services/authentication_service.dart';
 import '../utilities/colors.dart';
 
 class MixTapeInfo {
@@ -33,6 +37,15 @@ class AddSongsPage extends StatefulWidget {
 
 class _AddSongsPageState extends State<AddSongsPage> {
   List<TrackInfo> _addedSongs = <TrackInfo>[];
+  late AuthenticationService authenticationService;
+  late MixtapeService mixtapeService;
+
+  @override
+  void initState() {
+    super.initState();
+    mixtapeService = ServicesContainer.of(context).mixtapeService;
+    authenticationService = ServicesContainer.of(context).authService;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,9 +191,26 @@ class _AddSongsPageState extends State<AddSongsPage> {
                       BorderRadius.circular(15), // Adjust the radius as needed
                 ),
                 heroTag: "submit_mixtape_creation",
-                onPressed: () {
-                  MixTapeInfo mixTape = MixTapeInfo(widget.mixTapeName, "", _addedSongs.length, _addedSongs, widget.mixTapeDescription);
-                  print("Title: ${mixTape.title}, NumSongs: ${mixTape.numSongs}, Description: ${mixTape.description}");
+                onPressed: () async {
+                  // MixTapeInfo mixTape = MixTapeInfo(widget.mixTapeName, "", _addedSongs.length, _addedSongs, widget.mixTapeDescription);
+                  if (_addedSongs.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please add at least one song'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
+                  List<String> songIDs = [];
+                  for (TrackInfo song in _addedSongs) {
+                    songIDs.add(song.id);
+                  }
+                  print("Creating mixTape");
+                  print(widget.mixTapeName);
+                  Mixtape createdMixtape = await mixtapeService.createMixtapeInPlaylistForCurrentUser(widget.playlist.id, name: widget.mixTapeName, description: widget.mixTapeDescription, songIDs: songIDs);
+                  print(createdMixtape);
+                  // print("Title: ${mixTape.title}, NumSongs: ${mixTape.numSongs}, Description: ${mixTape.description}");
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:mixtape/models/json_serializable.dart';
+import 'package:mixtape/utilities/json_utilities.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 
 /// Provides common network actions for interfaces. Basically, use the http
@@ -42,6 +43,7 @@ class AbstractService {
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
+    print(response.body);
 
     return decodeMany(response.body, parserFactory);
   }
@@ -81,8 +83,8 @@ class AbstractService {
   T decodeSingle<T>(String content, T Function(Map<String, dynamic>) parserFactory) => parserFactory(jsonDecode(content));
 
   List<T> decodeMany<T>(String content, T Function(Map<String, dynamic>) parserFactory) {
-    Iterable<Map<String, dynamic>> objectIterable = jsonDecode(content).map((item) => item as Map<String, dynamic>);
-    return List<T>.of(objectIterable.map(parserFactory));
+    Iterable objectIterable = jsonDecode(content);
+    return jsonDecodeList(objectIterable, parserFactory);
   }
 
   String _sanitizeUri(String uri) {

@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:mixtape/models/json_serializable.dart';
 import 'package:mixtape/models/profile.dart';
 
-import 'json_serializable.dart';
+import '../utilities/json_utilities.dart';
 import 'mixtape.dart';
 
 class Playlist implements JsonSerializable{
@@ -33,13 +34,13 @@ class Playlist implements JsonSerializable{
   factory Playlist.fromJson(Map<String, dynamic> json) {
     return Playlist(
       id: json["id"],
-      spotifyID: json["spotifyID"],
+      spotifyID: json["spotifyID"] ?? "",
       name: json["name"],
       initiator: Profile.fromJson(json["initiator"]),
       target: Profile.fromJson(json["target"]),
-      description: json["description"],
-      coverPicURL: json["coverPicURL"],
-      mixtapes: List<Mixtape>.of(json["mixtapes"].map((item) => Mixtape.fromJson(item))),
+      description: json["description"] ?? "",
+      coverPicURL: json["coverPicURL"] ?? "",
+      mixtapes: jsonDecodeList(json["mixtapes"], Mixtape.fromJson),
       totalDurationMS: json["totalDurationMS"],
       songCount: json["songCount"],
     );
@@ -59,4 +60,23 @@ class Playlist implements JsonSerializable{
   }
 
 //
+}
+
+class CreatePlaylistDTO extends JsonSerializable {
+  String name;
+  String description;
+  String coverPicURL; // not sure how this will work quite yet…
+  String requestedUserID;
+
+  CreatePlaylistDTO(this.name, this.description, this.coverPicURL, this.requestedUserID);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "description": description,
+      "coverPicURL": coverPicURL,
+      "requestedUserID": requestedUserID,
+    };
+  }
 }
