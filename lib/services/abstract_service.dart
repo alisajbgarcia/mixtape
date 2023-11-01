@@ -43,6 +43,7 @@ class AbstractService {
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
+    print(response.body);
 
     return decodeMany(response.body, parserFactory);
   }

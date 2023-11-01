@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/add_songs.dart';
@@ -40,12 +41,15 @@ class _TapeCreationScreenState extends State<TapeCreationScreen> {
                 Text("Create a MixTape", style: TextStyle(
                 color: Colors.white, fontFamily: "Montserrat", fontSize: 35, fontWeight: FontWeight.bold),),
                 SizedBox(height: screenHeight * .01),
-                Text("This mixtape will be added to ${widget.playlist.name}, which is owned by you and ${widget.playlist.initiator.displayName}",
+                Text("This mixtape will be added to ${widget.playlist.name}, which is owned by you and ${widget.playlist.target.displayName}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                     color: Colors.white, fontFamily: "Montserrat", fontSize: 15,),),
                 SizedBox(height: screenHeight * .01),
-                Image.asset(widget.playlist.coverPicURL,
+                CachedNetworkImage(
+                  imageUrl: widget.playlist.coverPicURL,
+                  placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                  errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
                   height: screenHeight * .1,
                   width: screenHeight * .1,
                 ),

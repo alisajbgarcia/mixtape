@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
@@ -270,10 +271,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         top: screenHeight *
                             .25, // Adjust the top position as needed
                         //child: Text('here', style: TextStyle(color: Colors.white)),
-                        child: Image.network(
-                            widget.playlist.initiator.profilePicURL,
+                        child: CachedNetworkImage(
+                            imageUrl: widget.playlist.initiator.profilePicURL,
+                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
                             width: screenWidth * .1,
-                            height: screenWidth * .1),
+                            height: screenWidth * .1
+                        ),
                       ),
                       Positioned(
                         left: screenWidth * .75,
@@ -281,8 +285,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         top: screenHeight *
                             .25, // Adjust the top position as needed
                         //child: Text('here', style: TextStyle(color: Colors.white)),
-                        child: Image.network(exampleProfile.profilePicURL,
-                            width: screenWidth * .1, height: screenWidth * .1),
+                        child: CachedNetworkImage(
+                            imageUrl: widget.playlist.target.profilePicURL,
+                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                            width: screenWidth * .1,
+                            height: screenWidth * .1
+                        ),
                       ),
                     ],
                   ),
