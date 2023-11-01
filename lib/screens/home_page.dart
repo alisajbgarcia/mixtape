@@ -62,9 +62,9 @@ class _HomePageState extends State<HomePage> {
       Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: initiatorProfile, target: targetProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 9120000, songCount: 5),
     ];
 
+    profileService = ServicesContainer.of(context).profileService;
     playlistService = ServicesContainer.of(context).playlistService;
     authenticationService = ServicesContainer.of(context).authService;
-    profileService = ServicesContainer.of(context).profileService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
@@ -136,9 +136,28 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         toolbarHeight: screenHeight * .13,
         actions: [
-          Padding(
-            padding: EdgeInsets.all(screenHeight * .03),
-            child: Image.asset('assets/ish_profile_picture.png'),
+          FutureBuilder(
+            future: currentProfile,
+            builder: (context, profileSnapshot) {
+              if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                //return const Center(child: CircularProgressIndicator());
+                return CircularProgressIndicator();
+              }
+              final profile = profileSnapshot.data!;
+              return Padding(
+                padding: EdgeInsets.all(screenHeight * .03),
+                child: ClipOval(
+                  child: Container(
+                    width: screenWidth * 0.15,
+                    height: screenWidth * 0.15,
+                    child: Image.network(
+                      profile.profilePicURL,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              );
+            }
           )
         ],
       ),
