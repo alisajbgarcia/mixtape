@@ -193,6 +193,15 @@ class _AddSongsPageState extends State<AddSongsPage> {
                 heroTag: "submit_mixtape_creation",
                 onPressed: () async {
                   // MixTapeInfo mixTape = MixTapeInfo(widget.mixTapeName, "", _addedSongs.length, _addedSongs, widget.mixTapeDescription);
+                  if (_addedSongs.length <= 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please add at least one song'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
                   List<String> songIDs = [];
                   for (TrackInfo song in _addedSongs) {
                     songIDs.add(song.id);
