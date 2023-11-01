@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   late List<Mixtape> mixtapes;
   late List<Playlist> dummydata;
   late List<TrackInfo> tracks;
+  late List<Reaction> reactions;
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
@@ -55,8 +56,9 @@ class _HomePageState extends State<HomePage> {
     initiatorProfile = Profile('id', 'alisajbgarcia', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
     songIds = ['id', 'id', 'id'];
     tracks = [TrackInfo(id: 'id', name: 'name', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/blue_colored_logo.png')];
+    reactions = [Reaction(id: 123, reactor: initiatorProfile, reactionType: ReactionType.LIKE)];
     DateTime date = DateTime.now();
-    sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: targetProfile, songIDs: songIds, songs: tracks);
+    sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: targetProfile, songIDs: songIds, songs: tracks, reactions: reactions);
     mixtapes = [sampleMixtape, sampleMixtape];
     dummydata = [
       Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: initiatorProfile, target: targetProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 9120000, songCount: 5),
