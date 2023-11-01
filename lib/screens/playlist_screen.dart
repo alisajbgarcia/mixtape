@@ -128,7 +128,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           builder: (context, profileSnapshot) {
             // List<Mixtape> cardData;
             if (!profileSnapshot.hasData || profileSnapshot.hasError) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(), );
             }
             final cardData = profileSnapshot.data!;
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
@@ -184,7 +185,11 @@ class _HomePageState extends State<HomePage> {
                                         padding: EdgeInsets.all(screenWidth * .005),
                                         height: screenHeight * .17,
                                         color: MixTapeColors.dark_gray,
-                                        child: Image.asset(playlist.coverPicURL),
+                                        child: CachedNetworkImage(
+                                          imageUrl: playlist.coverPicURL,
+                                          placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                          errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                        ),
                                       ),
                                     ),
                                     Expanded(
