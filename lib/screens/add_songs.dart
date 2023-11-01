@@ -191,13 +191,16 @@ class _AddSongsPageState extends State<AddSongsPage> {
                       BorderRadius.circular(15), // Adjust the radius as needed
                 ),
                 heroTag: "submit_mixtape_creation",
-                onPressed: () {
+                onPressed: () async {
                   // MixTapeInfo mixTape = MixTapeInfo(widget.mixTapeName, "", _addedSongs.length, _addedSongs, widget.mixTapeDescription);
                   List<String> songIDs = [];
                   for (TrackInfo song in _addedSongs) {
                     songIDs.add(song.id);
                   }
-                  mixtapeService.createMixtapeInPlaylistForCurrentUser(widget.playlist.id, name: widget.mixTapeName, description: widget.mixTapeDescription, songIDs: songIDs);
+                  print("Creating mixTape");
+                  print(widget.mixTapeName);
+                  Mixtape createdMixtape = await mixtapeService.createMixtapeInPlaylistForCurrentUser(widget.playlist.id, name: widget.mixTapeName, description: widget.mixTapeDescription, songIDs: songIDs);
+                  print(createdMixtape);
                   // print("Title: ${mixTape.title}, NumSongs: ${mixTape.numSongs}, Description: ${mixTape.description}");
                   Navigator.push(
                       context,
