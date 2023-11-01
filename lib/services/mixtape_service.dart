@@ -17,4 +17,8 @@ class MixtapeService extends AbstractService {
     final createDTO = MixtapeCreateDTO(name, description, songIDs);
     return post("/api/v1/profile/me/playlist/$playlistId/mixtape", createDTO, Mixtape.fromJson);
   }
+
+  Future<void> deleteMixtapeInPlaylistForCurrentUser(String playlistId, String mixtapeId) async {
+    return delete("/api/v1/profile/me/playlist/$playlistId/mixtape/$mixtapeId");
+  }
 }

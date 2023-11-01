@@ -1,27 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/models/track_info.dart';
+import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
 
+import '../models/mixtape.dart';
+import '../models/playlist.dart';
+import '../models/profile.dart';
+import '../services/authentication_service.dart';
+import '../services/mixtape_service.dart';
+import '../services/profile_service.dart';
+import '../services/services_container.dart';
+
 
 class TapeInfoScreen extends StatefulWidget {
-  final int tape_id;
-  final int spotify_id;
-  final String title;
-  final List<TrackInfo> songs;
-  final String description;
+  // final int tape_id;
+  // final int spotify_id;
+  // final String title;
+  // final List<TrackInfo> songs;
+  // final String description;
+  final Mixtape mixtape;
+  final Playlist playlist;
   const TapeInfoScreen(
-      {required this.tape_id,
-      required this.spotify_id,
-      required this.title,
-      required this.songs,
-      required this.description});
+      {
+        required this.mixtape,
+        required this.playlist
+      });
 
   @override
   State<TapeInfoScreen> createState() => _TapeInfoScreenState();
 }
 
 class _TapeInfoScreenState extends State<TapeInfoScreen> {
+  late ProfileService profileService;
+  late AuthenticationService authenticationService;
+  late MixtapeService mixtapeService;
+  late Future<Profile> currentProfile;
+
+  @override
+  void initState() {
+    super.initState();
+
+    mixtapeService = ServicesContainer.of(context).mixtapeService;
+    profileService = ServicesContainer.of(context).profileService;
+    authenticationService = ServicesContainer.of(context).authService;
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -70,7 +97,7 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                             padding: EdgeInsets.all(20.0),
                             child: Column(children: [
                               Text(
-                                widget.title,
+                                widget.mixtape.name,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: 'Montserrat',
@@ -107,7 +134,7 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                             padding: EdgeInsets.all(20.0),
                             child: Column(children: [
                               Text(
-                                widget.description,
+                                widget.mixtape.description,
                                 softWrap: true,
                                 style: TextStyle(
                                   fontSize: 10,
@@ -127,7 +154,7 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
-                    children: widget.songs.map((song) {
+                    children: widget.mixtape.songs.map((song) {
                       return InkWell(
                         borderRadius: BorderRadius.circular(12.0),
                         child: Card(
@@ -187,6 +214,64 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                   ),
                 ),
               ),
+              FutureBuilder(
+                future: currentProfile,
+                builder: (context, profileSnapshot) {
+                  if (profileSnapshot.hasData) {
+                    final profile = profileSnapshot.data! as Profile;
+                    if (profile.id == widget.mixtape.creator.id) {
+                      return Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            0, 0, 0, screenHeight * .05),
+                        child: FloatingActionButton.extended(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                15), // Adjust the radius as needed
+                          ),
+                          heroTag: "mixtape_creation",
+                          onPressed: () async {
+                            print("create mixtape");
+                            try {
+                              await mixtapeService
+                                  .deleteMixtapeInPlaylistForCurrentUser(
+                                  widget.playlist.id, widget.mixtape.id);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomePage(),
+                                  )
+                              );
+                            } catch (err) {
+                              print(err);
+                            }
+                          },
+                          label: Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Text(
+                              'Delete Mixtape',
+                              style: TextStyle(
+                                fontSize: textScaleFactor * 20,
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          icon: Icon(Icons.delete),
+                          backgroundColor: Colors
+                              .red, // Change the button's color
+                        ),
+                      );
+                    } else {
+                      return Text(
+                          "Mixtape was created by ${widget.mixtape.creator
+                              .displayName}");
+                    }
+                  } else {
+                    return Text("Awaiting profile data");
+                  }
+                }
+              ),
+
             ],
           ),
         ));

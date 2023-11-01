@@ -307,13 +307,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TapeInfoScreen(
-                                          tape_id: 1,
-                                          spotify_id: 2,
-                                          title: mixtape.name,
-                                          songs: mixtape.songs,
-                                          description: mixtape.description,
-                                        )),
+                                    builder: (context) => TapeInfoScreen(mixtape: mixtape, playlist: widget.playlist)),
                               );
                             },
                             child: Card(
