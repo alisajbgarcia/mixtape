@@ -15,6 +15,8 @@ class Mixtape {
   Profile creator;
   List<String> songIDs;
   List<TrackInfo> songs;
+  List<Reaction> reactions;
+
 
   Mixtape(
       {required this.id,
@@ -24,7 +26,8 @@ class Mixtape {
         required this.description,
         required this.creator,
         required this.songIDs,
-        required this.songs});
+        required this.songs,
+        required this.reactions});
 
   factory Mixtape.fromJson(Map<String, dynamic> json) {
     return Mixtape(
@@ -35,7 +38,8 @@ class Mixtape {
       description: json["description"],
       creator: Profile.fromJson(json["creator"]),
       songIDs: List<String>.from(json['songIDs'].map((x) => x)),
-      songs: jsonDecodeList(json["songs"], TrackInfo.fromJson)
+      songs: jsonDecodeList(json["songs"], TrackInfo.fromJson),
+      reactions: List<Reaction>.of(json["reactions"].map((item) => Reaction.fromJson(item)))
     );
   }
 
@@ -49,6 +53,7 @@ class Mixtape {
       "creator": creator,
       "songIDs": jsonEncode(songIDs),
       "songs": jsonEncode(songs),
+      "reactions": jsonEncode(reactions)
     };
   }
 }
@@ -68,4 +73,35 @@ class MixtapeCreateDTO extends JsonSerializable {
       "songIDs": songIDs,
     };
   }
+}
+
+enum ReactionType { LIKE, DISLIKE, HEART, FIRE}
+
+class Reaction {
+  int id;
+  Profile reactor;
+  ReactionType reactionType;
+
+  Reaction(
+      {required this.id,
+        required this.reactor,
+        required this.reactionType,});
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": this.id,
+      "reactor": jsonEncode(this.reactor),
+      "reactionType": this.reactionType.name,
+    };
+  }
+
+  factory Reaction.fromJson(Map<String, dynamic> json) {
+    return Reaction(
+        id: json["id"],
+        reactor: Profile.fromJson(json["reactor"]),
+        reactionType: json["reactionType"]
+    );
+  }
+
+
 }
