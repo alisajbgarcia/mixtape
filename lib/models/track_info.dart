@@ -19,8 +19,7 @@ class TrackInfo {
     return TrackInfo(
       id: json["id"],
       name: json["name"],
-      artistNames:
-        json["artistNames"] as List<String>,
+      artistNames: List<String>.from(json['artistNames'].map((x) => x)),
       albumName: json["albumName"],
       albumImageURL: json["albumImageURL"],
     );

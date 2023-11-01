@@ -92,7 +92,7 @@ class _FriendsPageState extends State<FriendsPage> {
         elevation: 0.0,
         toolbarHeight: screenHeight * .13,
       ),
-     
+
       body: FutureBuilder(
         future: friends,
         builder: (context, friendsSnapshot) {
@@ -166,7 +166,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                           padding: EdgeInsets.all(10),
                                           height: screenHeight * .07,
                                           color: MixTapeColors.dark_gray,
-                                          child: Image.asset(friend.profilePicURL),
+                                          child: Image.network(friend.profilePicURL),
                                         ),
                                       ),
                                       Expanded(

@@ -1,11 +1,12 @@
-import 'dart:core';
-
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/widgets/playlist_invitation_sent.dart';
 import 'package:mixtape/widgets/image_upload.dart';
 
+import '../services/authentication_service.dart';
+import '../services/playlist_service.dart';
+import '../services/services_container.dart';
 import '../models/playlist.dart';
 import '../models/profile.dart';
 import '../services/authentication_service.dart';
