@@ -94,42 +94,47 @@ class _HomePageState extends State<HomePage> {
             );
           }
           ),
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0,5,0,0),
-              child: Text('Your Playlists',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  fontSize: (25.0 * textScaleFactor),
+        title: Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width - 200, // Adjust the width as needed
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0,5,0,0),
+                child: Text('Your Playlists',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    fontSize: (25.0 * textScaleFactor),
+                  ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                /*
-                Icon(
-                  light ? Icons.sunny : Icons.dark_mode,
-                  color: Colors.white,
-                ),
-                Switch(
-                  // This bool value toggles the switch.
-                  value: light,
-                  activeColor: MixTapeColors.green,
-                  onChanged: (bool value) {
-                    // This is called when the user toggles the switch.
-                    setState(() {
-                      light = value;
-                    });
-                  },
-                ),
-                */
+              Row(
+                children: [
+                  /*
+                  Icon(
+                    light ? Icons.sunny : Icons.dark_mode,
+                    color: Colors.white,
+                  ),
+                  Switch(
+                    // This bool value toggles the switch.
+                    value: light,
+                    activeColor: MixTapeColors.green,
+                    onChanged: (bool value) {
+                      // This is called when the user toggles the switch.
+                      setState(() {
+                        light = value;
+                      });
+                    },
+                  ),
+                  */
+                ],
+              ),
               ],
-            ),
-            ],
+          ),
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
@@ -139,6 +144,10 @@ class _HomePageState extends State<HomePage> {
           FutureBuilder(
             future: profile,
             builder: (context, profileSnapshot) {
+              if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                //return const Center(child: CircularProgressIndicator());
+                return CircularProgressIndicator();
+              }
               final profile = profileSnapshot.data!;
               return Padding(
                 padding: EdgeInsets.all(screenHeight * .03),
