@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:mixtape/models/json_serializable.dart';
 import 'package:mixtape/models/profile.dart';
 import 'package:mixtape/models/track_info.dart';
+import 'package:mixtape/utilities/json_utilities.dart';
 
 class Mixtape {
   String id;
@@ -34,7 +35,8 @@ class Mixtape {
       description: json["description"],
       creator: Profile.fromJson(json["creator"]),
       songIDs: List<String>.of(json["songIDs"].map((item) => item)),
-      songs: List<TrackInfo>.of(json["songs"].map((item) => TrackInfo.fromJson(item))),
+      // songs: List<TrackInfo>.of(json["songs"].map((item) => TrackInfo.fromJson(item))),
+      songs: jsonDecodeList(json["songs"], TrackInfo.fromJson)
     );
   }
 

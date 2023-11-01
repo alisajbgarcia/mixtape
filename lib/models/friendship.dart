@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:core';
 
 import 'package:mixtape/models/profile.dart';
@@ -20,5 +19,4 @@ class Friendship {
       target: Profile.fromJson(json["target"]),
     );
   }
-
 }
