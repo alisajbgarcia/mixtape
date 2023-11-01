@@ -143,11 +143,13 @@ class _HomePageState extends State<HomePage> {
               return Padding(
                 padding: EdgeInsets.all(screenHeight * .03),
                 child: ClipOval(
-                  child: Image.network(
-                    profile.profilePicURL,
-                    width: screenWidth * .15,
-                    height: screenWidth * .15,
-                    fit: BoxFit.cover,
+                  child: Container(
+                    width: screenWidth * 0.15,
+                    height: screenWidth * 0.15,
+                    child: Image.network(
+                      profile.profilePicURL,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               );
