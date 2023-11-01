@@ -286,6 +286,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                           totalDurationMS: 0,
                           songCount: 0
                         );
+                        print(newPlaylist.target.displayName);
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),
