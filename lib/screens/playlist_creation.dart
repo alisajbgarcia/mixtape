@@ -24,9 +24,10 @@ class PlaylistCreationScreen extends StatefulWidget {
 
 class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   TextEditingController _textController = TextEditingController();
-  String _textFieldValue = "";
-  String selectedFriend = "";
+  String playlistName = "";
+  String playlistTargetName = "";
   String playlistPhoto = "";
+  late Profile playlistTargetProfile;
 
   late ProfileService profileService;
   late AuthenticationService authenticationService;
@@ -81,7 +82,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
         return PlaylistInvitation(
           onFriendSelected: (String friendName) {
             setState(() {
-              selectedFriend = friendName;
+              playlistTargetName = friendName;
             });
             print('Selected friend!: $friendName');
           },
@@ -101,6 +102,17 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     );
   }
 
+  // function to return a profile of the friends name
+  Profile? getFriend(String name) {
+    for(Profile profile in userFriends) {
+      if(profile.displayName == name) {
+        return profile;
+      }
+    }
+    return null;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -118,7 +130,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     // Callback function to handle the selected friend
     void handleFriendSelection(String friendName) {
       setState(() {
-        selectedFriend = friendName;
+        playlistTargetName = friendName;
       });
     }
     return FutureBuilder(
@@ -247,7 +259,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                   ],
                 ),
 
-                selectedFriend.isNotEmpty ? Padding(
+                playlistTargetName.isNotEmpty ? Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * 0.05),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
@@ -260,26 +272,25 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                       onPressed: () async {
                         print("send invitation");
                         openPlaylistInvitationSentDialog(context);
-                        _textFieldValue = _textController.text;
+                        playlistName = _textController.text;
+                        playlistTargetProfile = getFriend(playlistTargetName)!;
                         newPlaylist = Playlist(
                           id: 'id',
                           spotifyID: 'spotifyId',
-                          name: _textFieldValue,
+                          name: playlistName,
                           initiator: await currentProfile,
-                          target: await currentProfile,
+                          target: playlistTargetProfile,
                           description: "",
                           coverPicURL: playlistPhoto,
                           mixtapes: [],
                           totalDurationMS: 0,
                           songCount: 0
                         );
-                        print(newPlaylist.name);
-                        print(newPlaylist.initiator.displayName);
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Text(
-                          'Invite $selectedFriend',
+                          'Invite $playlistTargetName',
                           style: TextStyle(
                             fontSize: textScaleFactor * 20,
                             fontFamily: "Montserrat",
