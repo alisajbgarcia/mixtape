@@ -336,7 +336,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 color: Colors.white,
                                 size: screenSize.shortestSide * .1,
                               ),
-                              onPressed: _searchController.clear,
+                              onPressed: () {
+                                _searchController.clear;
+                                setState(() {
+                                  mixtapes =
+                                      mixtapeService.getMixtapesForPlaylistCurrentUser(widget.playlist.id);
+                                });
+                              },
                             ) // The trailing icon
                         ),
                       ),
