@@ -120,6 +120,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     print(newPlaylist.name);
     print(newPlaylist.initiator.displayName);
     print(newPlaylist.target.displayName);
+    print('PLAYLIST PHOTO ${playlistPhoto.path}');
     Playlist playlist = await playlistService.createPlaylistAndInvitation(newPlaylist);
     if (playlist != null) {
       print('playlist successfully created wahoo');
