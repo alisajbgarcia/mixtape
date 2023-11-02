@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, playlistsSnapshot) {
           List<Playlist> cardData;
           if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
-            print("playlists snapshot has error");
+            print(playlistsSnapshot.error.toString());
             return const Center(child: CircularProgressIndicator());
             // cardData = dummydata;
             // print('oops');

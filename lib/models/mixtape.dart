@@ -121,7 +121,7 @@ class Reaction {
     return Reaction(
         id: json["id"],
         reactor: Profile.fromJson(json["reactor"]),
-        reactionType: json["reactionType"]
+        reactionType: ReactionType.fromJson(json["reactionType"])
     );
   }
 
