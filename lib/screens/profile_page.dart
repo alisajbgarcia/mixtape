@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/models/profile.dart';
 import 'package:mixtape/screens/login_page.dart';
@@ -88,14 +89,27 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Container(
                         width: MediaQuery.of(context).size.width * .5,
                         height: MediaQuery.of(context).size.width * .5,
-                        child: Image.network(profile.profilePicURL),
-                        /*decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage('assets/ish_profile_picture.png'),
+                        child: CachedNetworkImage(
+                          imageUrl: profile.profilePicURL,
+                          placeholder: (context, url) => CircleAvatar(
+                            backgroundColor: MixTapeColors.dark_gray,
+                            radius: 30,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white70,
+                              size: MediaQuery.of(context).size.width * .3,
+                            ),
                           ),
-                        ), */
+                          errorWidget: (context, url, error) => CircleAvatar(
+                            backgroundColor: MixTapeColors.dark_gray,
+                            radius: 30,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white70,
+                              size: MediaQuery.of(context).size.width * .3,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     Padding(

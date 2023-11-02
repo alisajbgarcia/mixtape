@@ -2,9 +2,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/models/json_serializable.dart';
 import 'package:mixtape/utilities/json_utilities.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
+
+import 'file_upload_http_client.dart';
 
 /// Provides common network actions for interfaces. Basically, use the http
 /// methods provided here. They make things easier. They provide some error
@@ -52,8 +55,13 @@ class AbstractService {
     uri = _sanitizeUri(uri);
     final bodyMap = jsonEncode(body.toJson());
 
-    final response = await helper.post("$baseUrl/$uri", body: bodyMap, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
+    return postString(uri, bodyMap, responseConverter);
+  }
+
+  Future<R> postString<R>(String uri, String body, DeserializerFactory<R> responseConverter) async {
+    final response = await helper.post("$baseUrl/$uri", body: body, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
     if (response.statusCode != 200) {
+      print("Request error: ${response.statusCode} - ${response.reasonPhrase}");
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
 
@@ -67,8 +75,11 @@ class AbstractService {
     if (body != null) {
       bodyMap = jsonEncode(body.toJson());
     }
+    return putString(uri, bodyMap, responseConverter);
+  }
 
-    final response = await helper.put("$baseUrl/$uri", body: bodyMap, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
+  Future<R> putString<R>(String uri, String body, DeserializerFactory<R> responseConverter) async {
+    final response = await helper.put("$baseUrl/$uri", body: body, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
@@ -82,6 +93,18 @@ class AbstractService {
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
+  }
+
+  Future<R> putXFile<R>(String uri, XFile file, String fileId, R Function(Map<String, dynamic>) parserFactory) async {
+    final fileUploadClient = XFileUploadHttpClient(fileId, null);
+    uri = _sanitizeUri(uri);
+
+    final response = await helper.put("$baseUrl/$uri", body: file, httpClient: fileUploadClient);
+    if (response.statusCode != 200) {
+      return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
+    }
+
+    return decodeSingle(response.body, parserFactory);
   }
 
   T decodeSingle<T>(String content, T Function(Map<String, dynamic>) parserFactory) => parserFactory(jsonDecode(content));

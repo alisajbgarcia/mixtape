@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/models/json_serializable.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/services/abstract_service.dart';
@@ -14,15 +15,19 @@ class PlaylistService extends AbstractService {
     return get("/api/v1/profile/me/playlist/$playlistId", Playlist.fromJson);
   }
 
-  Future<Playlist> createPlaylistAndInvitation(Playlist playlist) async {
-    return post<Playlist, Playlist>("/api/v1/profile/<profileId>/playlist", playlist, Playlist.fromJson);
+  Future<CreatePlaylistResponse> createPlaylistAndInvitation(CreatePlaylistDTO playlist) async {
+    return post<CreatePlaylistDTO, CreatePlaylistResponse>("/api/v1/profile/me/playlist", playlist, CreatePlaylistResponse.fromJson);
   }
-  
+
+  Future<CreatePlaylistResponse> setProfilePicForPlaylist(String playlistId, XFile uploadFile) {
+    return putXFile("/api/v1/profile/me/playlist/$playlistId/cover-pic", uploadFile, "file", CreatePlaylistResponse.fromJson);
+  }
+
   Future<Playlist> createPlaylistForCurrentUser({required String name, required String description, required String coverPicURL, required String requestedUserID}) async {
     final createDTO = CreatePlaylistDTO(name, description, coverPicURL, requestedUserID);
     return post("/api/v1/profile/me/playlist", createDTO, Playlist.fromJson);
   }
-  
+
   Future<void> deletePlaylist(String playlistId) async {
     return delete("/api/v1/profile/me/playlist/$playlistId");
   }
