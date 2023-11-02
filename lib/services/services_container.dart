@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:mixtape/services/friendship_service.dart';
 import 'package:mixtape/services/mixtape_oauth_client.dart';
 import 'package:mixtape/services/playlist_service.dart';
 import 'package:mixtape/services/profile_service.dart';
@@ -15,9 +16,11 @@ class ServicesContainer {
   ProfileService profileService;
   PlaylistService playlistService;
   NotificationService notificationService;
+  FriendshipService friendshipService;
 
   
-  ServicesContainer(this.authService, this.mixtapeService, this.profileService, this.notificationService, this.playlistService);
+  ServicesContainer(this.authService, this.mixtapeService, this.profileService, 
+        this.notificationService, this.playlistService, this.friendshipService);
 
   static Future<ServicesContainer> initialize({String baseUrl = "https://api.getmixtapeapplication.com"}) async {
     final mixtapeClientSpec = MixtapeOAuth2Client(redirectUri: 'com.mixtape://callback');
@@ -34,9 +37,10 @@ class ServicesContainer {
     final profileService = ProfileService(helper, baseUrl);
     final playlistService = PlaylistService(helper, baseUrl);
     final notificationService = NotificationService(helper, baseUrl);
+    final friendshipService = FriendshipService(helper, baseUrl);
 
     
-    return ServicesContainer(authService, mixtapeService, profileService, notificationService, playlistService);
+    return ServicesContainer(authService, mixtapeService, profileService, notificationService, playlistService, friendshipService);
 
   }
 

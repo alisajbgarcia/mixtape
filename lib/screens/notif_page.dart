@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/services/authentication_service.dart';
+import 'package:mixtape/services/friendship_service.dart';
+import 'package:mixtape/services/playlist_service.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
 import '../models/profile.dart';
 import '../models/notification.dart';
 import '../utilities/navbar_pages.dart';
+import '../services/services_container.dart';
+import '../services/notification_service.dart';
+import '../services/profile_service.dart';
 
 class NotifPage extends StatefulWidget {
   @override
@@ -24,8 +30,13 @@ class _NotifPage extends State<NotifPage> {
   bool isFilterVisible = false;
   String filterValue = 'Off';
 
-  late Future<List<Profile>> notifs;
+  late Future<List<Notif>> notifs;
   late Future<Profile> currentProfile;
+  late ProfileService profileService;
+  late NotificationService notificationService;
+  late AuthenticationService authenticationService;
+  late PlaylistService playlistService;
+  late FriendshipService friendshipService;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -48,8 +59,25 @@ class _NotifPage extends State<NotifPage> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+
+    profileService = ServicesContainer.of(context).profileService;
+    authenticationService = ServicesContainer.of(context).authService;
+    notificationService = ServicesContainer.of(context).notificationService;
+    playlistService = ServicesContainer.of(context).playlistService;
+    friendshipService = ServicesContainer.of(context).friendshipService;
+
+
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+      notifs = notificationService.getNotifications();
+    });
+  }
+
   List<Notif> dummydata = [
-    Notif(id:'123', initiator: Profile('1', 'Charlie', 'Charlie', ''), target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1'),
+    Notif(id:'123', target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1', contents: '    NO NOTIFICATIONS!', notificationType: NotificationType.MIXTAPE),
   ];
 
 
@@ -135,11 +163,10 @@ class _NotifPage extends State<NotifPage> {
             if(!notifSnapshot.hasData) {
               cardData = dummydata;
             } else {
-              cardData = notifSnapshot.data!; } } } 
-      )
+              cardData = notifSnapshot.data!; }
       
-      Column(
-        children: notifInfo.map((notif) {
+            return Column(
+              children: cardData.map((notif) {
           return InkWell(
             child: Card(
               shape: RoundedRectangleBorder(
@@ -148,7 +175,7 @@ class _NotifPage extends State<NotifPage> {
               margin: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                child: notif.type.contains('friend') && (filterValue.contains('Friend') || filterValue.contains('Off'))//Is it a friend or playlist notification
+                child: notif.notificationType == NotificationType.FRIENDSHIP && (filterValue.contains('Friend') || filterValue.contains('Off'))//Is it a friend or playlist notification
                 ? Container(//Friend
                   color: MixTapeColors.dark_gray,
                   padding: EdgeInsets.all(9.0),
@@ -162,7 +189,7 @@ class _NotifPage extends State<NotifPage> {
                             color: Colors.white,
                             fontFamily: "Montserrat",
                           ),
-                        '${notif.user} would like to be your friend, do you accept?'
+                        '${notif.contents}'
                         ),
                       ),
                       IconButton(
@@ -173,7 +200,8 @@ class _NotifPage extends State<NotifPage> {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                            setState(() => notifInfo.remove(notif));
+                            setState(() => cardData.remove(notif));
+                            friendshipService.acceptRequest(notif.externalId);
                             print('Friend Accepted');
                         }
                       ),
@@ -185,14 +213,15 @@ class _NotifPage extends State<NotifPage> {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                            setState(() => notifInfo.remove(notif));
+                            setState(() => cardData.remove(notif));
+                            friendshipService.deleteRequest(notif.externalId);
                             print('Friend Rejected');
                         }
                       ),
                     ]
                   ),
                 )
-                : notif.type.contains('playlist') && (filterValue.contains('Playlist') || filterValue.contains('Off')) ? Container(//Playlist
+                : notif.notificationType == NotificationType.PLAYLIST && (filterValue.contains('Playlist') || filterValue.contains('Off')) ? Container(//Playlist
                   color: MixTapeColors.dark_gray,
                   padding: EdgeInsets.all(9.0),
                   child: Row(
@@ -205,7 +234,7 @@ class _NotifPage extends State<NotifPage> {
                             color: Colors.white,
                             fontFamily: "Montserrat",
                           ),
-                        '${notif.user} invited you to join the playlist "${notif.title}" do you accept?'
+                        '${notif.contents}'
                         ),
                       ),
                       IconButton(
@@ -216,7 +245,8 @@ class _NotifPage extends State<NotifPage> {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                            setState(() => notifInfo.remove(notif));
+                            setState(() => cardData.remove(notif));
+                            playlistService.acceptRequest(notif.externalId);
                             print('Playlist Accepted');
                         }
                       ),
@@ -228,14 +258,15 @@ class _NotifPage extends State<NotifPage> {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                            setState(() => notifInfo.remove(notif));
+                            setState(() => cardData.remove(notif));
+                            playlistService.acceptRequest(notif.externalId);
                             print('Playlist Rejected');
                         }
                       ),
                     ]
                   ),
                 )
-                : notif.type.contains('activity') && (filterValue.contains('Activity') || filterValue.contains('Off')) ? Container(//Recent Activity
+                : notif.notificationType == (NotificationType.MIXTAPE) && (filterValue.contains('Activity') || filterValue.contains('Off')) ? Container(//Recent Activity
                   width: screenWidth * .9,
                   height: screenHeight * .05,
                   color: MixTapeColors.dark_gray,
@@ -249,7 +280,7 @@ class _NotifPage extends State<NotifPage> {
                             color: Colors.white,
                             fontFamily: "Montserrat",
                           ),
-                        '${notif.user} added a new tape to ${notif.title}'
+                        '${notif.contents}'
                         ),
                    // ),
                 ) : SizedBox()
@@ -257,6 +288,7 @@ class _NotifPage extends State<NotifPage> {
             ),
           );
         }).toList(),
+      ); } }
       ),
       bottomNavigationBar: NavBar(
         currentIndex: _selectedIndex,
