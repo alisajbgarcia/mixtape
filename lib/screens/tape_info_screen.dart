@@ -163,7 +163,7 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                       return IconButton(
                         icon: getIconForReaction(type),
                         onPressed: () {
-                         mixtapeService.addReactionForCurrentUser(widget.playlist_id, widget.tape_id.toString(), type: type.toString()).then((_) {
+                         mixtapeService.addReactionForCurrentUser(widget.playlist_id, widget.tape_id, type: type.toString()).then((_) {
                            setState(() {
                              // set the state
                            });
