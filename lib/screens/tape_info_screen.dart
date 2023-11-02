@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/models/track_info.dart';
-import 'package:mixtape/screens/playlist_screen.dart';
+import 'package:mixtape/models/mixtape.dart';
 import 'package:mixtape/utilities/colors.dart';
+import 'package:mixtape/services/mixtape_service.dart';
+import 'package:mixtape/services/authentication_service.dart';
+import 'package:mixtape/services/services_container.dart';
 
 
 class TapeInfoScreen extends StatefulWidget {
-  final int tape_id;
-  final int spotify_id;
+  final String playlist_id;
+  final String tape_id;
+  final String spotify_id;
   final String title;
   final List<TrackInfo> songs;
+  final List<Reaction> reactions;
   final String description;
   const TapeInfoScreen(
-      {required this.tape_id,
+      { required this.playlist_id,
+      required this.tape_id,
       required this.spotify_id,
       required this.title,
       required this.songs,
+      required this.reactions,
       required this.description});
 
   @override
@@ -22,6 +29,29 @@ class TapeInfoScreen extends StatefulWidget {
 }
 
 class _TapeInfoScreenState extends State<TapeInfoScreen> {
+  late AuthenticationService authenticationService;
+  late MixtapeService mixtapeService;
+
+  Icon getIconForReaction(ReactionType type) {
+    switch (type) {
+      case ReactionType.LIKE:
+        return Icon(Icons.thumb_up, color: Colors.white,);
+      case ReactionType.DISLIKE:
+        return Icon(Icons.thumb_down, color: Colors.white,);
+      case ReactionType.HEART:
+        return Icon(Icons.favorite, color: Colors.pinkAccent,);
+      case ReactionType.FIRE:
+        return Icon(Icons.whatshot, color: Colors.red,);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    mixtapeService = ServicesContainer.of(context).mixtapeService;
+    authenticationService = ServicesContainer.of(context).authService;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -121,6 +151,45 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                         ),
                       ),
                     ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  SizedBox(height: screenHeight * .05),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: ReactionType.values.map((type) {
+                      return IconButton(
+                        icon: getIconForReaction(type),
+                        onPressed: () {
+                         mixtapeService.addReactionForCurrentUser(widget.playlist_id, widget.tape_id.toString(), type: type.toString()).then((_) {
+                           setState(() {
+                             // set the state
+                           });
+                         });
+                         print("reaction added");
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Reactions:',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Column(
+                    children: widget.reactions.map((reaction) {
+                      return ListTile(
+                        leading: getIconForReaction(reaction.reactionType),
+                        title: Text('${reaction.reactor.displayName} reacted with ${reaction.reactionType.toString()}'),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),

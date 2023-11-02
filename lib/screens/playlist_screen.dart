@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
-import 'package:mixtape/screens/search_page.dart';
 import '../models/mixtape.dart';
 import '../models/playlist.dart';
 import '../models/profile.dart';
@@ -308,10 +307,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => TapeInfoScreen(
-                                          tape_id: 1,
-                                          spotify_id: 2,
+                                          playlist_id: widget.playlist.id,
+                                          tape_id: mixtape.id,
+                                          spotify_id: mixtape.creator.id,
                                           title: mixtape.name,
                                           songs: mixtape.songs,
+                                          reactions: mixtape.reactions,
                                           description: mixtape.description,
                                         )),
                               );

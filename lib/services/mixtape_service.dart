@@ -1,5 +1,6 @@
 
 import 'package:mixtape/models/mixtape.dart';
+import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/services/abstract_service.dart';
 
 class MixtapeService extends AbstractService {
@@ -16,5 +17,10 @@ class MixtapeService extends AbstractService {
   Future<Mixtape> createMixtapeInPlaylistForCurrentUser(String playlistId, {required String name, required String description, required List<String> songIDs}) async {
     final createDTO = MixtapeCreateDTO(name, description, songIDs);
     return post("/api/v1/profile/me/playlist/$playlistId/mixtape", createDTO, Mixtape.fromJson);
+  }
+
+  Future<void> addReactionForCurrentUser(String playlistId, String mixtapeId, {required String type}) {
+    final createDTO = ReactionCreateDTO(type);
+    return put("/api/vi/profile/me/playlist/$playlistId/mixtape/$mixtapeId", createDTO, Playlist.fromJson);
   }
 }
