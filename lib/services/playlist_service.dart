@@ -14,8 +14,8 @@ class PlaylistService extends AbstractService {
     return get("/api/v1/profile/me/playlist/$playlistId", Playlist.fromJson);
   }
 
-  Future<Playlist> createPlaylistAndInvitation(Playlist playlist) async {
-    return post<Playlist, Playlist>("/api/v1/profile/me/playlist", playlist, Playlist.fromJson);
+  Future<Playlist> createPlaylistAndInvitation(CreatePlaylistDTO playlist) async {
+    return post<CreatePlaylistDTO, Playlist>("/api/v1/profile/me/playlist", playlist, Playlist.fromJson);
   }
 
   Future<Playlist> setProfilePicForPlaylist(String playlistId, XFile uploadFile) {

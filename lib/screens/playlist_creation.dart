@@ -37,7 +37,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   late Future<Profile> currentProfile;
   late Future<List<Profile>> friends;
   late List<Profile> userFriends;
-  late Playlist newPlaylist;
+  late CreatePlaylistDTO newPlaylist;
 
   @override
   void initState() {
@@ -114,12 +114,10 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   }
 
   // function to create a new playlist and upload a corresponding coverPic
-  Future<Playlist?> createPlaylist(Playlist newPlaylist) async {
+  Future<Playlist?> createPlaylist(CreatePlaylistDTO newPlaylist) async {
     print('the following playlist will be created');
     print(newPlaylist);
     print(newPlaylist.name);
-    print(newPlaylist.initiator.displayName);
-    print(newPlaylist.target.displayName);
     print('PLAYLIST PHOTO ${playlistPhoto.path}');
     Playlist playlist = await playlistService.createPlaylistAndInvitation(newPlaylist);
     if (playlist != null) {
@@ -280,18 +278,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                         openPlaylistInvitationSentDialog(context);
                         playlistName = _textController.text;
                         playlistTargetProfile = getFriend(playlistTargetName)!;
-                        newPlaylist = Playlist(
-                          id: 'id',
-                          spotifyID: 'spotifyId',
-                          name: playlistName,
-                          initiator: await currentProfile,
-                          target: playlistTargetProfile,
-                          description: "",
-                          coverPicURL: "",
-                          mixtapes: [],
-                          totalDurationMS: 0,
-                          songCount: 0
-                        );
+                        newPlaylist = CreatePlaylistDTO(playlistName, "", "", playlistTargetProfile.id);
                         createPlaylist(newPlaylist);
                       },
                       label: Padding(
