@@ -349,12 +349,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         children: [
                           FilledButton(
                             onPressed: () {
-                              // edit these with Alex's endpoints
-                              // searchSpotify(_searchController.text).then((_) {
-                              //   setState(() {
-                              //     // set the state
-                              //   });
-                              // });
+                              setState(() {
+                                // set state
+                                mixtapes = mixtapeService.getMixtapesbyTapeForPlaylistCurrentUser(widget.playlist.id, _searchController.text);
+                              });
                             },
                             style: FilledButton.styleFrom(
                                 backgroundColor: MixTapeColors.dark_gray,
@@ -371,12 +369,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                           ),
                           FilledButton(
                             onPressed: () {
-                              // edit these with Alex's endpoints
-                              // searchSpotify(_searchController.text).then((_) {
-                              //   setState(() {
-                              //     // set the state
-                              //   });
-                              // });
+                              setState(() {
+                                // set state
+                                mixtapes = mixtapeService.getMixtapesbySongForPlaylistCurrentUser(widget.playlist.id, _searchController.text);
+                              });
                             },
                             style: FilledButton.styleFrom(
                                 backgroundColor: MixTapeColors.dark_gray,
@@ -393,12 +389,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                           ),
                           FilledButton(
                             onPressed: () {
-                              // edit these with Alex's endpoints
-                              // searchSpotify(_searchController.text).then((_) {
-                              //   setState(() {
-                              //     // set the state
-                              //   });
-                              // });
+                              setState(() {
+                                // set state
+                                mixtapes = mixtapeService.getMixtapesbyArtistForPlaylistCurrentUser(widget.playlist.id, _searchController.text);
+                              });
                             },
                             style: FilledButton.styleFrom(
                                 backgroundColor: MixTapeColors.dark_gray,
@@ -415,12 +409,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                           ),
                           FilledButton(
                             onPressed: () {
-                              // edit these with Alex's endpoints
-                              // searchSpotifybyAlbum(_searchController.text).then((_) {
-                              //   setState(() {
-                              //     // set the state
-                              //   });
-                              // });
+                              setState(() {
+                                // set state
+                                mixtapes = mixtapeService.getMixtapesbyAlbumForPlaylistCurrentUser(widget.playlist.id, _searchController.text);
+                              });
                             },
                             style: FilledButton.styleFrom(
                                 backgroundColor: MixTapeColors.dark_gray,
