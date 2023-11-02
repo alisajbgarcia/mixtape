@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
+import '../models/profile.dart';
+import '../models/notification.dart';
 import '../utilities/navbar_pages.dart';
 
 class NotifPage extends StatefulWidget {
@@ -21,6 +23,9 @@ class _NotifPage extends State<NotifPage> {
   int _selectedIndex = 0;
   bool isFilterVisible = false;
   String filterValue = 'Off';
+
+  late Future<List<Profile>> notifs;
+  late Future<Profile> currentProfile;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -43,12 +48,8 @@ class _NotifPage extends State<NotifPage> {
     });
   }
 
-  List<NotifInfo> notifInfo = [
-    NotifInfo('friend', 'alexfrey', ''),
-    NotifInfo('playlist', 'charlie', 'Party Time'),
-    NotifInfo('activity', 'alexfrey', '422 Blues'),
-    NotifInfo('friend', 'bruh', ''),
-    NotifInfo('activity', 'charlie', 'GOAT PLAYLIST')
+  List<Notif> dummydata = [
+    Notif(id:'123', initiator: Profile('1', 'Charlie', 'Charlie', ''), target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1'),
   ];
 
 
@@ -124,7 +125,20 @@ class _NotifPage extends State<NotifPage> {
         ),
       ),
       
-      body: Column(
+      body: FutureBuilder(
+        future: notifs,
+        builder: (context, notifSnapshot) {
+          if (notifSnapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Display a loading indicator while waiting for data.
+          } else {
+            List<Notif> cardData;
+            if(!notifSnapshot.hasData) {
+              cardData = dummydata;
+            } else {
+              cardData = notifSnapshot.data!; } } } 
+      )
+      
+      Column(
         children: notifInfo.map((notif) {
           return InkWell(
             child: Card(
