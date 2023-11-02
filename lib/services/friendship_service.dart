@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:mixtape/services/abstract_service.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 
@@ -13,4 +15,11 @@ class FriendshipService extends AbstractService {
     return getMany("/api/v1/profile/me/playlist", Friendship.fromJson);
   }
 
+  Future<void> acceptRequest(String friendshipId) async {
+    return put("/api/v1/profile/me/friendship/$friendshipId/accept", null, Friendship.fromJson);
+  }
+
+  Future<void> deleteRequest(String friendshipId) async {
+    return delete("/api/v1/profile/me/friendship/$friendshipId/deny");
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:mixtape/models/json_serializable.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/services/abstract_service.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
@@ -16,9 +17,21 @@ class PlaylistService extends AbstractService {
   Future<Playlist> createPlaylistAndInvitation(Playlist playlist) async {
     return post<Playlist, Playlist>("/api/v1/profile/<profileId>/playlist", playlist, Playlist.fromJson);
   }
-
+  
   Future<Playlist> createPlaylistForCurrentUser({required String name, required String description, required String coverPicURL, required String requestedUserID}) async {
     final createDTO = CreatePlaylistDTO(name, description, coverPicURL, requestedUserID);
     return post("/api/v1/profile/me/playlist", createDTO, Playlist.fromJson);
+  }
+  
+  Future<void> deletePlaylist(String playlistId) async {
+    return delete("/api/v1/profile/me/playlist/$playlistId");
+  }
+
+  Future<void> acceptRequest(String playlistId) async {
+    return put("/api/v1/profile/me/friendship/$playlistId/accept", null, Playlist.fromJson);
+  }
+
+  Future<void> deleteRequest(String playlistId) async {
+    return delete("/api/v1/profile/me/friendship/$playlistId/deny");
   }
 }
