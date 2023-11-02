@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/widgets/playlist_invitation_sent.dart';
@@ -26,7 +27,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   TextEditingController _textController = TextEditingController();
   String playlistName = "";
   String playlistTargetName = "";
-  String playlistPhoto = "";
+  late XFile playlistPhoto;
   late Profile playlistTargetProfile;
 
   late ProfileService profileService;
@@ -63,12 +64,12 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
       context: context,
       builder: (BuildContext context) {
         return ImageUpload(
-          playlistPhotoURL: (String photoURL) {
+          photoFile: (XFile photoFile) {
             setState(() {
-              playlistPhoto = photoURL;
+              playlistPhoto = photoFile;
             });
           },
-          photoURL: playlistPhoto,
+          photoURL: playlistPhoto.path,
         );
       },
     );
@@ -117,6 +118,8 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
       Playlist playlist = await playlistService.createPlaylistAndInvitation(newPlaylist);
       if(playlist != null) {
         print('playlist successfully created wahoo');
+        String playlistId = playlist.id;
+        playlist = await playlistService.setProfilePicForPlaylist(playlistId, playlistPhoto);
       } else {
         print('womp womp');
       }

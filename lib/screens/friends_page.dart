@@ -64,10 +64,6 @@ class _FriendsPageState extends State<FriendsPage> {
       });
     }
 
-  List<Profile> dummydata = [
-    Profile('zestythomae', 'andrew thomae', 'spotifyuid', 'assets/green_colored_logo.png'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -101,7 +97,7 @@ class _FriendsPageState extends State<FriendsPage> {
           } else {
             List<Profile> cardData;
             if(!friendsSnapshot.hasData) {
-              cardData = dummydata;
+              return CircularProgressIndicator();
             } else {
               cardData = friendsSnapshot.data!;
             }

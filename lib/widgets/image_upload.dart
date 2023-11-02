@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/utilities/colors.dart';
 
 class ImageUpload extends StatefulWidget {
-  final Function(String) playlistPhotoURL;
+  final Function(XFile) photoFile;
   String photoURL;
-  ImageUpload({required this.playlistPhotoURL, required this.photoURL});
+  ImageUpload({required this.photoFile, required this.photoURL});
 
   @override
   State<ImageUpload> createState() => _ImageUploadState();
@@ -15,7 +15,7 @@ class ImageUpload extends StatefulWidget {
 
 class _ImageUploadState extends State<ImageUpload> {
   String playlistPhoto = "";
-  File? imageFile;
+  XFile? imageFile;
 
   _pickImagefromGallery() async {
     try {
@@ -23,9 +23,9 @@ class _ImageUploadState extends State<ImageUpload> {
       await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
         setState(() {
-          imageFile = File(pickedImage.path);
+          imageFile = XFile(pickedImage.path);
           playlistPhoto = pickedImage.path;
-          this.widget.playlistPhotoURL(playlistPhoto);
+          this.widget.photoFile(imageFile!);
           widget.photoURL = playlistPhoto;
         });
         return playlistPhoto;
@@ -78,7 +78,7 @@ class _ImageUploadState extends State<ImageUpload> {
                       onPressed: () async {
                         print('image upload dialog');
                         playlistPhoto = await _pickImagefromGallery();
-                        widget.playlistPhotoURL(playlistPhoto);
+                        widget.photoFile(imageFile!);
                         //Navigator.of(context).pop();
                       },
                       child: Text(
@@ -159,7 +159,7 @@ class _ImageUploadState extends State<ImageUpload> {
               onPressed: () {
                 print(playlistPhoto.length);
                 if(widget.photoURL.length == 0) {
-                  widget.playlistPhotoURL(playlistPhoto);
+                  widget.photoFile(imageFile!);
                 }
                 Navigator.of(context).pop();
               },
