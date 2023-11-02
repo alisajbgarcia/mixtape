@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/services/services_container.dart';
@@ -225,7 +226,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   ),
                                   TextButton(
                                     onPressed: () => {Navigator.pop(context, 'YES'),
-                                      _onDeletePlaylist(widget.playlist.id)
+                                      _onDeletePlaylist(widget.playlist.id),
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => HomePage()),
+                                      )
                                     },
                                     child: const Text('YES',
                                       style: TextStyle(

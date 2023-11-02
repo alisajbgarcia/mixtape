@@ -121,7 +121,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                 builder: (BuildContext context) => AlertDialog(
                                   backgroundColor: MixTapeColors.black,
                                   //title: const Text('Remove Friend?'),
-                                  content: const Text('Would you like to remove this user as a friend?',
+                                  content: Text('Would you like to remove this ${friend.displayName} as a friend?',
                                   style: TextStyle(
                                         fontSize: (22),
                                         color: Colors.white,
@@ -143,7 +143,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                       style: TextStyle(
                                                       fontSize: (22),
                                                       color: Colors.white,
-                                       ),
+                                        ),
                                        ),
                                     ),
                                   ],

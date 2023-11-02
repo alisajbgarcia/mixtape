@@ -7,10 +7,13 @@ import 'package:mixtape/widgets/navbar.dart';
 
 import '../models/profile.dart';
 import '../models/notification.dart';
+import '../models/playlist.dart';
 import '../utilities/navbar_pages.dart';
 import '../services/services_container.dart';
 import '../services/notification_service.dart';
 import '../services/profile_service.dart';
+import '../services/playlist_service.dart';
+import '../screens/playlist_screen.dart';
 
 class NotifPage extends StatefulWidget {
   @override
@@ -77,7 +80,7 @@ class _NotifPage extends State<NotifPage> {
   }
 
   List<Notif> dummydata = [
-    Notif(id:'123', target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1', contents: '    NO NOTIFICATIONS!', notificationType: NotificationType.MIXTAPE),
+    Notif(id:'123', target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1', contents: 'NO NOTIFICATIONS!', notificationType: NotificationType.MIXTAPE),
   ];
 
 
@@ -234,7 +237,7 @@ class _NotifPage extends State<NotifPage> {
                             color: Colors.white,
                             fontFamily: "Montserrat",
                           ),
-                        '${notif.contents}'
+                        notif.contents
                         ),
                       ),
                       IconButton(
@@ -259,7 +262,7 @@ class _NotifPage extends State<NotifPage> {
                         ),
                         onPressed: () {
                             setState(() => cardData.remove(notif));
-                            playlistService.acceptRequest(notif.externalId);
+                            playlistService.deleteRequest(notif.externalId);
                             print('Playlist Rejected');
                         }
                       ),
@@ -270,19 +273,27 @@ class _NotifPage extends State<NotifPage> {
                   width: screenWidth * .9,
                   height: screenHeight * .05,
                   color: MixTapeColors.dark_gray,
-                  padding: EdgeInsets.only(top:9.0, bottom: 9, left: 0, right:0),
-                  //child: Flexible(
-                        child: Text(
-                          textAlign: TextAlign.start,
-                          softWrap: true,
-                          style: TextStyle(
-                            fontSize: (15 * textScaleFactor),
-                            color: Colors.white,
-                            fontFamily: "Montserrat",
-                          ),
-                        '${notif.contents}'
+                  //padding: EdgeInsets.only(top:9.0, bottom: 9, left: 0, right:0),
+                  child: TextButton(
+                      child: Text(
+                        textAlign: TextAlign.start,
+                        softWrap: true,
+                        style: TextStyle(
+                          fontSize: (15 * textScaleFactor),
+                          color: Colors.white,
+                          fontFamily: "Montserrat",
                         ),
-                   // ),
+                      '${notif.contents}'
+                      ),
+                      onPressed: () async {
+                        print('activity pressed');
+                        Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.externalId);
+                        Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
+                        );
+                      },
+                    ),
                 ) : SizedBox()
               ),
             ),
