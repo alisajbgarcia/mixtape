@@ -1,6 +1,5 @@
 import 'dart:core';
 
-import 'package:mixtape/models/json_serializable.dart';
 import 'package:mixtape/models/profile.dart';
 
 class Friendship {
