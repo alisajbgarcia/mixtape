@@ -1,5 +1,8 @@
 
+import 'dart:convert';
+
 import 'package:mixtape/models/mixtape.dart';
+import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/services/abstract_service.dart';
 
 class MixtapeService extends AbstractService {
@@ -20,5 +23,10 @@ class MixtapeService extends AbstractService {
 
   Future<void> deleteMixtapeInPlaylistForCurrentUser(String playlistId, String mixtapeId) async {
     return delete("/api/v1/profile/me/playlist/$playlistId/mixtape/$mixtapeId");
+  }
+
+  Future<Mixtape> addReactionForCurrentUser(String playlistId, String mixtapeId, {required String type}) {
+    print(type);
+    return putString("/api/v1/profile/me/playlist/$playlistId/mixtape/$mixtapeId/reaction", jsonEncode(type), Mixtape.fromJson);
   }
 }

@@ -52,7 +52,11 @@ class AbstractService {
     uri = _sanitizeUri(uri);
     final bodyMap = jsonEncode(body.toJson());
 
-    final response = await helper.post("$baseUrl/$uri", body: bodyMap, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
+    return postString(uri, bodyMap, responseConverter);
+  }
+
+  Future<R> postString<R>(String uri, String body, DeserializerFactory<R> responseConverter) async {
+    final response = await helper.post("$baseUrl/$uri", body: body, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
     if (response.statusCode != 200) {
       print("Request error: ${response.statusCode} - ${response.reasonPhrase}");
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
@@ -75,10 +79,13 @@ class AbstractService {
 
     String bodyMap = '';
     if (body != null) {
-       bodyMap = jsonEncode((body as JsonSerializable).toJson());
+      bodyMap = jsonEncode((body as JsonSerializable).toJson());
     }
+    return putString(uri, bodyMap, responseConverter);
+  }
 
-    final response = await helper.put("$baseUrl/$uri", body: bodyMap, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
+  Future<R> putString<R>(String uri, String body, DeserializerFactory<R> responseConverter) async {
+    final response = await helper.put("$baseUrl/$uri", body: body, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
