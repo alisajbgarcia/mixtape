@@ -71,9 +71,9 @@ class AbstractService {
   Future<R> put<T extends JsonSerializable?, R>(String uri, T? body, R Function(Map<String, dynamic>) responseConverter) async {
     uri = _sanitizeUri(uri);
 
-    String? bodyMap;
+    String bodyMap = '';
     if (body != null) {
-      bodyMap = jsonEncode(body.toJson());
+      bodyMap = jsonEncode((body as JsonSerializable).toJson());
     }
     return putString(uri, bodyMap, responseConverter);
   }
