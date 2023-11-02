@@ -37,10 +37,22 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
   late MixtapeService mixtapeService;
   late Future<Profile> currentProfile;
 
+  Icon getIconForReaction(ReactionType type) {
+    switch (type) {
+      case ReactionType.LIKE:
+        return Icon(Icons.thumb_up, color: Colors.white,);
+      case ReactionType.DISLIKE:
+        return Icon(Icons.thumb_down, color: Colors.white,);
+      case ReactionType.HEART:
+        return Icon(Icons.favorite, color: Colors.pinkAccent,);
+      case ReactionType.FIRE:
+        return Icon(Icons.whatshot, color: Colors.red,);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
     mixtapeService = ServicesContainer.of(context).mixtapeService;
     profileService = ServicesContainer.of(context).profileService;
     authenticationService = ServicesContainer.of(context).authService;
@@ -148,6 +160,45 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                         ),
                       ),
                     ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  SizedBox(height: screenHeight * .05),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: ReactionType.values.map((type) {
+                      return IconButton(
+                        icon: getIconForReaction(type),
+                        onPressed: () {
+                         mixtapeService.addReactionForCurrentUser(widget.playlist.id, widget.mixtape.id, type: type.toString()).then((_) {
+                           setState(() {
+                             // set the state
+                           });
+                         });
+                         print("reaction added");
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Reactions:',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Column(
+                    children: widget.mixtape.reactions.map((reaction) {
+                      return ListTile(
+                        leading: getIconForReaction(reaction.reactionType),
+                        title: Text('${reaction.reactor.displayName} reacted with ${reaction.reactionType.toString()}'),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),

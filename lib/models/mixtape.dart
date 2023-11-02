@@ -78,6 +78,19 @@ class MixtapeCreateDTO extends JsonSerializable {
 
 enum ReactionType { LIKE, DISLIKE, HEART, FIRE}
 
+class ReactionCreateDTO extends JsonSerializable {
+  String reactionType;
+
+  ReactionCreateDTO(this.reactionType);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "reactionType": reactionType,
+    };
+  }
+}
+
 class Reaction {
   int id;
   Profile reactor;
