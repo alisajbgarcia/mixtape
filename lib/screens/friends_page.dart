@@ -64,10 +64,6 @@ class _FriendsPageState extends State<FriendsPage> {
       });
     }
 
-  List<Profile> dummydata = [
-    Profile('zestythomae', 'andrew thomae', 'spotifyuid', 'assets/green_colored_logo.png'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -101,7 +97,7 @@ class _FriendsPageState extends State<FriendsPage> {
           } else {
             List<Profile> cardData;
             if(!friendsSnapshot.hasData) {
-              cardData = dummydata;
+              return CircularProgressIndicator();
             } else {
               cardData = friendsSnapshot.data!;
             }
@@ -302,8 +298,15 @@ class _FriendsPageState extends State<FriendsPage> {
                                                   height: screenHeight * .07,
                                                   color: MixTapeColors
                                                       .dark_gray,
-                                                  child: Image.network(
-                                                      friend.profilePicURL),
+                                                  child: friend.profilePicURL.isNotEmpty ?
+                                                  Image.network(friend.profilePicURL) :
+                                                  Container(
+                                                    child: Icon(
+                                                      Icons.person_2_rounded,
+                                                      color: Colors.white70,
+                                                      size: screenWidth * .1,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               Expanded(

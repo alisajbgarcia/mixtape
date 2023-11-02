@@ -28,12 +28,6 @@ class _PlaylistInvitationState extends State<PlaylistInvitation> {
   late Future<List<Profile>> profileFriends;
   late List<Profile> friends;
 
-  List<Profile> dummydata = [
-    Profile('id', 'alexfrey1', 'spotifyUID', 'assets/green_colored_logo.png'),
-    Profile('id', 'alisajbgarcia', 'spotifyUID', 'assets/green_colored_logo.png'),
-    Profile('id', 'zestythomae', 'spotifyUID', 'assets/green_colored_logo.png'),
-    Profile('id', 'cmsale', 'spotifyUID', 'assets/green_colored_logo.png'),
-  ];
 
   late List<bool> selectedStates;
   String selectedFriend = "";

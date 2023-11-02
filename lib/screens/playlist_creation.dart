@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/widgets/playlist_invitation_sent.dart';
@@ -26,7 +27,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   TextEditingController _textController = TextEditingController();
   String playlistName = "";
   String playlistTargetName = "";
-  String playlistPhoto = "";
+  XFile playlistPhoto = XFile("");
   late Profile playlistTargetProfile;
 
   late ProfileService profileService;
@@ -36,7 +37,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   late Future<Profile> currentProfile;
   late Future<List<Profile>> friends;
   late List<Profile> userFriends;
-  late Playlist newPlaylist;
+  late CreatePlaylistDTO newPlaylist;
 
   @override
   void initState() {
@@ -63,12 +64,12 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
       context: context,
       builder: (BuildContext context) {
         return ImageUpload(
-          playlistPhotoURL: (String photoURL) {
+          photoFile: (XFile photoFile) {
             setState(() {
-              playlistPhoto = photoURL;
+              playlistPhoto = photoFile;
             });
           },
-          photoURL: playlistPhoto,
+          photoURL: playlistPhoto.path,
         );
       },
     );
@@ -112,6 +113,22 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     return null;
   }
 
+  // function to create a new playlist and upload a corresponding coverPic
+  Future<Playlist?> createPlaylist(CreatePlaylistDTO createPlaylistDTO) async {
+    print('the following playlist will be created');
+    print(createPlaylistDTO);
+    print('PLAYLIST PHOTO ${playlistPhoto.path}');
+    CreatePlaylistResponse playlist = await playlistService.createPlaylistAndInvitation(createPlaylistDTO);
+    Playlist newPlaylist;
+    if (playlist != null) {
+      print('playlist successfully created wahoo');
+      String playlistId = playlist.id;
+      newPlaylist = await playlistService.setProfilePicForPlaylist(playlistId, playlistPhoto);
+      print(newPlaylist.coverPicURL);
+    } else {
+      print('womp womp');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,25 +137,13 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
 
-    List<Profile> dummydata = [
-      Profile('id', 'alexfrey1', 'spotifyUID', 'assets/green_colored_logo.png'),
-      Profile('id', 'alisajbgarcia', 'spotifyUID', 'assets/green_colored_logo.png'),
-      Profile('id', 'zestythomae', 'spotifyUID', 'assets/green_colored_logo.png'),
-      Profile('id', 'cmsale', 'spotifyUID', 'assets/green_colored_logo.png'),
-    ];
 
     // Callback function to handle the selected friend
-    void handleFriendSelection(String friendName) {
-      setState(() {
-        playlistTargetName = friendName;
-      });
-    }
     return FutureBuilder(
       future: friends,
       builder: (context, friendsSnapshot) {
         if(!friendsSnapshot.hasData || friendsSnapshot.hasError) {
-          userFriends = dummydata;
-          print("here got dang it");
+          return CircularProgressIndicator();
         } else {
           userFriends = friendsSnapshot.data!;
         }
@@ -274,18 +279,8 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                         openPlaylistInvitationSentDialog(context);
                         playlistName = _textController.text;
                         playlistTargetProfile = getFriend(playlistTargetName)!;
-                        newPlaylist = Playlist(
-                          id: 'id',
-                          spotifyID: 'spotifyId',
-                          name: playlistName,
-                          initiator: await currentProfile,
-                          target: playlistTargetProfile,
-                          description: "",
-                          coverPicURL: playlistPhoto,
-                          mixtapes: [],
-                          totalDurationMS: 0,
-                          songCount: 0
-                        );
+                        newPlaylist = CreatePlaylistDTO(playlistName, "", "", playlistTargetProfile.id);
+                        createPlaylist(newPlaylist);
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),
