@@ -62,11 +62,7 @@ class AbstractService {
   }
 
   Future<R> postString<R>(String uri, String body, DeserializerFactory<R> responseConverter) async {
-    print(uri);
-    print(body);
-    print("$baseUrl/$uri");
     final response = await helper.post("$baseUrl/$uri", body: body, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
-    print(response.body);
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }

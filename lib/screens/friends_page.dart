@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:mixtape/services/friendship_service.dart';
 
@@ -35,6 +37,7 @@ class _FriendsPageState extends State<FriendsPage> {
   late Future<List<Profile>> friends;
   late List<Profile> test;
   late Future<List<Profile>> searchFriends;
+  HashSet<String> friendIDs = new HashSet<String>();
 
   bool isSearchBarVisible = false;
   int _selectedIndex = 0;
@@ -107,9 +110,11 @@ class _FriendsPageState extends State<FriendsPage> {
           } else {
             List<Profile> cardData;
             if(!friendsSnapshot.hasData) {
-              cardData = dummydata;
+              cardData = [];
+              friendIDs.clear();
             } else {
               cardData = friendsSnapshot.data!;
+              friendIDs.clear();
             }
             return Stack(
                 children: [
@@ -120,6 +125,7 @@ class _FriendsPageState extends State<FriendsPage> {
                       child: Container(
                         child: Column(
                           children: cardData.map((friend) {
+                            friendIDs.add(friend.id);
                             return InkWell(
                               borderRadius: BorderRadius.circular(12.0),
                               onTap: () => showDialog<String>(
@@ -301,130 +307,134 @@ class _FriendsPageState extends State<FriendsPage> {
                               return Container(
                                   child: Column(
                                     children: searchCardData.map((searchFriend) {
-                                      return InkWell(
-                                        borderRadius: BorderRadius.circular(12.0),
-                                        onTap: () {
-                                          print(
-                                              'Search Friend Tapped: ${searchFriend
-                                                  .displayName}');
-                                        },
-                                        child: Card(
-                                            color: MixTapeColors.light_gray,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                  12.0), // Adjust the radius as needed
-                                            ),
-                                            elevation: 3.0,
-                                            margin: EdgeInsets.all(2.0),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(
-                                                  12.0),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Container(
-                                                      padding: EdgeInsets.all(6),
-                                                      height: screenHeight * .07,
-                                                      color: MixTapeColors
-                                                          .dark_gray,
-                                                      child: Image.network(
-                                                          searchFriend.profilePicURL),
+                                      if (!friendIDs.contains(searchFriend.id)) {
+                                        return InkWell(
+                                          borderRadius: BorderRadius.circular(12.0),
+                                          onTap: () {
+                                            print(
+                                                'Search Friend Tapped: ${searchFriend
+                                                    .displayName}');
+                                          },
+                                          child: Card(
+                                              color: MixTapeColors.light_gray,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(
+                                                    12.0), // Adjust the radius as needed
+                                              ),
+                                              elevation: 3.0,
+                                              margin: EdgeInsets.all(2.0),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(
+                                                    12.0),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(6),
+                                                        height: screenHeight * .07,
+                                                        color: MixTapeColors
+                                                            .dark_gray,
+                                                        child: Image.network(
+                                                            searchFriend.profilePicURL),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Container(
-                                                      padding: EdgeInsets.only(
-                                                          top: 10,
-                                                          bottom: 5,
-                                                          left: 10,
-                                                          right: 10),
-                                                      height: screenHeight * .07,
-                                                      color: MixTapeColors
-                                                          .light_gray,
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: [
-                                                          Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: Text(
-                                                              searchFriend.displayName,
-                                                              textAlign: TextAlign
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding: EdgeInsets.only(
+                                                            top: 10,
+                                                            bottom: 5,
+                                                            left: 10,
+                                                            right: 10),
+                                                        height: screenHeight * .07,
+                                                        color: MixTapeColors
+                                                            .light_gray,
+                                                        child: Column(
+                                                          mainAxisAlignment: MainAxisAlignment
+                                                              .spaceBetween,
+                                                          children: [
+                                                            Align(
+                                                              alignment: Alignment
                                                                   .center,
+                                                              child: Text(
+                                                                searchFriend.displayName,
+                                                                textAlign: TextAlign
+                                                                    .center,
+                                                                style: TextStyle(
+                                                                  fontSize: (22 *
+                                                                      textScaleFactor),
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Card(
+                                                              color: MixTapeColors
+                                                                  .light_gray,
+                                                              elevation: 0.0,
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment
+                                                                    .spaceBetween,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                        color: MixTapeColors
+                                                            .light_gray,
+                                                        child: TextButton(
+                                                            child: Text(
+                                                              '+',
                                                               style: TextStyle(
                                                                 fontSize: (22 *
                                                                     textScaleFactor),
                                                                 color: Colors.white,
                                                               ),
                                                             ),
-                                                          ),
-                                                          Card(
-                                                            color: MixTapeColors
-                                                                .light_gray,
-                                                            elevation: 0.0,
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment
-                                                                  .spaceBetween,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                      color: MixTapeColors
-                                                          .light_gray,
-                                                      child: TextButton(
-                                                          child: Text(
-                                                            '+',
-                                                            style: TextStyle(
-                                                              fontSize: (22 *
-                                                                  textScaleFactor),
-                                                              color: Colors.white,
-                                                            ),
-                                                          ),
-                                                          onPressed: () async {
-                                                            try {
-                                                              Friendship friendship = await friendshipService
-                                                                  .createFriendRequest(
-                                                                  searchFriend
-                                                                      .id);
-                                                              final snackBar = SnackBar(
-                                                                  content: Text(
-                                                                      'Friend request sent to: ${searchFriend
-                                                                          .displayName}')
+                                                            onPressed: () async {
+                                                              try {
+                                                                await friendshipService
+                                                                    .createFriendRequest(
+                                                                    searchFriend
+                                                                        .id);
+                                                                final snackBar = SnackBar(
+                                                                    content: Text(
+                                                                        'Friend request sent to: ${searchFriend
+                                                                            .displayName}')
 
-                                                              );
-                                                              ScaffoldMessenger
-                                                                  .of(
-                                                                  context)
-                                                                  .showSnackBar(
-                                                                  snackBar);
-                                                            } catch (err) {
-                                                              print(err);
-                                                              final snackBar = SnackBar(
-                                                                  content: Text(
-                                                                      'Error in sending friend request to ${searchFriend
-                                                                          .displayName}')
+                                                                );
+                                                                ScaffoldMessenger
+                                                                    .of(
+                                                                    context)
+                                                                    .showSnackBar(
+                                                                    snackBar);
+                                                              } catch (err) {
+                                                                print(err);
+                                                                final snackBar = SnackBar(
+                                                                    content: Text(
+                                                                        'Error in sending friend request to ${searchFriend
+                                                                            .displayName}')
 
-                                                              );
-                                                              ScaffoldMessenger
-                                                                  .of(
-                                                                  context)
-                                                                  .showSnackBar(
-                                                                  snackBar);
+                                                                );
+                                                                ScaffoldMessenger
+                                                                    .of(
+                                                                    context)
+                                                                    .showSnackBar(
+                                                                    snackBar);
+                                                              }
                                                             }
-                                                          }
-                                                      )
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                        ),
-                                      );
+                                                        )
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                          ),
+                                        );
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
                                     }).toList(),
                                   )
                               );
