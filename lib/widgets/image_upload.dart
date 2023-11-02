@@ -148,11 +148,13 @@ class _ImageUploadState extends State<ImageUpload> {
               height: screenHeight * .17,
               color: MixTapeColors.dark_gray,
               child: widget.photoURL.length > 0 || playlistPhoto.length > 0 ?
-              Image(
-                image: FileImage(File(widget.photoURL)),
-                width: screenWidth * .4,
-                height: screenWidth * .4,
-                fit: BoxFit.cover,
+              ClipRect(
+                child: Image(
+                  image: FileImage(File(widget.photoURL)),
+                  width: screenWidth * .4,
+                  height: screenWidth * .4,
+                  fit: BoxFit.contain,
+                ),
               ) :
               Container(
                 width: screenWidth * .4,
