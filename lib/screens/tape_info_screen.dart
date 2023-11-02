@@ -281,21 +281,6 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                               ],
                             ),
                           ),
-                          // onPressed: () async {
-                          //   try {
-                          //     await mixtapeService
-                          //         .deleteMixtapeInPlaylistForCurrentUser(
-                          //         widget.playlist.id, widget.mixtape.id);
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //           builder: (context) => HomePage(),
-                          //         )
-                          //     );
-                          //   } catch (err) {
-                          //     print(err);
-                          //   }
-                          // },
                           label: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text(
