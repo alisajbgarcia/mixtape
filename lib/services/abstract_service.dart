@@ -2,9 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/models/json_serializable.dart';
-import 'package:mixtape/services/file_upload_http_client.dart';
 import 'package:mixtape/utilities/json_utilities.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 
@@ -45,6 +43,7 @@ class AbstractService {
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
+    print(response.body);
 
     return decodeMany(response.body, parserFactory);
   }
@@ -81,23 +80,11 @@ class AbstractService {
     }
   }
 
-  Future<R> putXFile<R>(String uri, XFile file, String fileId, R Function(Map<String, dynamic>) parserFactory) async {
-    final fileUploadClient = XFileUploadHttpClient(fileId, null);
-    uri = _sanitizeUri(uri);
-
-    final response = await helper.put("$baseUrl/$uri", body: file, httpClient: fileUploadClient);
-    if (response.statusCode != 200) {
-      return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
-    }
-
-    return decodeSingle(response.body, parserFactory);
-  }
-
   T decodeSingle<T>(String content, T Function(Map<String, dynamic>) parserFactory) => parserFactory(jsonDecode(content));
 
   List<T> decodeMany<T>(String content, T Function(Map<String, dynamic>) parserFactory) {
-    Iterable<Map<String, dynamic>> objectIterable = jsonDecode(content).map((item) => item as Map<String, dynamic>);
-    return List<T>.of(objectIterable.map(parserFactory));
+    Iterable objectIterable = jsonDecode(content);
+    return jsonDecodeList(objectIterable, parserFactory);
   }
 
   String _sanitizeUri(String uri) {
