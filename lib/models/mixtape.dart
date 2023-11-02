@@ -39,7 +39,8 @@ class Mixtape {
       creator: Profile.fromJson(json["creator"]),
       songIDs: List<String>.from(json['songIDs'].map((x) => x)),
       songs: jsonDecodeList(json["songs"], TrackInfo.fromJson),
-      reactions: List<Reaction>.of(json["reactions"].map((item) => Reaction.fromJson(item)))
+      reactions: jsonDecodeList(json["reactions"], Reaction.fromJson)
+
     );
   }
 
