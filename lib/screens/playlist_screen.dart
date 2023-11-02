@@ -46,6 +46,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   late MixtapeService mixtapeService;
   late PlaylistService playlistService;
 
+  TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -302,6 +304,131 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         ),
                       ),
                     ],
+                  ),
+                  Positioned(
+                    top: screenHeight * .3, // Adjust the top position as needed
+                    //child: Text('here', style: TextStyle(color: Colors.white)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: _searchController,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: textScaleFactor * 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+                            border: InputBorder.none,
+                            focusColor: Colors.white,
+                            hintText: "Search for tapes by...",
+                            hintStyle: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: textScaleFactor * 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                Icons.clear,
+                                color: Colors.white,
+                                size: screenSize.shortestSide * .1,
+                              ),
+                              onPressed: _searchController.clear,
+                            ) // The trailing icon
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      top: screenHeight * .35,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                // set state
+                                mixtapes = mixtapeService.getMixtapesbyTapeForPlaylistCurrentUser(widget.playlist.id, _searchController.text);
+                              });
+                            },
+                            style: FilledButton.styleFrom(
+                                backgroundColor: MixTapeColors.dark_gray,
+                                padding: EdgeInsets.all(0),
+                                fixedSize: Size(screenWidth * .225, screenWidth * .1)
+                            ),
+                            child: Text(
+                              'Tape Title',
+                              style: TextStyle(
+                                fontSize: 14 * textScaleFactor,
+                                color: MixTapeColors.green,
+                              ),
+                            ),
+                          ),
+                          FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                // set state
+                                mixtapes = mixtapeService.getMixtapesbySongForPlaylistCurrentUser(widget.playlist.id, _searchController.text);
+                              });
+                            },
+                            style: FilledButton.styleFrom(
+                                backgroundColor: MixTapeColors.dark_gray,
+                                padding: EdgeInsets.all(0),
+                                fixedSize: Size(screenWidth * .225, screenWidth * .1)
+                            ),
+                            child: Text(
+                              'Song Title',
+                              style: TextStyle(
+                                fontSize: 14 * textScaleFactor,
+                                color: MixTapeColors.green,
+                              ),
+                            ),
+                          ),
+                          FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                // set state
+                                mixtapes = mixtapeService.getMixtapesbyArtistForPlaylistCurrentUser(widget.playlist.id, _searchController.text);
+                              });
+                            },
+                            style: FilledButton.styleFrom(
+                                backgroundColor: MixTapeColors.dark_gray,
+                                padding: EdgeInsets.all(0),
+                                fixedSize: Size(screenWidth * .225, screenWidth * .1)
+                            ),
+                            child: Text(
+                              'Artist',
+                              style: TextStyle(
+                                fontSize: 14 * textScaleFactor,
+                                color: MixTapeColors.green,
+                              ),
+                            ),
+                          ),
+                          FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                // set state
+                                mixtapes = mixtapeService.getMixtapesbyAlbumForPlaylistCurrentUser(widget.playlist.id, _searchController.text);
+                              });
+                            },
+                            style: FilledButton.styleFrom(
+                                backgroundColor: MixTapeColors.dark_gray,
+                                padding: EdgeInsets.all(0),
+                                fixedSize: Size(screenWidth * .225, screenWidth * .1)
+                            ),
+                            child: Text(
+                              'Album',
+                              style: TextStyle(
+                                fontSize: 14 * textScaleFactor,
+                                color: MixTapeColors.green,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
                   ),
                   Expanded(
                     child: SingleChildScrollView(
