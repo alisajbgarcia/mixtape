@@ -25,6 +25,7 @@ class XFileUploadHttpClient extends BaseClient {
       return MultipartFile.fromPath(fieldName, file.path)
           .then((value) {
             request.files.add(value);
+            request.headers.addAll(headers ?? {});
             return send(request)
               .then((value) => Response.fromStream(value));
           });
@@ -37,5 +38,4 @@ class XFileUploadHttpClient extends BaseClient {
   Future<StreamedResponse> send(BaseRequest request) {
     return client.send(request);
   }
-
 }
