@@ -25,6 +25,6 @@ class MixtapeService extends AbstractService {
 
   Future<void> addReactionForCurrentUser(String playlistId, String mixtapeId, {required String type}) {
     final createDTO = ReactionCreateDTO(type);
-    return put("/api/vi/profile/me/playlist/$playlistId/mixtape/$mixtapeId", createDTO, Playlist.fromJson);
+    return put("/api/vi/profile/me/playlist/$playlistId/mixtape/$mixtapeId/reaction", createDTO, Playlist.fromJson);
   }
 }

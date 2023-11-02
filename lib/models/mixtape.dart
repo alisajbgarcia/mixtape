@@ -76,7 +76,15 @@ class MixtapeCreateDTO extends JsonSerializable {
   }
 }
 
-enum ReactionType { LIKE, DISLIKE, HEART, FIRE}
+enum ReactionType {
+  LIKE,
+  DISLIKE,
+  HEART,
+  FIRE;
+
+  String toJson() => name;
+  static ReactionType fromJson(String json) => values.byName(json);
+}
 
 class ReactionCreateDTO extends JsonSerializable {
   String reactionType;
