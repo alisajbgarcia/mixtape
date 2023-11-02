@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
+import 'package:mixtape/services/services_container.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';
 import '../models/mixtape.dart';
@@ -11,6 +12,9 @@ import '../models/track_info.dart';
 import '../services/authentication_service.dart';
 import '../services/mixtape_service.dart';
 import '../services/services_container.dart';
+
+import '../services/playlist_service.dart';
+
 
 class MixTapeInfo {
   String title;
@@ -40,6 +44,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   late List<String> songIds;
   late AuthenticationService authenticationService;
   late MixtapeService mixtapeService;
+  late PlaylistService playlistService;
 
   @override
   void initState() {
@@ -110,10 +115,16 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
     songs = tameImpala;
 
-    // // Initialize cardData
-    // cardData = [
-    //   Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: createdAt, description: 'description', creator: exampleProfile, songIDs: songIds, songs: songs),
-    // ];
+    // Initialize cardData
+    //cardData = [
+      // Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: createdAt, description: 'description', creator: exampleProfile, songIDs: songIds, songs: songs),
+    //];
+
+    playlistService = ServicesContainer.of(context).playlistService;
+  }
+
+  _onDeletePlaylist(String playlistId) {
+    playlistService.deletePlaylist(playlistId);
   }
 
   @override
@@ -178,6 +189,14 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
+//                             TextButton(
+//                               onPressed: () => {Navigator.pop(context, 'YES'),
+//                                 _onDeletePlaylist(widget.playlist.id)
+//                               },
+//                               child: const Text('YES',
+//                                 style: TextStyle(
+//                                                 fontSize: (22),
+//                                                 color: Colors.white,
                                 ),
                               ),
                             ),
