@@ -13,9 +13,9 @@ class TapeInfoScreen extends StatefulWidget {
   final String spotify_id;
   final String title;
   final List<TrackInfo> songs;
-  final List<Reaction> reactions;
+  List<Reaction> reactions;
   final String description;
-  const TapeInfoScreen(
+  TapeInfoScreen(
       { required this.playlist_id,
       required this.tape_id,
       required this.spotify_id,
@@ -162,13 +162,13 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                     children: ReactionType.values.map((type) {
                       return IconButton(
                         icon: getIconForReaction(type),
-                        onPressed: () {
-                         mixtapeService.addReactionForCurrentUser(widget.playlist_id, widget.tape_id, type: type.toString()).then((_) {
-                           setState(() {
-                             // set the state
-                           });
-                         });
+                        onPressed: () async {
+                         Mixtape returnedTape = await mixtapeService.addReactionForCurrentUser(widget.playlist_id, widget.tape_id, type: type.name);
+                         widget.reactions = returnedTape.reactions;
                          print("reaction added");
+                         setState(() {
+                           // set the state
+                         });
                         },
                       );
                     }).toList(),
@@ -186,8 +186,18 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                   Column(
                     children: widget.reactions.map((reaction) {
                       return ListTile(
-                        leading: getIconForReaction(reaction.reactionType),
-                        title: Text('${reaction.reactor.displayName} reacted with ${reaction.reactionType.toString()}'),
+                        title: Text('${reaction.reactor.displayName} reacted with a',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        trailing: Container(
+                          child: getIconForReaction(reaction.reactionType),
+                        ),
                       );
                     }).toList(),
                   ),

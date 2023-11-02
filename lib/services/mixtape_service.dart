@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:mixtape/models/mixtape.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/services/abstract_service.dart';
@@ -19,8 +21,8 @@ class MixtapeService extends AbstractService {
     return post("/api/v1/profile/me/playlist/$playlistId/mixtape", createDTO, Mixtape.fromJson);
   }
 
-  Future<void> addReactionForCurrentUser(String playlistId, String mixtapeId, {required String type}) {
-    final createDTO = ReactionCreateDTO(type);
-    return put("/api/vi/profile/me/playlist/$playlistId/mixtape/$mixtapeId/reaction", createDTO, Playlist.fromJson);
+  Future<Mixtape> addReactionForCurrentUser(String playlistId, String mixtapeId, {required String type}) {
+    print(type);
+    return putString("/api/v1/profile/me/playlist/$playlistId/mixtape/$mixtapeId/reaction", jsonEncode(type), Mixtape.fromJson);
   }
 }
