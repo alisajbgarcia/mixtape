@@ -22,4 +22,8 @@ class FriendshipService extends AbstractService {
   Future<void> deleteRequest(String friendshipId) async {
     return delete("/api/v1/profile/me/friendship/$friendshipId/deny");
   }
+
+  Future<Friendship> createFriendRequest(String profileId) async {
+    return postString("/api/v1/profile/me/friendship", jsonEncode(profileId), Friendship.fromJson);
+  }
 }
