@@ -336,7 +336,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 color: Colors.white,
                                 size: screenSize.shortestSide * .1,
                               ),
-                              onPressed: _searchController.clear,
+                              onPressed: () {
+                                setState(() {
+                                  _searchController.clear();
+                                  mixtapes =
+                                      mixtapeService.getMixtapesForPlaylistCurrentUser(widget.playlist.id);
+                                });
+                              },
                             ) // The trailing icon
                         ),
                       ),
@@ -430,27 +436,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         ],
                       )
                   ),
-                  Positioned(child:
-                  FilledButton(
-                    onPressed: () {
-                      setState(() {
-                        mixtapes =
-                            mixtapeService.getMixtapesForPlaylistCurrentUser(widget.playlist.id);
-                      });
-                    },
-                    style: FilledButton.styleFrom(
-                        backgroundColor: MixTapeColors.dark_gray,
-                        padding: EdgeInsets.all(0),
-                        fixedSize: Size(screenWidth * .225, screenWidth * .1)
-                    ),
-                    child: Text(
-                      'All Tapes',
-                      style: TextStyle(
-                        fontSize: 14 * textScaleFactor,
-                        color: MixTapeColors.green,
-                      ),
-                    ),
-                  ),),
                   Expanded(
                     child: SingleChildScrollView(
                       // Use SingleChildScrollView instead of ListView
