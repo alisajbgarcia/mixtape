@@ -298,8 +298,15 @@ class _FriendsPageState extends State<FriendsPage> {
                                                   height: screenHeight * .07,
                                                   color: MixTapeColors
                                                       .dark_gray,
-                                                  child: Image.network(
-                                                      friend.profilePicURL),
+                                                  child: friend.profilePicURL.isNotEmpty ?
+                                                  Image.network(friend.profilePicURL) :
+                                                  Container(
+                                                    child: Icon(
+                                                      Icons.person_2_rounded,
+                                                      color: Colors.white70,
+                                                      size: screenWidth * .1,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               Expanded(
