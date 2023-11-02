@@ -277,29 +277,3 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
         ));
   }
 }
-//       body: Center(
-//         child: Padding(
-//           padding: EdgeInsets.only(top: 200),
-//           child: Column(children: [
-//             Text(widget.title, style: TextStyle(color: Colors.white)),
-//             Image.asset(
-//               widget.image,
-//               width: screenWidth * .4,
-//               height: screenHeight * .4,
-//             ),
-//             Expanded(
-//               child: SingleChildScrollView(
-//                 // Use SingleChildScrollView instead of ListView
-//                 child: Column(
-//                     children: widget.songs.map((song) {
-//                   return Text(song.title,
-//                       style: TextStyle(color: Colors.white));
-//                 }).toList()),
-//               ),
-//             ),
-//           ]),
-//         ),
-//       ),
-//     );
-//   }
-// }
