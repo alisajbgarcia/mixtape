@@ -229,22 +229,73 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                                 15), // Adjust the radius as needed
                           ),
                           heroTag: "mixtape_creation",
-                          onPressed: () async {
-                            print("create mixtape");
-                            try {
-                              await mixtapeService
-                                  .deleteMixtapeInPlaylistForCurrentUser(
-                                  widget.playlist.id, widget.mixtape.id);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomePage(),
-                                  )
-                              );
-                            } catch (err) {
-                              print(err);
-                            }
-                          },
+                          onPressed: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              backgroundColor: MixTapeColors.black,
+                              //title: const Text('Remove Friend?'),
+                              content: const Text(
+                                'Would you like to delete this MixTape?',
+                                style: TextStyle(
+                                  fontSize: (22),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                    Navigator.pop(context, 'CANCEL'),
+                                  child: const Text(
+                                    'CANCEL',
+                                    style: TextStyle(
+                                      fontSize: (22),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    try {
+                                      await mixtapeService
+                                          .deleteMixtapeInPlaylistForCurrentUser(
+                                          widget.playlist.id, widget.mixtape.id);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => HomePage(),
+                                          )
+                                      );
+                                    } catch (err) {
+                                      print(err);
+                                      Navigator.pop(context, 'ERROR');
+                                    }
+                                  },
+                                  child: const Text(
+                                    'YES',
+                                    style: TextStyle(
+                                      fontSize: (22),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // onPressed: () async {
+                          //   try {
+                          //     await mixtapeService
+                          //         .deleteMixtapeInPlaylistForCurrentUser(
+                          //         widget.playlist.id, widget.mixtape.id);
+                          //     Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //           builder: (context) => HomePage(),
+                          //         )
+                          //     );
+                          //   } catch (err) {
+                          //     print(err);
+                          //   }
+                          // },
                           label: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text(
