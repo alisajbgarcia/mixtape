@@ -37,7 +37,7 @@ class Playlist implements JsonSerializable{
       spotifyID: json["spotifyID"] ?? "",
       name: json["name"],
       initiator: Profile.fromJson(json["initiator"]),
-      target: Profile.fromJson(json["target"]),
+      target: json["target"] ?? Profile.fromJson(json["target"]),
       description: json["description"] ?? "",
       coverPicURL: json["coverPicURL"] ?? "",
       mixtapes: jsonDecodeList(json["mixtapes"], Mixtape.fromJson),
