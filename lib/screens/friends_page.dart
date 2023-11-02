@@ -1,5 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:collection';
 
+import 'package:flutter/material.dart';
+import 'package:mixtape/services/friendship_service.dart';
+
+import '../models/friendship.dart';
 import '../models/profile.dart';
 import '../services/authentication_service.dart';
 import '../services/profile_service.dart';
@@ -28,9 +32,12 @@ class FriendsInfo {
 class _FriendsPageState extends State<FriendsPage> {
   late ProfileService profileService;
   late AuthenticationService authenticationService;
+  late FriendshipService friendshipService;
   late Future<Profile> currentProfile;
   late Future<List<Profile>> friends;
   late List<Profile> test;
+  late Future<List<Profile>> searchFriends;
+  HashSet<String> friendIDs = new HashSet<String>();
 
   bool isSearchBarVisible = false;
   int _selectedIndex = 0;
@@ -41,9 +48,11 @@ class _FriendsPageState extends State<FriendsPage> {
 
     profileService = ServicesContainer.of(context).profileService;
     authenticationService = ServicesContainer.of(context).authService;
+    friendshipService = ServicesContainer.of(context).friendshipService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
       friends = profileService.getFriendsForCurrentUser();
+      searchFriends = profileService.searchProfiles("");
     });
   }
 
@@ -63,6 +72,10 @@ class _FriendsPageState extends State<FriendsPage> {
         isSearchBarVisible = !isSearchBarVisible;
       });
     }
+
+  List<Profile> dummydata = [
+    Profile('zestythomae', 'andrew thomae', 'spotifyuid', 'assets/green_colored_logo.png'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +110,11 @@ class _FriendsPageState extends State<FriendsPage> {
           } else {
             List<Profile> cardData;
             if(!friendsSnapshot.hasData) {
-              return CircularProgressIndicator();
+              cardData = [];
+              friendIDs.clear();
             } else {
               cardData = friendsSnapshot.data!;
+              friendIDs.clear();
             }
             return Stack(
                 children: [
@@ -110,6 +125,7 @@ class _FriendsPageState extends State<FriendsPage> {
                       child: Container(
                         child: Column(
                           children: cardData.map((friend) {
+                            friendIDs.add(friend.id);
                             return InkWell(
                               borderRadius: BorderRadius.circular(12.0),
                               onTap: () => showDialog<String>(
@@ -255,6 +271,12 @@ class _FriendsPageState extends State<FriendsPage> {
                             margin: EdgeInsets.only(
                                 top: 0, bottom: 5, left: 10, right: 10),
                             child: TextField(
+                              textInputAction: TextInputAction.search,
+                              onSubmitted: (value) async {
+                                setState(() {
+                                  searchFriends = profileService.searchProfiles(value);
+                                });
+                              },
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
@@ -267,124 +289,176 @@ class _FriendsPageState extends State<FriendsPage> {
                               ),
                             ),
                           ),
-                          //TODO: Search bar results
-                          Container(
-                              child: Column(
-                                children: cardData.map((friend) {
-                                  return InkWell(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    onTap: () {
-                                      print(
-                                          'Search Friend Tapped: ${friend
-                                              .displayName}');
-                                    },
-                                    child: Card(
-                                        color: MixTapeColors.light_gray,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              12.0), // Adjust the radius as needed
-                                        ),
-                                        elevation: 3.0,
-                                        margin: EdgeInsets.all(2.0),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              12.0),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  height: screenHeight * .07,
-                                                  color: MixTapeColors
-                                                      .dark_gray,
-                                                  child: friend.profilePicURL.isNotEmpty ?
-                                                  Image.network(friend.profilePicURL) :
-                                                  Container(
-                                                    child: Icon(
-                                                      Icons.person_2_rounded,
-                                                      color: Colors.white70,
-                                                      size: screenWidth * .1,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 10,
-                                                      bottom: 5,
-                                                      left: 10,
-                                                      right: 10),
-                                                  height: screenHeight * .07,
-                                                  color: MixTapeColors
-                                                      .light_gray,
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment
-                                                        .spaceBetween,
-                                                    children: [
-                                                      Align(
-                                                        alignment: Alignment
-                                                            .center,
-                                                        child: Text(
-                                                          friend.displayName,
-                                                          textAlign: TextAlign
-                                                              .center,
-                                                          style: TextStyle(
-                                                            fontSize: (22 *
-                                                                textScaleFactor),
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Card(
-                                                        color: MixTapeColors
-                                                            .light_gray,
-                                                        elevation: 0.0,
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment
-                                                              .spaceBetween,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                  color: MixTapeColors
-                                                      .light_gray,
-                                                  child: TextButton(
-                                                      child: Text(
-                                                        '+',
-                                                        style: TextStyle(
-                                                          fontSize: (22 *
-                                                              textScaleFactor),
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      onPressed: () {
-                                                        final snackBar = SnackBar(
-                                                            content: Text(
-                                                                'Friend request sent to: ${friend
-                                                                    .displayName}')
+                          FutureBuilder(
+                            future: currentProfile,
+                            builder: (context, profileSnapshot) {
+                              if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                                return CircularProgressIndicator(); // Display a loading indicator while waiting for data.
+                              }
+                              Profile profile = profileSnapshot.data!;
+                              return FutureBuilder(
+                                  future: searchFriends,
+                                  builder: (context, searchSnapshot) {
+                                    if (searchSnapshot.connectionState == ConnectionState.waiting) {
+                                      return CircularProgressIndicator(); // Display a loading indicator while waiting for data.
+                                    }
+                                    List<Profile> searchCardData;
+                                    if(!searchSnapshot.hasData) {
+                                      searchCardData = [];
+                                    } else {
+                                      searchCardData = searchSnapshot.data!;
+                                    }
+                                    print("search card data");
+                                    print(searchCardData);
 
-                                                        );
-                                                        ScaffoldMessenger.of(
-                                                            context)
-                                                            .showSnackBar(
-                                                            snackBar);
-                                                      }
-                                                  )
-                                              )
-                                            ],
-                                          ),
+                                    return Container(
+                                        child: Column(
+                                          children: searchCardData.map((searchFriend) {
+                                            if (profile.id != searchFriend.id && !friendIDs.contains(searchFriend.id)) {
+                                              return InkWell(
+                                                borderRadius: BorderRadius.circular(12.0),
+                                                onTap: () {
+                                                  print(
+                                                      'Search Friend Tapped: ${searchFriend
+                                                          .displayName}');
+                                                },
+                                                child: Card(
+                                                    color: MixTapeColors.light_gray,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(
+                                                          12.0), // Adjust the radius as needed
+                                                    ),
+                                                    elevation: 3.0,
+                                                    margin: EdgeInsets.all(2.0),
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(
+                                                          12.0),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child: Container(
+                                                              padding: EdgeInsets.all(6),
+                                                              height: screenHeight * .07,
+                                                              color: MixTapeColors
+                                                                  .dark_gray,
+                                                              child: searchFriend.profilePicURL.isNotEmpty ?
+                                                              Image.network(searchFriend.profilePicURL) :
+                                                              Container(
+                                                                child: Icon(
+                                                                  Icons.person_2_rounded,
+                                                                  color: Colors.white70,
+                                                                  size: screenWidth * .1,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            flex: 2,
+                                                            child: Container(
+                                                              padding: EdgeInsets.only(
+                                                                  top: 10,
+                                                                  bottom: 5,
+                                                                  left: 10,
+                                                                  right: 10),
+                                                              height: screenHeight * .07,
+                                                              color: MixTapeColors
+                                                                  .light_gray,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment
+                                                                    .spaceBetween,
+                                                                children: [
+                                                                  Align(
+                                                                    alignment: Alignment
+                                                                        .center,
+                                                                    child: Text(
+                                                                      searchFriend.displayName,
+                                                                      textAlign: TextAlign
+                                                                          .center,
+                                                                      style: TextStyle(
+                                                                        fontSize: (22 *
+                                                                            textScaleFactor),
+                                                                        color: Colors.white,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Card(
+                                                                    color: MixTapeColors
+                                                                        .light_gray,
+                                                                    elevation: 0.0,
+                                                                    child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                              color: MixTapeColors
+                                                                  .light_gray,
+                                                              child: TextButton(
+                                                                  child: Text(
+                                                                    '+',
+                                                                    style: TextStyle(
+                                                                      fontSize: (22 *
+                                                                          textScaleFactor),
+                                                                      color: Colors.white,
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () async {
+                                                                    try {
+                                                                      await friendshipService
+                                                                          .createFriendRequest(
+                                                                          searchFriend
+                                                                              .id);
+                                                                      final snackBar = SnackBar(
+                                                                          content: Text(
+                                                                              'Friend request sent to: ${searchFriend
+                                                                                  .displayName}')
+
+                                                                      );
+                                                                      ScaffoldMessenger
+                                                                          .of(
+                                                                          context)
+                                                                          .showSnackBar(
+                                                                          snackBar);
+                                                                    } catch (err) {
+                                                                      print(err);
+                                                                      final snackBar = SnackBar(
+                                                                          content: Text(
+                                                                              'Error in sending friend request to ${searchFriend
+                                                                                  .displayName}')
+
+                                                                      );
+                                                                      ScaffoldMessenger
+                                                                          .of(
+                                                                          context)
+                                                                          .showSnackBar(
+                                                                          snackBar);
+                                                                    }
+                                                                  }
+                                                              )
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
+                                                ),
+                                              );
+                                            } else {
+                                              return SizedBox.shrink();
+                                            }
+                                          }).toList(),
                                         )
-                                    ),
-                                  );
-                                }).toList(),
-                              )
-                          ),
+                                    );
+                                  }
+                              );
+                            }
+                          )
+
+                          //TODO: Search bar results
+
                         ],
                       )
                           : SizedBox() // Empty placeholder when not visible
