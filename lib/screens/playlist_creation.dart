@@ -124,6 +124,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
       print('playlist successfully created wahoo');
       String playlistId = playlist.id;
       newPlaylist = await playlistService.setProfilePicForPlaylist(playlistId, playlistPhoto);
+      print(newPlaylist.coverPicURL);
     } else {
       print('womp womp');
     }
