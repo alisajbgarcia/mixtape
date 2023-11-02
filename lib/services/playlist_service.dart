@@ -19,7 +19,6 @@ class PlaylistService extends AbstractService {
   }
 
   Future<Playlist> setProfilePicForPlaylist(String playlistId, XFile uploadFile) {
-    //return get("/api/v1/profile/me/playlist/$playlistId", Playlist.fromJson);
     return putXFile("/api/v1/profile/me/playlist/$playlistId/cover-pic", uploadFile, "file", Playlist.fromJson);
   }
 

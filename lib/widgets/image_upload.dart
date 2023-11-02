@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mixtape/utilities/colors.dart';
 
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
+
 class ImageUpload extends StatefulWidget {
   final Function(XFile) photoFile;
   String photoURL;
@@ -16,6 +19,20 @@ class ImageUpload extends StatefulWidget {
 class _ImageUploadState extends State<ImageUpload> {
   String playlistPhoto = "";
   XFile? imageFile;
+
+  // converts image asset to XFile type
+  getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    setState(() {
+      playlistPhoto = file.path;
+      imageFile = XFile(playlistPhoto);
+      widget.photoFile(imageFile!);
+      widget.photoURL = playlistPhoto;
+    });
+    return playlistPhoto;
+  }
 
   _pickImagefromGallery() async {
     try {
@@ -31,6 +48,7 @@ class _ImageUploadState extends State<ImageUpload> {
         return playlistPhoto;
       } else {
         print('User didnt pick any image.');
+        
       }
     } catch (e) {
       //print(e.toString());
@@ -104,9 +122,10 @@ class _ImageUploadState extends State<ImageUpload> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       backgroundColor: MixTapeColors.light_gray,
-                      onPressed: () {
+                      onPressed: () async {
                         print('image default');
-                        Navigator.of(context).pop();
+                        playlistPhoto = await getImageFileFromAssets('blue_colored_logo.png');
+                        widget.photoFile(imageFile!);
                       },
                       child: Text(
                         'Default',

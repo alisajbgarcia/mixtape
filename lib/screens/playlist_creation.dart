@@ -27,7 +27,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
   TextEditingController _textController = TextEditingController();
   String playlistName = "";
   String playlistTargetName = "";
-  late XFile playlistPhoto;
+  XFile playlistPhoto = XFile("");
   late Profile playlistTargetProfile;
 
   late ProfileService profileService;
@@ -115,17 +115,20 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
 
   // function to create a new playlist and upload a corresponding coverPic
   Future<Playlist?> createPlaylist(Playlist newPlaylist) async {
-      Playlist playlist = await playlistService.createPlaylistAndInvitation(newPlaylist);
-      if(playlist != null) {
-        print('playlist successfully created wahoo');
-        String playlistId = playlist.id;
-        playlist = await playlistService.setProfilePicForPlaylist(playlistId, playlistPhoto);
-      } else {
-        print('womp womp');
-      }
+    print('the following playlist will be created');
+    print(newPlaylist);
+    print(newPlaylist.name);
+    print(newPlaylist.initiator.displayName);
+    print(newPlaylist.target.displayName);
+    Playlist playlist = await playlistService.createPlaylistAndInvitation(newPlaylist);
+    if (playlist != null) {
+      print('playlist successfully created wahoo');
+      String playlistId = playlist.id;
+      playlist = await playlistService.setProfilePicForPlaylist(playlistId, playlistPhoto);
+    } else {
+      print('womp womp');
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -136,11 +139,6 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
 
 
     // Callback function to handle the selected friend
-    void handleFriendSelection(String friendName) {
-      setState(() {
-        playlistTargetName = friendName;
-      });
-    }
     return FutureBuilder(
       future: friends,
       builder: (context, friendsSnapshot) {
