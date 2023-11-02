@@ -141,7 +141,23 @@ class _HomePageState extends State<HomePage> {
             builder: (context, profileSnapshot) {
               if (!profileSnapshot.hasData || profileSnapshot.hasError) {
                 //return const Center(child: CircularProgressIndicator());
-                return CircularProgressIndicator();
+                return Padding(
+                  padding: EdgeInsets.all(screenHeight * .03),
+                  child: ClipOval(
+                    child: Container(
+                      width: screenWidth * 0.15,
+                      height: screenWidth * 0.15,
+                      child: CircleAvatar(
+                        backgroundColor: MixTapeColors.dark_gray,
+                        radius: 30,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               }
               final profile = profileSnapshot.data!;
               return Padding(
@@ -150,8 +166,24 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     width: screenWidth * 0.15,
                     height: screenWidth * 0.15,
-                    child: Image.network(
-                      profile.profilePicURL,
+                    child: CachedNetworkImage(
+                      imageUrl: profile.profilePicURL,
+                      placeholder: (context, url) => CircleAvatar(
+                        backgroundColor: MixTapeColors.dark_gray,
+                        radius: 30,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => CircleAvatar(
+                        backgroundColor: MixTapeColors.dark_gray,
+                        radius: 30,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white70,
+                        ),
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),
