@@ -64,9 +64,13 @@ class AbstractService {
     return decodeSingle(response.body, responseConverter);
   }
 
-  Future<R> put<T extends JsonSerializable, R>(String uri, T body, R Function(Map<String, dynamic>) responseConverter) async {
+  Future<R> put<T, R>(String uri, T? body, R Function(Map<String, dynamic>) responseConverter) async {
     uri = _sanitizeUri(uri);
-    final bodyMap = jsonEncode(body.toJson());
+
+    String bodyMap = '';
+    if (body != null) {
+      bodyMap = jsonEncode((body as JsonSerializable).toJson());
+    }
     return putString(uri, bodyMap, responseConverter);
   }
 
