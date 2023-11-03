@@ -14,6 +14,7 @@ import '../services/notification_service.dart';
 import '../services/profile_service.dart';
 import '../services/playlist_service.dart';
 import '../screens/playlist_screen.dart';
+import '../services/mixtape_service.dart';
 
 class NotifPage extends StatefulWidget {
   @override
@@ -40,6 +41,7 @@ class _NotifPage extends State<NotifPage> {
   late AuthenticationService authenticationService;
   late PlaylistService playlistService;
   late FriendshipService friendshipService;
+  late MixtapeService mixtapeService;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -71,6 +73,7 @@ class _NotifPage extends State<NotifPage> {
     notificationService = ServicesContainer.of(context).notificationService;
     playlistService = ServicesContainer.of(context).playlistService;
     friendshipService = ServicesContainer.of(context).friendshipService;
+    mixtapeService = ServicesContainer.of(context).mixtapeService;
 
 
     setState(() {
@@ -274,7 +277,7 @@ class _NotifPage extends State<NotifPage> {
                 )
                 : notif.notificationType == (NotificationType.MIXTAPE) && (filterValue.contains('Activity') || filterValue.contains('Off')) ? Container(//Recent Activity
                   width: screenWidth * .9,
-                  height: screenHeight * .05,
+                  height: screenHeight * .07,
                   color: MixTapeColors.dark_gray,
                   //padding: EdgeInsets.only(top:9.0, bottom: 9, left: 0, right:0),
                   child: TextButton(

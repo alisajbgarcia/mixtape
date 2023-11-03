@@ -163,7 +163,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   TextButton(
                                     onPressed: () => {Navigator.pop(context, 'YES'),
                                       _onDeletePlaylist(widget.playlist.id),
-                                      setState(() {}),
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => HomePage()),
