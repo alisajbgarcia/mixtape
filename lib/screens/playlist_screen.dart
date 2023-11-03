@@ -230,8 +230,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         ),
                       ),
                       Positioned(
-                        left: screenWidth * .04,
-                        top: screenHeight * .31, // Adjust the top position as needed
+                        left: screenWidth * .01,
+                        top: screenHeight * .22, // Adjust the top position as needed
                         //child: Text('here', style: TextStyle(color: Colors.white)),
                         child: Text('+ ${getSongsAddedByUser(widget.playlist.mixtapes, widget.playlist.initiator)} songs',
                             style: TextStyle(
@@ -256,8 +256,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         ),
                       ),
                       Positioned(
-                        left: screenWidth * .75,
-                        top: screenHeight * .31, // Adjust the top position as needed
+                        left: screenWidth * .74,
+                        top: screenHeight * .22, // Adjust the top position as needed
                         //child: Text('here', style: TextStyle(color: Colors.white)),
                         child: Text('+ ${getSongsAddedByUser(widget.playlist.mixtapes, widget.playlist.target)} songs',
                             style: TextStyle(
