@@ -92,7 +92,7 @@ class _SearchPageState extends State<SearchPage> {
             children: [Text("Filter by")],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(8, 30, 8, 8),
             child: TextField(
               controller: _searchController,
               textAlign: TextAlign.start,
