@@ -78,6 +78,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               return const Center(child: CircularProgressIndicator(), );
             }
             final cardData = profileSnapshot.data!;
+            print("length");
+            print(cardData.length);
 
             return Container(
               width: screenWidth,
@@ -231,7 +233,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         left: screenWidth * .04,
                         top: screenHeight * .31, // Adjust the top position as needed
                         //child: Text('here', style: TextStyle(color: Colors.white)),
-                        child: Text('+ ${getSongsAddedByUser(cardData, widget.playlist.initiator)} songs',
+                        child: Text('+ ${getSongsAddedByUser(widget.playlist.mixtapes, widget.playlist.initiator)} songs',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: textScaleFactor * 15,
@@ -257,7 +259,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         left: screenWidth * .75,
                         top: screenHeight * .31, // Adjust the top position as needed
                         //child: Text('here', style: TextStyle(color: Colors.white)),
-                        child: Text('+ ${getSongsAddedByUser(cardData, widget.playlist.initiator)} songs',
+                        child: Text('+ ${getSongsAddedByUser(widget.playlist.mixtapes, widget.playlist.target)} songs',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: textScaleFactor * 15,
@@ -618,12 +620,14 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   }
 
   int getSongsAddedByUser(List<Mixtape> mixtapes, Profile profile) {
+    print(mixtapes.length);
     int total = 0;
     for(Mixtape mixtape in mixtapes) {
-      if(mixtape.creator == profile) {
+      if(mixtape.creator.displayName == profile.displayName) {
         total += mixtape.songs.length;
       }
     }
+    print(total);
     return total;
   }
 
