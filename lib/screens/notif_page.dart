@@ -163,11 +163,14 @@ class _NotifPage extends State<NotifPage> {
             return CircularProgressIndicator(); // Display a loading indicator while waiting for data.
           } else {
             List<Notif> cardData;
+
             if(!notifSnapshot.hasData) {
               cardData = dummydata;
+
             } else {
-              cardData = notifSnapshot.data!; }
-      
+              cardData = notifSnapshot.data!;
+            }
+
             return Column(
               children: cardData.map((notif) {
           return InkWell(

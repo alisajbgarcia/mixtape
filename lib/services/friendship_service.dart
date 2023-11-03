@@ -28,6 +28,6 @@ class FriendshipService extends AbstractService {
   }
 
   Future<void> deleteFriendship (String profileId) async {
-    return delete("/api/v1/profile/me/friends/$profileId");
+    return delete("/api/v1/profile/me/friendship/$profileId");
   }
 }

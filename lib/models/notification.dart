@@ -1,9 +1,14 @@
 import 'dart:convert';
 import 'dart:core';
-
+import 'package:mixtape/utilities/json_utilities.dart';
 import 'package:mixtape/models/profile.dart';
 
-enum NotificationType {MIXTAPE, FRIENDSHIP, PLAYLIST}
+enum NotificationType {
+  MIXTAPE, FRIENDSHIP, PLAYLIST;
+
+  String toJson() => name;
+  static NotificationType fromJson(String json) => values.byName(json);
+  }
 
 class Notif {
   String id;
@@ -26,7 +31,7 @@ class Notif {
       id: json["id"],
       target: Profile.fromJson(json["target"]),
       externalId: json["externalId"],
-      notificationType: json["notificationType"],
+      notificationType: NotificationType.fromJson(json["notificationType"]),
       contents: json["contents"],
     );
   }
