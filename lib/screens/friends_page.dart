@@ -150,7 +150,12 @@ class _FriendsPageState extends State<FriendsPage> {
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () => Navigator.pop(context, 'YES'),
+                                      onPressed: () => {
+                                        Navigator.pop(context, 'YES'),
+                                        cardData.remove(friend),
+                                        friendshipService.deleteFriendship(friend.id),
+                                        setState(() {}),
+                                        },
                                       child: const Text('YES',
                                       style: TextStyle(
                                                       fontSize: (22),

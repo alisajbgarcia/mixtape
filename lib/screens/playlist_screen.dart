@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
 import 'package:mixtape/services/services_container.dart';
@@ -37,11 +38,7 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   // API call to get playlist info
-  late List<TrackInfo> songs;
   late Future<List<Mixtape>> mixtapes;
-  late Profile exampleProfile;
-  late DateTime createdAt;
-  late List<String> songIds;
   late AuthenticationService authenticationService;
   late MixtapeService mixtapeService;
   late PlaylistService playlistService;
@@ -58,69 +55,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       mixtapes =
           mixtapeService.getMixtapesForPlaylistCurrentUser(widget.playlist.id);
     });
-
-    exampleProfile = Profile('id', 'cmsale', 'spotifyId',
-        'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
-    createdAt = DateTime.now();
-    songIds = ['id', 'id', 'id'];
-
-    List<TrackInfo> tameImpala = [
-      TrackInfo(
-          id: '123',
-          name: 'hello there',
-          artistNames: ['artist'],
-          albumName: 'album',
-          albumImageURL: 'assets/green_colored_logo.png'),
-      TrackInfo(
-          id: '123',
-          name: 'hello there',
-          artistNames: ['artist'],
-          albumName: 'album',
-          albumImageURL: 'assets/green_colored_logo.png'),
-      TrackInfo(
-          id: '123',
-          name: 'hello there',
-          artistNames: ['artist'],
-          albumName: 'album',
-          albumImageURL: 'assets/green_colored_logo.png'),
-    ];
-
-    List<TrackInfo> rock = [
-      TrackInfo(
-          id: '123',
-          name: 'hello there',
-          artistNames: ['artist'],
-          albumName: 'album',
-          albumImageURL: 'assets/green_colored_logo.png'),
-      TrackInfo(
-          id: '123',
-          name: 'hello there',
-          artistNames: ['artist'],
-          albumName: 'album',
-          albumImageURL: 'assets/green_colored_logo.png'),
-    ];
-
-    List<TrackInfo> defaultTape = [
-      TrackInfo(
-          id: '123',
-          name: 'hello there',
-          artistNames: ['artist'],
-          albumName: 'album',
-          albumImageURL: 'assets/green_colored_logo.png'),
-      TrackInfo(
-          id: '123',
-          name: 'hello there',
-          artistNames: ['artist'],
-          albumName: 'album',
-          albumImageURL: 'assets/green_colored_logo.png'),
-    ];
-
-    songs = tameImpala;
-
-    // Initialize cardData
-    //cardData = [
-      // Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: createdAt, description: 'description', creator: exampleProfile, songIDs: songIds, songs: songs),
-    //];
 
     playlistService = ServicesContainer.of(context).playlistService;
   }
@@ -140,7 +74,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       body: FutureBuilder(
           future: mixtapes,
           builder: (context, profileSnapshot) {
-            // List<Mixtape> cardData;
             if (!profileSnapshot.hasData || profileSnapshot.hasError) {
               return const Center(child: CircularProgressIndicator(), );
             }
@@ -227,7 +160,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   ),
                                   TextButton(
                                     onPressed: () => {Navigator.pop(context, 'YES'),
-                                      _onDeletePlaylist(widget.playlist.id)
+                                      _onDeletePlaylist(widget.playlist.id),
+                                      setState(() {}),
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => HomePage()),
+                                      )
                                     },
                                     child: const Text('YES',
                                       style: TextStyle(
@@ -290,6 +228,18 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         ),
                       ),
                       Positioned(
+                        left: screenWidth * .04,
+                        top: screenHeight * .31, // Adjust the top position as needed
+                        //child: Text('here', style: TextStyle(color: Colors.white)),
+                        child: Text('+ ${getSongsAddedByUser(cardData, widget.playlist.initiator)} songs',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: textScaleFactor * 15,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w400,
+                            )),
+                      ),
+                      Positioned(
                         left: screenWidth * .75,
                         right: 0,
                         top: screenHeight *
@@ -302,6 +252,18 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             width: screenWidth * .1,
                             height: screenWidth * .1
                         ),
+                      ),
+                      Positioned(
+                        left: screenWidth * .75,
+                        top: screenHeight * .31, // Adjust the top position as needed
+                        //child: Text('here', style: TextStyle(color: Colors.white)),
+                        child: Text('+ ${getSongsAddedByUser(cardData, widget.playlist.initiator)} songs',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: textScaleFactor * 15,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w400,
+                            )),
                       ),
                     ],
                   ),
@@ -654,4 +616,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   int getMinutesFromMS(int milliseconds) {
     return (milliseconds / 60000).truncate();
   }
+
+  int getSongsAddedByUser(List<Mixtape> mixtapes, Profile profile) {
+    int total = 0;
+    for(Mixtape mixtape in mixtapes) {
+      if(mixtape.creator == profile) {
+        total += mixtape.songs.length;
+      }
+    }
+    return total;
+  }
+
 }

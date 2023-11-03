@@ -33,10 +33,10 @@ class PlaylistService extends AbstractService {
   }
 
   Future<void> acceptRequest(String playlistId) async {
-    return put("/api/v1/profile/me/friendship/$playlistId/accept", null, Playlist.fromJson);
+    return put("/api/v1/profile/me/playlist/$playlistId/accept", null, Playlist.fromJson);
   }
 
   Future<void> deleteRequest(String playlistId) async {
-    return delete("/api/v1/profile/me/friendship/$playlistId/deny");
+    return delete("/api/v1/profile/me/playlist/$playlistId/deny");
   }
 }

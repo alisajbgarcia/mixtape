@@ -32,7 +32,7 @@ class ServicesContainer {
       scopes: ['profile', 'openid']
     );
 
-    final authService = AuthenticationService(helper);
+    final authService = AuthenticationService(helper, baseUrl);
     final mixtapeService = MixtapeService(helper, baseUrl);
     final profileService = ProfileService(helper, baseUrl);
     final playlistService = PlaylistService(helper, baseUrl);
