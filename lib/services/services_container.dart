@@ -3,6 +3,7 @@ import 'package:mixtape/services/friendship_service.dart';
 import 'package:mixtape/services/mixtape_oauth_client.dart';
 import 'package:mixtape/services/playlist_service.dart';
 import 'package:mixtape/services/profile_service.dart';
+import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 
 import 'authentication_service.dart';
@@ -22,14 +23,21 @@ class ServicesContainer {
   ServicesContainer(this.authService, this.mixtapeService, this.profileService, 
         this.notificationService, this.playlistService, this.friendshipService);
 
-  static Future<ServicesContainer> initialize({String baseUrl = "https://api.getmixtapeapplication.com"}) async {
-    final mixtapeClientSpec = MixtapeOAuth2Client(redirectUri: 'com.mixtape://callback');
+  static Future<ServicesContainer> initialize(bool useProd) async {
+    final mixtapeClientSpec = useProd
+        ? MixtapeOAuth2Client(redirectUri: 'com.mixtape://callback')
+        : LocalMixtapeOAuth2Client(redirectUri: 'com.mixtape://callback');
+
+    final baseUrl = useProd
+        ? "https://api.getmixtapeapplication.com"
+        : "http://localhost:8080";
+
     final helper = OAuth2Helper(
-      mixtapeClientSpec,
-      clientId: 'mixtape-flutter',
-      clientSecret: 'secret',
-      grantType: OAuth2Helper.authorizationCode,
-      scopes: ['profile', 'openid']
+        mixtapeClientSpec,
+        clientId: 'mixtape-flutter',
+        clientSecret: 'secret',
+        grantType: OAuth2Helper.authorizationCode,
+        scopes: ['profile', 'openid']
     );
 
     final authService = AuthenticationService(helper, baseUrl);
@@ -39,9 +47,8 @@ class ServicesContainer {
     final notificationService = NotificationService(helper, baseUrl);
     final friendshipService = FriendshipService(helper, baseUrl);
 
-    
-    return ServicesContainer(authService, mixtapeService, profileService, notificationService, playlistService, friendshipService);
 
+    return ServicesContainer(authService, mixtapeService, profileService, notificationService, playlistService, friendshipService);
   }
 
   static ServicesContainer of(BuildContext context) {

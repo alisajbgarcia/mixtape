@@ -3,7 +3,8 @@ import 'package:mixtape/screens/login_page.dart';
 import 'package:mixtape/services/services_container.dart';
 
 void main() async {
-  var services = await ServicesContainer.initialize();
+  const USE_PROD = false;
+  var services = await ServicesContainer.initialize(USE_PROD);
 
   runApp(
     ServicesProvider(

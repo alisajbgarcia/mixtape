@@ -9,3 +9,12 @@ class MixtapeOAuth2Client extends OAuth2Client {
     customUriScheme: "com.mixtape",
   );
 }
+
+class LocalMixtapeOAuth2Client extends OAuth2Client {
+  LocalMixtapeOAuth2Client({required String redirectUri}): super(
+    authorizeUrl: "http://auth.mixtape.local:9000/oauth2/authorize",
+    tokenUrl: "http://auth.mixtape.local:9000/oauth2/token",
+    redirectUri: redirectUri,
+    customUriScheme: "com.mixtape",
+  );
+}
