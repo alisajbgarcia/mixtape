@@ -1,10 +1,16 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/login_page.dart';
 import 'package:mixtape/services/services_container.dart';
+import 'package:mixtape/app_observer.dart';
 
 void main() async {
   var services = await ServicesContainer.initialize();
+  Bloc.observer = const AppObserver();
 
+  runApp(const App());
+}
+  /*
   runApp(
     ServicesProvider(
       services: services,
@@ -17,6 +23,11 @@ void main() async {
       ),
     )
   );
+  */
+
+
+class App extends MaterialApp {
+  const App({super.key}) : super(home: const LoginPage());
 }
 
 class MyApp extends StatelessWidget {

@@ -12,7 +12,7 @@ class FriendshipService extends AbstractService {
   FriendshipService(OAuth2Helper helper, String baseUrl) : super(helper, baseUrl);
 
   Future<List<Friendship>> getFriendsForCurrentUser() async {
-    return getMany("/api/v1/profile/me/playlist", Friendship.fromJson);
+    return getMany("/api/v1/profile/me/friendship/friends", Friendship.fromJson);
   }
 
   Future<void> acceptRequest(String friendshipId) async {

@@ -77,6 +77,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             if (!profileSnapshot.hasData || profileSnapshot.hasError) {
               return const Center(child: CircularProgressIndicator(), );
             }
+            
             final cardData = profileSnapshot.data!;
             print("length");
             print(cardData.length);
