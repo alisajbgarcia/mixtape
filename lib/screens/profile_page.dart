@@ -12,6 +12,7 @@ import 'package:mixtape/widgets/navbar.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../utilities/colors.dart';
+import 'package:mixtape/tour_targets/profile_tour_target.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -27,22 +28,36 @@ class _ProfilePageState extends State<ProfilePage> {
   late Future<Profile> currentProfile;
   late TutorialCoachMark tutorialCoachMark;
 
-  GlobalKey key1 = GlobalKey();
-  GlobalKey key2 = GlobalKey();
+  GlobalKey introKey = GlobalKey();
+  GlobalKey profileKey = GlobalKey();
+
+  void pageTour() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: addTourTargets(
+          introKey: introKey,
+          profileKey: profileKey),
+      colorShadow: MixTapeColors.green,
+      paddingFocus: 10,
+      hideSkip: false,
+      opacityShadow: 0.8,
+    );
+  }
+
+  void showTour() => Future.delayed(Duration(seconds: 1),
+      () => tutorialCoachMark.show(context: context));
 
   @override
   void initState() {
     super.initState();
-
     profileService = ServicesContainer.of(context).profileService;
     authenticationService = ServicesContainer.of(context).authService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
     });
 
-    // check if current profile has been onboarded or not
-    createTutorial();
-    Future.delayed(Duration.zero, showTutorial);
+    pageTour();
+    showTour();
+
   }
 
   int _selectedIndex = 0;
@@ -101,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: MediaQuery.of(context).size.width * .5,
                         height: MediaQuery.of(context).size.width * .5,
                         child: CachedNetworkImage(
-                          key: key2,
+                          key: profileKey,
                           imageUrl: profile.profilePicURL,
                           placeholder: (context, url) => CircleAvatar(
                             backgroundColor: MixTapeColors.dark_gray,
@@ -171,7 +186,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           flex: 1,
                           child: Image.asset(
                             'assets/spotify/Spotify_Icon_RGB_Green.png',
-                            key: key1,
                             width: 50,
                             height: 100,
                           ),
@@ -208,94 +222,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void showTutorial() {
     tutorialCoachMark.show(context: context);
-  }
-
-  void createTutorial() {
-    tutorialCoachMark = TutorialCoachMark(
-      targets: _createTargets(),
-      colorShadow: Colors.red,
-      textSkip: "SKIP",
-      paddingFocus: 10,
-      opacityShadow: 0.5,
-      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-      onFinish: () {
-        print("finish");
-      },
-      onClickTarget: (target) {
-        print('onClickTarget: $target');
-      },
-      onClickTargetWithTapPosition: (target, tapDetails) {
-        print("target: $target");
-        print(
-            "clicked at position local: ${tapDetails.localPosition} - global: ${tapDetails.globalPosition}");
-      },
-      onClickOverlay: (target) {
-        print('onClickOverlay: $target');
-      },
-      onSkip: () {
-        print("skip");
-        return true;
-      },
-    );
-  }
-
-  List<TargetFocus> _createTargets() {
-    List<TargetFocus> targets = [];
-    targets.add(
-      TargetFocus(
-        identify: "keyButton1",
-        keyTarget: key1,
-        alignSkip: Alignment.topRight,
-        enableOverlayTab: true,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Example tutorial",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-    targets.add(
-      TargetFocus(
-        identify: "key2",
-        keyTarget: key2,
-        alignSkip: Alignment.topRight,
-        enableOverlayTab: true,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "This is your profile. It is connected to your Spotify account",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-    return targets;
   }
 
   handleLogout(void Function() onComplete, {void Function(Object)? onError}) {
