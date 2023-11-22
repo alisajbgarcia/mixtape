@@ -15,7 +15,6 @@ import '../services/services_container.dart';
 
 
 class TapeInfoScreen extends StatefulWidget {
-  static const String route = '/tape';
 
   // final int tape_id;
   // final int spotify_id;
@@ -322,7 +321,7 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                                       await mixtapeService
                                           .deleteMixtapeInPlaylistForCurrentUser(
                                           widget.playlist.id, widget.mixtape.id);
-                                          
+
                                       Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(widget.playlist));
                                     } catch (err) {
                                       print(err);

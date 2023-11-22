@@ -6,7 +6,6 @@ import 'package:mixtape/screens/add_songs.dart';
 import '../utilities/colors.dart';
 
 class TapeCreationScreen extends StatefulWidget {
-  static const String route = '/tapecreate';
 
   final Playlist playlist;
   const TapeCreationScreen({

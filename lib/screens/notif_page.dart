@@ -18,7 +18,6 @@ import '../screens/playlist_screen.dart';
 import '../services/mixtape_service.dart';
 
 class NotifPage extends StatefulWidget {
-  static const String route = '/notifs';
 
   @override
   _NotifPage createState() => _NotifPage();
@@ -59,7 +58,7 @@ class _NotifPage extends State<NotifPage> {
         route = '/friends';
         break;
       case 3:
-        return; //don't migrate
+        route = '/profile'; //don't migrate
     }
     Navigator.of(context).pushReplacementNamed(route);
   }

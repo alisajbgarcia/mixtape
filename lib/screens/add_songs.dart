@@ -23,7 +23,6 @@ class MixTapeInfo {
 }
 
 class AddSongsPage extends StatefulWidget {
-  static const String route = '/addsongs';
   final Playlist playlist;
   final String mixTapeName;
   final String mixTapeDescription;

@@ -18,7 +18,6 @@ import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
 
 class HomePage extends StatefulWidget {
-  static const String route = '/home';
   @override
   _HomePageState createState() => _HomePageState();
 }
