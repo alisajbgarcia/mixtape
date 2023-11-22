@@ -6,6 +6,7 @@ import 'package:mixtape/screens/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+  static const String route = '/';
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -29,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   void onLogin() {
     _authService.login().then((success) => {
       if (success) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
+        Navigator.pushReplacementNamed(context, '/home')
       } else {
         hasError = true
       }

@@ -14,6 +14,8 @@ import '../services/services_container.dart';
 
 
 class TapeInfoScreen extends StatefulWidget {
+  static const String route = '/tape';
+
   // final int tape_id;
   // final int spotify_id;
   // final String title;

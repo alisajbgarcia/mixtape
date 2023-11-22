@@ -17,6 +17,8 @@ import '../screens/playlist_screen.dart';
 import '../services/mixtape_service.dart';
 
 class NotifPage extends StatefulWidget {
+  static const String route = '/notifs';
+
   @override
   _NotifPage createState() => _NotifPage();
 }

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mixtape/main.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
 import 'package:mixtape/utilities/colors.dart';
@@ -17,6 +18,7 @@ import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
 
 class HomePage extends StatefulWidget {
+  static const String route = '/home';
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -44,9 +46,18 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => NavbarPages.navBarPages.elementAt(_selectedIndex)),
-    );
+
+    String route = "/home";
+    switch (index) {
+      case 1:
+        return; //don't migrate
+      case 2:
+        route = "/friends";
+        break;
+      case 3:
+        route = "/profile";
+    }
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   @override
@@ -91,10 +102,7 @@ class _HomePageState extends State<HomePage> {
             size: textScaleFactor * 50
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NotifPage()),
-            );
+            Navigator.of(context).pushReplacementNamed('/notifs');
           }
           ),
         title: Column(
@@ -223,9 +231,8 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(12.0),
                           onTap: () {
                             print('Tapped on Card ${playlist.name}');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
+                            Navigator.of(context).pushReplacementNamed(
+                              '/playlist', arguments: ScreenArguments(playlist)
                             );
                           },
                           child: Card(
@@ -400,9 +407,8 @@ class _HomePageState extends State<HomePage> {
             ),
             onPressed: () {
               print("here omg please");
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
+              Navigator.of(context).pushReplacementNamed(
+                '/playlistcreate'
               );
             },
             label: Text(

@@ -13,6 +13,8 @@ import '../services/profile_service.dart';
 import '../widgets/playlist_invitation.dart';
 
 class PlaylistCreationScreen extends StatefulWidget {
+    static const String route = '/playlistcreate';
+
   const PlaylistCreationScreen({super.key});
 
   @override

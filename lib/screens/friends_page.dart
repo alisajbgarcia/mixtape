@@ -16,6 +16,7 @@ import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
 class FriendsPage extends StatefulWidget {
+  static const String route = '/friends';
   const FriendsPage({Key? key}) : super(key: key);
 
   @override

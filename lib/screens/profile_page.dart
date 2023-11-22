@@ -11,6 +11,7 @@ import 'package:mixtape/widgets/navbar.dart';
 import '../utilities/colors.dart';
 
 class ProfilePage extends StatefulWidget {
+  static const String route = '/profile';
   const ProfilePage({Key? key}) : super(key: key);
 
   @override

@@ -7,6 +7,7 @@ SpotifyApiCredentials credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e
 SpotifyApi spotify = SpotifyApi(credentials);
 
 class SearchPage extends StatefulWidget {
+  static const String route = '/search';
   const SearchPage({super.key});
 
   @override

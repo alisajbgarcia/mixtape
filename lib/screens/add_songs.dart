@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/main.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
@@ -22,6 +23,7 @@ class MixTapeInfo {
 }
 
 class AddSongsPage extends StatefulWidget {
+  static const String route = '/addsongs';
   final Playlist playlist;
   final String mixTapeName;
   final String mixTapeDescription;
@@ -215,6 +217,8 @@ class _AddSongsPageState extends State<AddSongsPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => HomePage(),));
+
+                  Navigator.pushNamed(context, '/home');
                 },
                 label: Padding(
                   padding: EdgeInsets.all(5.0),
