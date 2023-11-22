@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/main.dart';
 import 'package:mixtape/services/authentication_service.dart';
 import 'package:mixtape/services/friendship_service.dart';
 import 'package:mixtape/services/playlist_service.dart';
@@ -49,9 +50,18 @@ class _NotifPage extends State<NotifPage> {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => NavbarPages.navBarPages.elementAt(_selectedIndex)),
-    );
+    String route = "/friends";
+    switch (index) {
+      case 1:
+        route = '/home';
+        break;
+      case 2:
+        route = '/friends';
+        break;
+      case 3:
+        return; //don't migrate
+    }
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   void toggleFilter() {
@@ -296,10 +306,8 @@ class _NotifPage extends State<NotifPage> {
                       onPressed: () async {
                         print('activity pressed');
                         Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.externalId);
-                        Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
-                        );
+                        
+                        Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(playlist));
                       },
                     ),
                 ) : SizedBox()

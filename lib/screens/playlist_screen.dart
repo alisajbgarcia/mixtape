@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mixtape/main.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_screen.dart';
@@ -163,10 +164,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   TextButton(
                                     onPressed: () => {Navigator.pop(context, 'YES'),
                                       _onDeletePlaylist(widget.playlist.id),
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => HomePage()),
-                                      )
+                                      Navigator.of(context).pushReplacementNamed(
+                                        '/home'),
+                                      
                                     },
                                     child: const Text('YES',
                                       style: TextStyle(
@@ -408,11 +408,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             borderRadius: BorderRadius.circular(12.0),
                             onTap: () {
                               print('Tapped on Card ${mixtape.name}');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TapeInfoScreen(mixtape: mixtape, playlist: widget.playlist)),
-                              );
+                              Navigator.of(context).pushReplacementNamed('/tape', arguments: ScreenArguments(widget.playlist, null, null, mixtape));
                             },
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -574,12 +570,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       heroTag: "mixtape_creation",
                       onPressed: () {
                         print("create mixtape");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TapeCreationScreen(
-                                  playlist: widget.playlist)),
-                        );
+                        Navigator.of(context).pushReplacementNamed('/tapecreate', arguments: ScreenArguments(widget.playlist));
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),

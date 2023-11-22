@@ -61,11 +61,17 @@ class _FriendsPageState extends State<FriendsPage> {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) =>
-              NavbarPages.navBarPages.elementAt(_selectedIndex)),
-    );
+    String route = "/friends";
+    switch (index) {
+      case 1:
+        route = '/home';
+        break;
+      case 2:
+        return; //don't migrate
+      case 3:
+        route = "/profile";
+    }
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   void toggleSearchBar() {

@@ -26,10 +26,7 @@ class PlaylistInvitationSent extends StatelessWidget {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
+              Navigator.of(context).pushReplacementNamed('/home');
             },
             icon: Icon(
               Icons.check,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/main.dart';
 import 'package:mixtape/models/track_info.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
@@ -321,12 +322,8 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                                       await mixtapeService
                                           .deleteMixtapeInPlaylistForCurrentUser(
                                           widget.playlist.id, widget.mixtape.id);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => HomePage(),
-                                          )
-                                      );
+                                          
+                                      Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(widget.playlist));
                                     } catch (err) {
                                       print(err);
                                       Navigator.pop(context, 'ERROR');
