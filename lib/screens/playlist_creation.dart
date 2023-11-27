@@ -12,15 +12,15 @@ import '../models/profile.dart';
 import '../services/profile_service.dart';
 import '../widgets/playlist_invitation.dart';
 
-class PlaylistCreationScreen extends StatefulWidget {
+class PlaylistCreationPage extends StatefulWidget {
 
-  const PlaylistCreationScreen({super.key});
+  const PlaylistCreationPage({super.key});
 
   @override
-  State<PlaylistCreationScreen> createState() => _PlaylistCreationScreenState();
+  State<PlaylistCreationPage> createState() => _PlaylistCreationPageState();
 }
 
-class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
+class _PlaylistCreationPageState extends State<PlaylistCreationPage> {
   TextEditingController _textController = TextEditingController();
   String playlistName = "";
   String playlistTargetName = "";
