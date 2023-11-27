@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/main.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/home_page.dart';
-import 'package:mixtape/screens/playlist_screen.dart';
+import 'package:mixtape/screens/playlist_page.dart';
 import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/services/mixtape_service.dart';
 import 'package:mixtape/services/services_container.dart';

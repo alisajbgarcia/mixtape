@@ -14,7 +14,7 @@ import '../services/services_container.dart';
 import '../services/notification_service.dart';
 import '../services/profile_service.dart';
 import '../services/playlist_service.dart';
-import '../screens/playlist_screen.dart';
+import 'playlist_page.dart';
 import '../services/mixtape_service.dart';
 
 class NotifPage extends StatefulWidget {
@@ -51,13 +51,13 @@ class _NotifPage extends State<NotifPage> {
     });
     String route = "/friends";
     switch (index) {
-      case 1:
+      case 0:
         route = '/home';
         break;
-      case 2:
+      case 1:
         route = '/friends';
         break;
-      case 3:
+      case 2:
         route = '/profile'; //don't migrate
     }
     Navigator.of(context).pushReplacementNamed(route);

@@ -6,13 +6,13 @@ import 'package:mixtape/screens/notif_page.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/screens/tape_creation.dart';
-import 'package:mixtape/screens/tape_info_screen.dart';
+import 'package:mixtape/screens/tape_info_page.dart';
 import 'package:mixtape/services/services_container.dart';
 
 import 'models/mixtape.dart';
 import 'models/playlist.dart';
 import 'screens/friends_page.dart';
-import 'screens/playlist_screen.dart';
+import 'screens/playlist_page.dart';
 import 'screens/profile_page.dart';
 
 void main() async {
@@ -43,7 +43,7 @@ void main() async {
               builder = (BuildContext context) => const ProfilePage();
               return MaterialPageRoute(builder: builder);
             case '/playlist':
-              builder = (BuildContext context) => PlaylistScreen(playlist: args.playlist as Playlist);
+              builder = (BuildContext context) => PlaylistPage(playlist: args.playlist as Playlist);
               return MaterialPageRoute(builder: builder);
             case '/addsongs':
               builder = (BuildContext context) => AddSongsPage(playlist: args.playlist as Playlist, mixTapeName: args.mixTapeName as String, mixTapeDescription: args.mixTapeDescription as String);
@@ -52,16 +52,16 @@ void main() async {
               builder = (BuildContext context) => NotifPage();
               return MaterialPageRoute(builder: builder);
             case '/playlistcreate':
-              builder = (BuildContext context) => const PlaylistCreationScreen();
+              builder = (BuildContext context) => const PlaylistCreationPage();
               return MaterialPageRoute(builder: builder);
             case '/search':
               builder = (BuildContext context) => const SearchPage();
               return MaterialPageRoute(builder: builder);
             case '/tape':
-              builder = (BuildContext context) => TapeInfoScreen(playlist: args.playlist as Playlist, mixtape: args.mixtape as Mixtape,);
+              builder = (BuildContext context) => TapeInfoPage(playlist: args.playlist as Playlist, mixtape: args.mixtape as Mixtape,);
               return MaterialPageRoute(builder: builder);
             case '/tapecreate':
-              builder = (BuildContext context) => TapeCreationScreen(playlist: args.playlist as Playlist);
+              builder = (BuildContext context) => TapeCreationPage(playlist: args.playlist as Playlist);
               return MaterialPageRoute(builder: builder);
             default:
               throw Exception('Invalid route: ${settings.name}');

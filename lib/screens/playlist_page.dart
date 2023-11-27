@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/main.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/tape_creation.dart';
-import 'package:mixtape/screens/tape_info_screen.dart';
+import 'package:mixtape/screens/tape_info_page.dart';
 import 'package:mixtape/services/services_container.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/screens/search_page.dart';

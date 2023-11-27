@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/main.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
-import 'package:mixtape/screens/playlist_screen.dart';
+import 'package:mixtape/screens/playlist_page.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 import 'package:mixtape/screens/notif_page.dart';
