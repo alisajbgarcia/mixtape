@@ -26,7 +26,7 @@ class PlaylistInvitationSent extends StatelessWidget {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/home');
+              Navigator.of(context).pop();
             },
             icon: Icon(
               Icons.check,

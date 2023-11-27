@@ -42,13 +42,13 @@ class _ProfilePageState extends State<ProfilePage> {
     });
     String route = "/friends";
     switch (index) {
-      case 1:
+      case 0:
         route = '/home';
         break;
-      case 2:
+      case 1:
         route = '/friends';
         break;
-      case 3:
+      case 2:
         return; //don't migrate
     }
     Navigator.of(context).pushReplacementNamed(route);

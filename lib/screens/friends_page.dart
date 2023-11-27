@@ -62,12 +62,12 @@ class _FriendsPageState extends State<FriendsPage> {
     });
     String route = "/friends";
     switch (index) {
-      case 1:
+      case 0:
         route = '/home';
         break;
-      case 2:
+      case 1:
         return; //don't migrate
-      case 3:
+      case 2:
         route = "/profile";
     }
     Navigator.of(context).pushReplacementNamed(route);

@@ -48,7 +48,7 @@ void main() async {
             case '/addsongs':
               builder = (BuildContext context) => AddSongsPage(playlist: args.playlist as Playlist, mixTapeName: args.mixTapeName as String, mixTapeDescription: args.mixTapeDescription as String);
               return MaterialPageRoute(builder: builder);
-            case '/notif':
+            case '/notifs':
               builder = (BuildContext context) => NotifPage();
               return MaterialPageRoute(builder: builder);
             case '/playlistcreate':

@@ -48,12 +48,12 @@ class _HomePageState extends State<HomePage> {
 
     String route = "/home";
     switch (index) {
-      case 1:
+      case 0:
         return; //don't migrate
-      case 2:
+      case 1:
         route = "/friends";
         break;
-      case 3:
+      case 2:
         route = "/profile";
     }
     Navigator.of(context).pushReplacementNamed(route);
@@ -406,7 +406,7 @@ class _HomePageState extends State<HomePage> {
             ),
             onPressed: () {
               print("here omg please");
-              Navigator.of(context).pushReplacementNamed(
+              Navigator.of(context).pushNamed(
                 '/playlistcreate'
               );
             },
