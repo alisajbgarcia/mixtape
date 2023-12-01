@@ -40,8 +40,6 @@ class _ProfilePageState extends State<ProfilePage> {
       textSkip: "NEXT",
       opacityShadow: 0.8,
       onSkip: () {
-        // Delay the navigation pop to ensure it doesn't conflict with the tutorial animations
-        print('done');
         Navigator.of(context).pop();
         return true;
       },

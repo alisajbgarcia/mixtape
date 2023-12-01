@@ -11,14 +11,21 @@ List<TargetFocus> addTourTargets({
       keyTarget: profileKey,
       shape: ShapeLightFocus.RRect,
       radius: 10,
+      paddingFocus: 50,
       contents: [
         TargetContent(
           align: ContentAlign.bottom,
           builder: (context, controller) => Container(
             alignment: Alignment.center,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Icon(
+                  Icons.arrow_upward_rounded,
+                  color: Colors.white,
+                  size: 50,
+                ),
                 Text('This is your Spotify profile',
                   textAlign: TextAlign.center,
                   style: TextStyle(
