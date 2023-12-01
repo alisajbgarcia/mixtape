@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/models/profile.dart';
+import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/login_page.dart';
 import 'package:mixtape/services/authentication_service.dart';
 import 'package:mixtape/services/profile_service.dart';
@@ -28,18 +29,22 @@ class _ProfilePageState extends State<ProfilePage> {
   late Future<Profile> currentProfile;
   late TutorialCoachMark tutorialCoachMark;
 
-  GlobalKey introKey = GlobalKey();
   GlobalKey profileKey = GlobalKey();
 
   void pageTour() {
     tutorialCoachMark = TutorialCoachMark(
       targets: addTourTargets(
-          introKey: introKey,
           profileKey: profileKey),
       colorShadow: MixTapeColors.green,
       paddingFocus: 10,
-      hideSkip: false,
+      textSkip: "NEXT",
       opacityShadow: 0.8,
+      onSkip: () {
+        // Delay the navigation pop to ensure it doesn't conflict with the tutorial animations
+        print('done');
+        Navigator.of(context).pop();
+        return true;
+      },
     );
   }
 
@@ -73,7 +78,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    final Size screenSize = MediaQuery.of(context).size;
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    final double screenWidth = screenSize.width;
+    final double screenHeight = screenSize.height;
 
     return Scaffold(
       backgroundColor: MixTapeColors.black,
@@ -109,33 +117,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    // Profile picture, using MixTape logo temporarily until Spotify Link
                     Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        height: MediaQuery.of(context).size.width * .5,
-                        child: CachedNetworkImage(
+                      padding: EdgeInsets.fromLTRB(0, screenHeight * .05, 0, screenHeight * .03),
+                      child: ClipOval(
+                        child: Image.network(
                           key: profileKey,
-                          imageUrl: profile.profilePicURL,
-                          placeholder: (context, url) => CircleAvatar(
-                            backgroundColor: MixTapeColors.dark_gray,
-                            radius: 30,
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white70,
-                              size: MediaQuery.of(context).size.width * .3,
-                            ),
-                          ),
-                          errorWidget: (context, url, error) => CircleAvatar(
-                            backgroundColor: MixTapeColors.dark_gray,
-                            radius: 30,
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white70,
-                              size: MediaQuery.of(context).size.width * .3,
-                            ),
-                          ),
+                          profile.profilePicURL,
+                          width: screenHeight * .15,
+                          height: screenHeight * .15,
+                          fit: BoxFit.cover, // Adjust the fit as needed
                         ),
                       ),
                     ),

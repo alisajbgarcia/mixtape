@@ -15,6 +15,7 @@ import '../services/profile_service.dart';
 import '../services/services_container.dart';
 import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
+import '../widgets/welcome_dialog.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -25,20 +26,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   bool light = true;
-  late Profile targetProfile;
+  bool newUser = true;
   late Profile initiatorProfile;
-  late List<String> songIds;
-  late Mixtape sampleMixtape;
-  late List<Mixtape> mixtapes;
-  late List<Playlist> dummydata;
-  late List<TrackInfo> tracks;
-  late List<Reaction> reactions = [Reaction(id: 123, reactor: initiatorProfile, reactionType: ReactionType.LIKE)];
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
   late ProfileService profileService;
   late Future<List<Playlist>> playlists;
   late Future<Profile> currentProfile;
+  late List<Reaction> reactions = [Reaction(id: 123, reactor: initiatorProfile, reactionType: ReactionType.LIKE)];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -52,16 +48,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    targetProfile = Profile('id', 'cmsale', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
-    initiatorProfile = Profile('id', 'alisajbgarcia', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
-    songIds = ['id', 'id', 'id'];
-    tracks = [TrackInfo(id: 'id', name: 'name', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/blue_colored_logo.png')];
-    DateTime date = DateTime.now();
-    sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: targetProfile, songIDs: songIds, songs: tracks, reactions: reactions);
-    mixtapes = [sampleMixtape, sampleMixtape];
-    dummydata = [
-      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: initiatorProfile, target: targetProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 9120000, songCount: 5),
-    ];
 
     profileService = ServicesContainer.of(context).profileService;
     playlistService = ServicesContainer.of(context).playlistService;
@@ -70,6 +56,23 @@ class _HomePageState extends State<HomePage> {
       currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
     });
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 500), () {
+        if (newUser) {
+          openWelcomeDialog();
+        }
+      });
+    });
+  }
+
+  void openWelcomeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return WelcomeDialog(); // Use the WelcomeDialog widget here
+      },
+    );
   }
 
   @override
@@ -78,7 +81,6 @@ class _HomePageState extends State<HomePage> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
-
 
 
     return Scaffold(

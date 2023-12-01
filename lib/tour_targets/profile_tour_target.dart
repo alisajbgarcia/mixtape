@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 List<TargetFocus> addTourTargets({
-  required GlobalKey introKey,
   required GlobalKey profileKey,
 }){
   List<TargetFocus> targets = [];
@@ -10,9 +9,8 @@ List<TargetFocus> addTourTargets({
   targets.add(
     TargetFocus(
       keyTarget: profileKey,
-      alignSkip: Alignment.bottomLeft,
-      shape: ShapeLightFocus.Circle,
-      radius: 20,
+      shape: ShapeLightFocus.RRect,
+      radius: 10,
       contents: [
         TargetContent(
           align: ContentAlign.bottom,
@@ -27,9 +25,21 @@ List<TargetFocus> addTourTargets({
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Montserrat',
                     color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text('This is linked to your account. '
+                    'You will be able to create collaborative playlists and add a collection of songs to your queue.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    color: Colors.white,
                     fontSize: 15,
                   ),
-                )
+                ),
               ],
             ),
           )

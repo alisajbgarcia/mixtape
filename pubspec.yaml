@@ -49,6 +49,7 @@ dependencies:
   onesignal_flutter: ^5.0.0
   app_tutorial: ^1.0.6
   tutorial_coach_mark: ^1.2.11
+  showcaseview: ^2.0.3
 
 dev_dependencies:
   flutter_test:
