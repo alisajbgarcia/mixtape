@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/playlist_screen.dart';
@@ -13,6 +14,7 @@ import '../services/authentication_service.dart';
 import '../services/playlist_service.dart';
 import '../services/profile_service.dart';
 import '../services/services_container.dart';
+import '../tour_targets/home_page_tour_target.dart';
 import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
 import '../widgets/welcome_dialog.dart';
@@ -26,8 +28,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   bool light = true;
-  bool newUser = true;
+  bool newUser = false;
   late Profile initiatorProfile;
+
+  late TutorialCoachMark tutorialCoachMark;
+  GlobalKey homePageKey = GlobalKey();
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
@@ -35,6 +40,24 @@ class _HomePageState extends State<HomePage> {
   late Future<List<Playlist>> playlists;
   late Future<Profile> currentProfile;
   late List<Reaction> reactions = [Reaction(id: 123, reactor: initiatorProfile, reactionType: ReactionType.LIKE)];
+
+  void pageTour() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: addTourTargets(
+          profileKey: homePageKey),
+      colorShadow: MixTapeColors.dark_gray,
+      paddingFocus: 1,
+      hideSkip: true,
+      opacityShadow: 0,
+      onSkip: () {
+        print('done');
+        return true;
+      },
+    );
+  }
+
+  void showTour() => Future.delayed(Duration(milliseconds: 500),
+          () => tutorialCoachMark.show(context: context));
 
   void _onItemTapped(int index) {
     setState(() {
@@ -57,11 +80,14 @@ class _HomePageState extends State<HomePage> {
       playlists = playlistService.getPlaylistsForCurrentUser();
     });
 
+
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       Future.delayed(Duration(milliseconds: 500), () {
-        if (newUser) {
+        /*if (newUser) {
           openWelcomeDialog();
-        }
+        } */
+        pageTour();
+        showTour();
       });
     });
   }
@@ -86,6 +112,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: MixTapeColors.black,
       appBar: AppBar(
+        key: homePageKey,
         leading: IconButton(
           padding: EdgeInsets.all(10),
           icon: ImageIcon(
