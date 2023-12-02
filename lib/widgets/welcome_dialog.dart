@@ -6,6 +6,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import '../screens/home_page.dart';
 
 class WelcomeDialog extends StatefulWidget {
+  final Function(bool) startTutorial;
+
+  WelcomeDialog({required this.startTutorial});
 
   @override
   State<WelcomeDialog> createState() => _WelcomeDialogState();
@@ -56,6 +59,7 @@ class _WelcomeDialogState extends State<WelcomeDialog> {
           children: [
             TextButton(
               onPressed: () {
+                widget.startTutorial(false);
                 Navigator.pop(context);
               },
               child: Text(
@@ -69,7 +73,10 @@ class _WelcomeDialogState extends State<WelcomeDialog> {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                widget.startTutorial(true);
+                Navigator.pop(context);
+              },
               child: Text(
                 'GET STARTED >',
                 style: TextStyle(
