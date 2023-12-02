@@ -10,6 +10,7 @@ import '../services/profile_service.dart';
 import '../services/services_container.dart';
 import '../utilities/navbar_pages.dart';
 import '../widgets/navbar.dart';
+import '../screens/suggested_friends_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
@@ -484,7 +485,7 @@ class _FriendsPageState extends State<FriendsPage> {
                     },
                     child: Container(
                       //alignment: Alignment.bottomRight,
-                      width: 200,
+                      width: screenWidth * .45,
                       height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
@@ -505,6 +506,32 @@ class _FriendsPageState extends State<FriendsPage> {
                     ),
                   ),
                 ),
+                  Container(
+                    alignment: Alignment.bottomLeft,
+                    width: screenWidth * .45,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: MixTapeColors.green,
+                    ),
+                    child: Center(
+                      child: TextButton(
+                        child: Text(
+                          'Suggested Friends',
+                          style: TextStyle(
+                            fontSize: (22 * textScaleFactor),
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SuggestedFriendsPage()),
+                          );
+                        },
+                      ),
+                    ),
+                  )
               ],
             );
           }
