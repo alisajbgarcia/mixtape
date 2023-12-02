@@ -18,6 +18,7 @@ import '../tour_targets/home_page_tour_target.dart';
 import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
 import '../widgets/welcome_dialog.dart';
+import '../widgets/mixtape_premise_dialog.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -83,6 +84,7 @@ class _HomePageState extends State<HomePage> {
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       openWelcomeDialog();
+      //openTutorial1();
     });
   }
 
@@ -94,13 +96,24 @@ class _HomePageState extends State<HomePage> {
           startTutorial: (bool startTutorial) {
             setState(() {
               newUser = startTutorial;
-              if(newUser) {
-                pageTour();
-                showTour();
-              }
             });
           },
         );
+      },
+    ).then((result) {
+      if (newUser) {
+        openTutorial1();
+        //pageTour();
+        //showTour();
+      }
+    });
+  }
+
+  void openTutorial1() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MixTapePremiseDialog();
       },
     );
   }
