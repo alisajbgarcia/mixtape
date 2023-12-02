@@ -82,13 +82,7 @@ class _HomePageState extends State<HomePage> {
 
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Future.delayed(Duration(milliseconds: 500), () {
-        /*if (newUser) {
-          openWelcomeDialog();
-        } */
-        pageTour();
-        showTour();
-      });
+      openWelcomeDialog();
     });
   }
 
@@ -96,7 +90,17 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return WelcomeDialog(); // Use the WelcomeDialog widget here
+        return WelcomeDialog(
+          startTutorial: (bool startTutorial) {
+            setState(() {
+              newUser = startTutorial;
+              if(newUser) {
+                pageTour();
+                showTour();
+              }
+            });
+          },
+        );
       },
     );
   }
