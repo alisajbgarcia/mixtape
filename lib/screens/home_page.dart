@@ -83,7 +83,10 @@ class _HomePageState extends State<HomePage> {
 
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      openWelcomeDialog();
+      if(newUser) {
+        openWelcomeDialog();
+      }
+
       //openTutorial1();
     });
   }
