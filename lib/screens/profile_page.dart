@@ -28,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late AuthenticationService authenticationService;
   late Future<Profile> currentProfile;
   late TutorialCoachMark tutorialCoachMark;
+  late bool playlists_enabled;
 
   GlobalKey profileKey = GlobalKey();
 
@@ -56,6 +57,8 @@ class _ProfilePageState extends State<ProfilePage> {
     authenticationService = ServicesContainer.of(context).authService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
+      // TODO: initialize playlists enabled value to backend value
+      playlists_enabled = false;
     });
 
     pageTour();
@@ -141,6 +144,33 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Switch(
+                      // This bool value toggles the switch.
+                      value: playlists_enabled,
+                      activeColor: MixTapeColors.green,
+                      inactiveTrackColor: MixTapeColors.light_gray,
+                      onChanged: (bool value) {
+                        // This is called when the user toggles the switch.
+                        setState(() {
+                          playlists_enabled = value;
+                        });
+                      },
+                    ),
+                    Text("Require Approval For Playlists",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0 * textScaleFactor,
+                    ),)
+                  ]
+                )
               ),
               Flexible(
                 flex: 1,
