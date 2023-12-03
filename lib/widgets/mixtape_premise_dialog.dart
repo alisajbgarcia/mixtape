@@ -1,20 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 
-import 'package:flutter/services.dart' show rootBundle;
-
-import '../screens/home_page.dart';
-
-class WelcomeDialog extends StatefulWidget {
-  final Function(bool) startTutorial;
-
-  WelcomeDialog({required this.startTutorial});
-
-  @override
-  State<WelcomeDialog> createState() => _WelcomeDialogState();
-}
-
-class _WelcomeDialogState extends State<WelcomeDialog> {
+class MixTapePremiseDialog extends StatelessWidget {
+  const MixTapePremiseDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,32 +31,14 @@ class _WelcomeDialogState extends State<WelcomeDialog> {
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
         color: MixTapeColors.dark_gray,
         height: screenHeight * .25,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(screenWidth * .023, 0, screenWidth * .023, screenWidth * .03),
-                child: Center(
-                  child: Text(
-                    "Create collaborative playlists and send collections of songs to your friends.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: textScaleFactor * 13,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white
-                    ),
-                  ),
-                ),
-              ),
-              Image.asset(
-                'assets/green_colored_logo.png',
-                scale: screenHeight * .02,
-              )
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/green_colored_logo.png',
+              scale: screenHeight * .02,
+            )
+          ],
         ),
       ),
       actions: [
@@ -77,8 +47,7 @@ class _WelcomeDialogState extends State<WelcomeDialog> {
           children: [
             TextButton(
               onPressed: () {
-                widget.startTutorial(false);
-                Navigator.pop(context);
+
               },
               child: Text(
                 'SKIP',
@@ -92,8 +61,7 @@ class _WelcomeDialogState extends State<WelcomeDialog> {
             ),
             TextButton(
               onPressed: () {
-                widget.startTutorial(true);
-                Navigator.pop(context);
+
               },
               child: Text(
                 'GET STARTED >',
@@ -111,3 +79,4 @@ class _WelcomeDialogState extends State<WelcomeDialog> {
     );
   }
 }
+
