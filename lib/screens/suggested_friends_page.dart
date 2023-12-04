@@ -23,8 +23,32 @@ class SuggestedFriendsPage extends StatefulWidget {
 }
 
 class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
+  late ProfileService profileService;
+  late AuthenticationService authenticationService;
+  late FriendshipService friendshipService;
+  late Future<Profile> currentProfile;
+  late Future<List<Profile>> friends;
+  late Future<List<Profile>> suggestedFriends;
+
+  void initState() {
+    super.initState();
+
+    profileService = ServicesContainer.of(context).profileService;
+    authenticationService = ServicesContainer.of(context).authService;
+    friendshipService = ServicesContainer.of(context).friendshipService;
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+      friends = profileService.getFriendsForCurrentUser();
+      suggestedFriends = profileService.searchProfiles("");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    final double screenWidth = screenSize.width;
+    final double screenHeight = screenSize.height;
     return const Placeholder();
   }
 }
