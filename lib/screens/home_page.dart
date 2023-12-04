@@ -29,7 +29,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   bool light = true;
-  bool newUser = false;
+  bool newUser = true;
   late Profile initiatorProfile;
 
   late TutorialCoachMark tutorialCoachMark;
@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage> {
       hideSkip: true,
       opacityShadow: 0,
       onSkip: () {
-        print('done');
         return true;
       },
     );
@@ -105,9 +104,9 @@ class _HomePageState extends State<HomePage> {
       },
     ).then((result) {
       if (newUser) {
-        openTutorial1();
-        //pageTour();
-        //showTour();
+        //openTutorial1();
+        pageTour();
+        showTour();
       }
     });
   }
@@ -469,6 +468,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: NavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        context: context,
       ),
     );
   }

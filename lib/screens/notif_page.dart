@@ -308,6 +308,7 @@ class _NotifPage extends State<NotifPage> {
       ); } }
       ),
       bottomNavigationBar: NavBar(
+        context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
