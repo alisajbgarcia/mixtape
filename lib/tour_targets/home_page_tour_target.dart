@@ -17,47 +17,47 @@ List<TargetFocus> addTourTargets({
       contents: [
         TargetContent(
           //padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-            align: ContentAlign.bottom,
-            builder: (context, controller) => Container(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  PlaylistWidget(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Icon(
-                    Icons.arrow_upward_rounded,
+          align: ContentAlign.bottom,
+          builder: (context, controller) => Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                PlaylistWidget(),
+                SizedBox(
+                  height: 10,
+                ),
+                Icon(
+                  Icons.arrow_upward_rounded,
+                  color: Colors.white,
+                  size: 50,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'This is the homepage',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
                     color: Colors.white,
-                    size: 50,
+                    fontSize: 20,
                   ),
-                  SizedBox(
-                    height: 5,
+                ),
+                Text(
+                  'Once you\'ve started creating, you will be able to view your playlists here',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    color: Colors.white,
+                    fontSize: 15,
                   ),
-                  Text(
-                    'This is the homepage',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Text(
-                    'Once you\'ve started creating, you will be able to view your playlists here',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            )
+                ),
+              ],
+            ),
+          )
         ),
       ],
     ),
