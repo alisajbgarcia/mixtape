@@ -202,7 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       ),
       bottomNavigationBar: NavBar(
-        friendsPageKey: GlobalKey(),
+        friendsPageKey: null,
         context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

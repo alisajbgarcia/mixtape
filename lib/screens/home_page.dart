@@ -29,7 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  bool newUser = false;
+  bool newUser = true;
   late Profile initiatorProfile;
 
   late TutorialCoachMark homePageTutorialMark;
@@ -65,8 +65,11 @@ class _HomePageState extends State<HomePage> {
   void navBarTour() {
     navBarTutorialMark = TutorialCoachMark(
       targets: addNavBarTourTargets(
-          friendsPageKey: navBarKey),
+        context: context,
+        friendsPageKey: navBarKey,
+      ),
       colorShadow: MixTapeColors.green,
+      textSkip: 'NEXT',
       paddingFocus: 1,
       hideSkip: false,
       opacityShadow: 0.8,

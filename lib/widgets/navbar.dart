@@ -5,7 +5,7 @@ import 'package:mixtape/tour_targets/nav_bar_tour_target.dart';
 
 class NavBar extends StatelessWidget {
   BuildContext context;
-  GlobalKey friendsPageKey;
+  GlobalKey? friendsPageKey;
   final int currentIndex;
   final Function(int) onTap;
   bool newUser = false;
