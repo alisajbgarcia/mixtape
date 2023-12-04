@@ -15,6 +15,7 @@ import '../services/playlist_service.dart';
 import '../services/profile_service.dart';
 import '../services/services_container.dart';
 import '../tour_targets/home_page_tour_target.dart';
+import '../tour_targets/nav_bar_tour_target.dart';
 import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
 import '../widgets/welcome_dialog.dart';
@@ -28,12 +29,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  bool light = true;
   bool newUser = false;
   late Profile initiatorProfile;
 
-  late TutorialCoachMark tutorialCoachMark;
+  late TutorialCoachMark homePageTutorialMark;
+  late TutorialCoachMark navBarTutorialMark;
   GlobalKey homePageKey = GlobalKey();
+  GlobalKey navBarKey = GlobalKey();
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
@@ -42,8 +44,8 @@ class _HomePageState extends State<HomePage> {
   late Future<Profile> currentProfile;
   late List<Reaction> reactions = [Reaction(id: 123, reactor: initiatorProfile, reactionType: ReactionType.LIKE)];
 
-  void pageTour() {
-    tutorialCoachMark = TutorialCoachMark(
+  void homePageTour() {
+    homePageTutorialMark = TutorialCoachMark(
       targets: addTourTargets(
           profileKey: homePageKey),
       colorShadow: MixTapeColors.dark_gray,
@@ -51,14 +53,34 @@ class _HomePageState extends State<HomePage> {
       hideSkip: true,
       opacityShadow: 0,
       onSkip: () {
-        print('done');
+        newUser = false;
+        return newUser;
+      },
+      onFinish: () {
+        showNavBarTour();
+      }
+    );
+  }
+
+  void navBarTour() {
+    navBarTutorialMark = TutorialCoachMark(
+      targets: addNavBarTourTargets(
+          friendsPageKey: navBarKey),
+      colorShadow: MixTapeColors.green,
+      paddingFocus: 1,
+      hideSkip: false,
+      opacityShadow: 0.8,
+      onSkip: () {
         return true;
       },
     );
   }
 
   void showTour() => Future.delayed(Duration(milliseconds: 500),
-          () => tutorialCoachMark.show(context: context));
+          () => homePageTutorialMark.show(context: context));
+
+  void showNavBarTour() => Future.delayed(Duration(milliseconds: 500),
+          () => navBarTutorialMark.show(context: context));
 
   void _onItemTapped(int index) {
     setState(() {
@@ -81,13 +103,13 @@ class _HomePageState extends State<HomePage> {
       playlists = playlistService.getPlaylistsForCurrentUser();
     });
 
-
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if(newUser) {
+        homePageTour();
+        navBarTour();
         openWelcomeDialog();
       }
 
-      //openTutorial1();
     });
   }
 
@@ -105,9 +127,7 @@ class _HomePageState extends State<HomePage> {
       },
     ).then((result) {
       if (newUser) {
-        openTutorial1();
-        //pageTour();
-        //showTour();
+        showTour();
       }
     });
   }
@@ -160,28 +180,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                /*
-                Icon(
-                  light ? Icons.sunny : Icons.dark_mode,
-                  color: Colors.white,
-                ),
-                Switch(
-                  // This bool value toggles the switch.
-                  value: light,
-                  activeColor: MixTapeColors.green,
-                  onChanged: (bool value) {
-                    // This is called when the user toggles the switch.
-                    setState(() {
-                      light = value;
-                    });
-                  },
-                ),
-                */
-              ],
-            ),
-            ],
+          ],
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
@@ -448,7 +447,6 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
             ),
             onPressed: () {
-              print("here omg please");
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
@@ -467,8 +465,10 @@ class _HomePageState extends State<HomePage> {
           ),
       ),
       bottomNavigationBar: NavBar(
+        friendsPageKey: navBarKey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        context: context,
       ),
     );
   }
