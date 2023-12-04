@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:mixtape/widgets/playlist_widget.dart';
 
-List<TargetFocus> addTourTargets({
+List<TargetFocus> addNavBarTourTargets({
   required GlobalKey friendsPageKey,
 }){
   List<TargetFocus> targets = [];
@@ -24,18 +24,6 @@ List<TargetFocus> addTourTargets({
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  PlaylistWidget(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Icon(
-                    Icons.arrow_upward_rounded,
-                    color: Colors.white,
-                    size: 50,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
                   Text(
                     'This is the homepage',
                     textAlign: TextAlign.center,

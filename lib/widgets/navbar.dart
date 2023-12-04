@@ -5,48 +5,17 @@ import 'package:mixtape/tour_targets/nav_bar_tour_target.dart';
 
 class NavBar extends StatelessWidget {
   BuildContext context;
+  GlobalKey friendsPageKey;
   final int currentIndex;
   final Function(int) onTap;
-  late TutorialCoachMark tutorialCoachMark;
+  bool newUser = false;
 
-  NavBar({required this.context, required this.currentIndex, required this.onTap});
-
-  GlobalKey friendsPageKey = GlobalKey();
-
-  void pageTour() {
-    tutorialCoachMark = TutorialCoachMark(
-      targets: addTourTargets(
-          friendsPageKey: friendsPageKey),
-      colorShadow: MixTapeColors.dark_gray,
-      paddingFocus: 1,
-      hideSkip: true,
-      opacityShadow: 0,
-      onSkip: () {
-        return true;
-      },
-    );
-  }
-
-  void showTour() => Future.delayed(Duration(milliseconds: 500),
-          () => tutorialCoachMark.show(context: context));
-
-  @override
-  void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if(true) {
-        pageTour();
-        showTour();
-      }
-
-      //openTutorial1();
-    });
-  }
-
+  NavBar({required this.context, required this.currentIndex, required this.onTap, required this.friendsPageKey});
 
 
   @override
   Widget build(BuildContext context) {
-    this.context = context;
+
     return Theme(
       data: ThemeData(
         canvasColor: MixTapeColors.black,
