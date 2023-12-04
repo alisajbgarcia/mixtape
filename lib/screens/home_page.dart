@@ -119,6 +119,7 @@ class _HomePageState extends State<HomePage> {
   void openWelcomeDialog() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return WelcomeDialog(
           startTutorial: (bool startTutorial) {
