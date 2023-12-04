@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/services/services_container.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:spotify/spotify.dart';
 import '../models/track_info.dart';
+import 'package:mixtape/services/playlist_service.dart';
 
 SpotifyApiCredentials credentials = SpotifyApiCredentials("df9bd9e5ec41469baf91e29921d605a9", "1f740b22a8984436bb87e41d7fa23295");
 SpotifyApi spotify = SpotifyApi(credentials);
+
+late PlaylistService playlistService;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -16,6 +20,13 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
   List<TrackInfo> _searchResults = [];
+
+  @override
+  void initState(){
+    super.initState();
+
+    playlistService = ServicesContainer.of(context).playlistService;
+  }
 
   Future<void> searchSpotify(String query) async {
     var search = await spotify.search.get(query).first(5);
@@ -72,6 +83,10 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
+  Future<void> getRecentlyListened() async {
+    var search = await playlistService.getRecentlyListened();
+    _searchResults = search;
+  }
 
 
   @override
@@ -138,12 +153,12 @@ class _SearchPageState extends State<SearchPage> {
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
-                    fixedSize: Size(screenWidth * .25, screenWidth * .1)
+                    fixedSize: Size(screenWidth * .20, screenWidth * .1)
                 ),
                 child: Text(
                   'Song Name',
                   style: TextStyle(
-                    fontSize: 14 * textScaleFactor,
+                    fontSize: 12 * textScaleFactor,
                     color: MixTapeColors.green,
                   ),
                 ),
@@ -159,12 +174,12 @@ class _SearchPageState extends State<SearchPage> {
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
-                    fixedSize: Size(screenWidth * .25, screenWidth * .1)
+                    fixedSize: Size(screenWidth * .20, screenWidth * .1)
                 ),
                 child: Text(
                   'Artist',
                   style: TextStyle(
-                    fontSize: 14 * textScaleFactor,
+                    fontSize: 12 * textScaleFactor,
                     color: MixTapeColors.green,
                   ),
                 ),
@@ -180,12 +195,33 @@ class _SearchPageState extends State<SearchPage> {
                 style: FilledButton.styleFrom(
                     backgroundColor: MixTapeColors.dark_gray,
                     padding: EdgeInsets.all(0),
-                    fixedSize: Size(screenWidth * .25, screenWidth * .1)
+                    fixedSize: Size(screenWidth * .20, screenWidth * .1)
                 ),
                 child: Text(
                   'Album',
                   style: TextStyle(
-                    fontSize: 14 * textScaleFactor,
+                    fontSize: 12 * textScaleFactor,
+                    color: MixTapeColors.green,
+                  ),
+                ),
+              ),
+              FilledButton(
+                onPressed: () {
+                  getRecentlyListened().then((_) {
+                    setState(() {
+                      // set the state
+                    });
+                  });
+                },
+                style: FilledButton.styleFrom(
+                    backgroundColor: MixTapeColors.dark_gray,
+                    padding: EdgeInsets.all(0),
+                    fixedSize: Size(screenWidth * .20, screenWidth * .1)
+                ),
+                child: Text(
+                  'History',
+                  style: TextStyle(
+                    fontSize: 12 * textScaleFactor,
                     color: MixTapeColors.green,
                   ),
                 ),
