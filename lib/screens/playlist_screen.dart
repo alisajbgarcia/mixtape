@@ -529,8 +529,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                   15), // Adjust the radius as needed
                                             ),
                                             heroTag: "mixtape_creation",
-                                            onPressed: () {
-                                              print("add to queue");
+                                            onPressed: () async {
+                                              // print("add to queue");
+                                              await mixtapeService.enqueueMixtape(mixtape.playlistId, mixtape.id);
                                               /* Navigator.push(
                                             context,
                                             MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
@@ -546,6 +547,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                       textScaleFactor * 15,
                                                   fontFamily: "Montserrat",
                                                   fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                             ),
@@ -589,6 +591,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             fontSize: textScaleFactor * 20,
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w600,
+                            color: Colors.white,
                           ),
                         ),
                       ),

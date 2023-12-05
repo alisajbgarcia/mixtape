@@ -286,6 +286,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                             fontSize: textScaleFactor * 20,
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w600,
+                            color: Colors.white,
                           ),
                         ),
                       ),

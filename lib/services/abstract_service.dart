@@ -58,8 +58,23 @@ class AbstractService {
     return postString(uri, bodyMap, responseConverter);
   }
 
+  Future<R> postWithoutBody<R>(String uri, R Function(Map<String, dynamic>) responseConverter) async {
+    uri = _sanitizeUri(uri);
+    print(uri);
+    final bodyMap = jsonEncode(null);
+    // final response = await helper.post("$baseUrl/$uri", body: jsonEncode(null), headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
+    // if (response.statusCode != 200) {
+    //   print("Request error: ${response.statusCode} - ${response.reasonPhrase}");
+    //   return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
+    // }
+    // return decodeSingle(response.body, responseConverter);
+    return postString(uri, bodyMap, responseConverter);
+  }
+
   Future<R> postString<R>(String uri, String body, DeserializerFactory<R> responseConverter) async {
+    print("$baseUrl/$uri");
     final response = await helper.post("$baseUrl/$uri", body: body, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
+    print(response.body);
     if (response.statusCode != 200) {
       print("Request error: ${response.statusCode} - ${response.reasonPhrase}");
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
