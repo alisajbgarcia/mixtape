@@ -97,6 +97,14 @@ class _NotifPage extends State<NotifPage> {
     Notif(id:'123', target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1', contents: 'NO NOTIFICATIONS!', notificationType: NotificationType.MIXTAPE),
   ];
 
+  Future<void> _refresh() {
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+      notifs = notificationService.getNotifications();
+    });
+    return Future.delayed(Duration(seconds: 1));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -185,136 +193,145 @@ class _NotifPage extends State<NotifPage> {
               cardData = notifSnapshot.data!;
             }
 
-            return Column(
-              children: cardData.map((notif) {
-          return InkWell(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
-              ),
-              margin: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12.0),
-                child: notif.notificationType == NotificationType.FRIENDSHIP && (filterValue.contains('Friend') || filterValue.contains('Off'))//Is it a friend or playlist notification
-                ? Container(//Friend
-                  color: MixTapeColors.dark_gray,
-                  padding: EdgeInsets.all(9.0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          softWrap: true,
-                          style: TextStyle(
-                            fontSize: (15 * textScaleFactor),
-                            color: Colors.white,
-                            fontFamily: "Montserrat",
-                          ),
-                        '${notif.contents}'
-                        ),
-                      ),
-                      IconButton(
-                        padding: EdgeInsets.all(10),
-                        icon: ImageIcon(
-                          AssetImage("assets/yes.png"),
-                          size: textScaleFactor * 50,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                            setState(() => cardData.remove(notif));
-                            friendshipService.acceptRequest(notif.externalId);
-                            print('Friend Accepted');
-                        }
-                      ),
-                      IconButton(
-                        padding: EdgeInsets.all(10),
-                        icon: ImageIcon(
-                          AssetImage("assets/no.png"),
-                          size: textScaleFactor * 20,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                            setState(() => cardData.remove(notif));
-                            friendshipService.deleteRequest(notif.externalId);
-                            print('Friend Rejected');
-                        }
-                      ),
-                    ]
+
+            return RefreshIndicator(
+              onRefresh: _refresh,
+              color: MixTapeColors.green,
+              backgroundColor: MixTapeColors.black,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: cardData.map((notif) {
+                        return InkWell(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
                   ),
-                )
-                : notif.notificationType == NotificationType.PLAYLIST && (filterValue.contains('Playlist') || filterValue.contains('Off')) ? Container(//Playlist
-                  color: MixTapeColors.dark_gray,
-                  padding: EdgeInsets.all(9.0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          softWrap: true,
-                          style: TextStyle(
-                            fontSize: (15 * textScaleFactor),
-                            color: Colors.white,
-                            fontFamily: "Montserrat",
+                  margin: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: notif.notificationType == NotificationType.FRIENDSHIP && (filterValue.contains('Friend') || filterValue.contains('Off'))//Is it a friend or playlist notification
+                    ? Container(//Friend
+                      color: MixTapeColors.dark_gray,
+                      padding: EdgeInsets.all(9.0),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              softWrap: true,
+                              style: TextStyle(
+                                fontSize: (15 * textScaleFactor),
+                                color: Colors.white,
+                                fontFamily: "Montserrat",
+                              ),
+                            '${notif.contents}'
+                            ),
                           ),
-                        notif.contents
-                        ),
+                          IconButton(
+                            padding: EdgeInsets.all(10),
+                            icon: ImageIcon(
+                              AssetImage("assets/yes.png"),
+                              size: textScaleFactor * 50,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                                setState(() => cardData.remove(notif));
+                                friendshipService.acceptRequest(notif.externalId);
+                                print('Friend Accepted');
+                            }
+                          ),
+                          IconButton(
+                            padding: EdgeInsets.all(10),
+                            icon: ImageIcon(
+                              AssetImage("assets/no.png"),
+                              size: textScaleFactor * 20,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                                setState(() => cardData.remove(notif));
+                                friendshipService.deleteRequest(notif.externalId);
+                                print('Friend Rejected');
+                            }
+                          ),
+                        ]
                       ),
-                      IconButton(
-                        padding: EdgeInsets.all(10),
-                        icon: ImageIcon(
-                          AssetImage("assets/yes.png"),
-                          size: textScaleFactor * 50,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                            setState(() => cardData.remove(notif));
-                            playlistService.acceptRequest(notif.externalId);
-                            print('Playlist Accepted');
-                        }
+                    )
+                    : notif.notificationType == NotificationType.PLAYLIST && (filterValue.contains('Playlist') || filterValue.contains('Off')) ? Container(//Playlist
+                      color: MixTapeColors.dark_gray,
+                      padding: EdgeInsets.all(9.0),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              softWrap: true,
+                              style: TextStyle(
+                                fontSize: (15 * textScaleFactor),
+                                color: Colors.white,
+                                fontFamily: "Montserrat",
+                              ),
+                            notif.contents
+                            ),
+                          ),
+                          IconButton(
+                            padding: EdgeInsets.all(10),
+                            icon: ImageIcon(
+                              AssetImage("assets/yes.png"),
+                              size: textScaleFactor * 50,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                                setState(() => cardData.remove(notif));
+                                playlistService.acceptRequest(notif.externalId);
+                                print('Playlist Accepted');
+                            }
+                          ),
+                          IconButton(
+                            padding: EdgeInsets.all(10),
+                            icon: ImageIcon(
+                              AssetImage("assets/no.png"),
+                              size: textScaleFactor * 20,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                                setState(() => cardData.remove(notif));
+                                playlistService.deleteRequest(notif.externalId);
+                                print('Playlist Rejected');
+                            }
+                          ),
+                        ]
                       ),
-                      IconButton(
-                        padding: EdgeInsets.all(10),
-                        icon: ImageIcon(
-                          AssetImage("assets/no.png"),
-                          size: textScaleFactor * 20,
-                          color: Colors.white,
+                    )
+                    : notif.notificationType == (NotificationType.MIXTAPE) && (filterValue.contains('Activity') || filterValue.contains('Off')) ? Container(//Recent Activity
+                      width: screenWidth * .9,
+                      height: screenHeight * .07,
+                      color: MixTapeColors.dark_gray,
+                      //padding: EdgeInsets.only(top:9.0, bottom: 9, left: 0, right:0),
+                      child: TextButton(
+                          child: Text(
+                            textAlign: TextAlign.start,
+                            softWrap: true,
+                            style: TextStyle(
+                              fontSize: (15 * textScaleFactor),
+                              color: Colors.white,
+                              fontFamily: "Montserrat",
+                            ),
+                          '${notif.contents}'
+                          ),
+                          onPressed: () async {
+                            print('activity pressed');
+                            Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.externalId);
+                            
+                            Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(playlist));
+                          },
                         ),
-                        onPressed: () {
-                            setState(() => cardData.remove(notif));
-                            playlistService.deleteRequest(notif.externalId);
-                            print('Playlist Rejected');
-                        }
-                      ),
-                    ]
+                    ) : SizedBox()
                   ),
-                )
-                : notif.notificationType == (NotificationType.MIXTAPE) && (filterValue.contains('Activity') || filterValue.contains('Off')) ? Container(//Recent Activity
-                  width: screenWidth * .9,
-                  height: screenHeight * .07,
-                  color: MixTapeColors.dark_gray,
-                  //padding: EdgeInsets.only(top:9.0, bottom: 9, left: 0, right:0),
-                  child: TextButton(
-                      child: Text(
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: (15 * textScaleFactor),
-                          color: Colors.white,
-                          fontFamily: "Montserrat",
-                        ),
-                      '${notif.contents}'
-                      ),
-                      onPressed: () async {
-                        print('activity pressed');
-                        Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.externalId);
-                        
-                        Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(playlist));
-                      },
+                ),
+                        );
+                      }).toList(),
                     ),
-                ) : SizedBox()
               ),
-            ),
-          );
-        }).toList(),
-      ); } }
+            ); } }
       ),
       bottomNavigationBar: NavBar(
         friendsPageKey: GlobalKey(),
