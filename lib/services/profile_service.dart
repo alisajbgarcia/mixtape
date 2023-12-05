@@ -16,6 +16,10 @@ class ProfileService extends AbstractService {
     return getMany("/api/v1/profile/me/friendship/friends", Profile.fromJson);
   }
 
+  Future<List<Profile>> getSuggestedFriendsForCurrentUser() async {
+    return getMany("/api/v1/profile/me/suggestions", Profile.fromJson);
+  }
+
   Future<List<Profile>> searchProfiles(String displayName) async {
     return getMany("/api/v1/profile", Profile.fromJson, paramMap: Map.fromEntries([MapEntry("displayName", displayName)]));
   }
