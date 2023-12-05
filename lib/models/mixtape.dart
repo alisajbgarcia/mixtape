@@ -8,7 +8,7 @@ import 'package:mixtape/utilities/json_utilities.dart';
 
 class Mixtape {
   String id;
-  String playlistID;
+  String playlistId;
   String name;
   DateTime createdAt;
   String description;
@@ -20,7 +20,7 @@ class Mixtape {
 
   Mixtape(
       {required this.id,
-        required this.playlistID,
+        required this.playlistId,
         required this.name,
         required this.createdAt,
         required this.description,
@@ -32,7 +32,7 @@ class Mixtape {
   factory Mixtape.fromJson(Map<String, dynamic> json) {
     return Mixtape(
       id: json["id"],
-      playlistID: json["playlistID"],
+      playlistId: json["playlistId"],
       name: json["name"],
       createdAt: DateTime.parse(json["createdAt"]),
       description: json["description"],
@@ -47,7 +47,7 @@ class Mixtape {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "playlistID": playlistID,
+      "playlistId": playlistId,
       "name": name,
       "createdAt": createdAt.toIso8601String(),
       "description": description,
