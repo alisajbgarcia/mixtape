@@ -35,7 +35,10 @@ class _HomePageState extends State<HomePage> {
   late TutorialCoachMark homePageTutorialMark;
   late TutorialCoachMark navBarTutorialMark;
   GlobalKey homePageKey = GlobalKey();
-  GlobalKey navBarKey = GlobalKey();
+  GlobalKey friendsPageKey = GlobalKey();
+  GlobalKey profilePageKey = GlobalKey();
+  GlobalKey notificationsPageKey = GlobalKey();
+  GlobalKey playlistKey = GlobalKey();
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
@@ -66,7 +69,7 @@ class _HomePageState extends State<HomePage> {
     navBarTutorialMark = TutorialCoachMark(
       targets: addNavBarTourTargets(
         context: context,
-        friendsPageKey: navBarKey,
+        friendsPageKey: friendsPageKey,
       ),
       colorShadow: MixTapeColors.green,
       textSkip: 'NEXT',
@@ -443,6 +446,7 @@ class _HomePageState extends State<HomePage> {
         }
       ),
       floatingActionButton: Container(
+        key: playlistKey,
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
         child: FloatingActionButton.extended(
@@ -468,8 +472,9 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: MixTapeColors.green, // Change the button's color
           ),
       ),
-      bottomNavigationBar: NavBar(
-        friendsPageKey: navBarKey,
+      bottomNavigationBar: NavBar.Tutorial(
+        friendsPageKey: friendsPageKey,
+        profileKey: profilePageKey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         context: context,

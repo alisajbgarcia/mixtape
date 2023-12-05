@@ -506,7 +506,6 @@ class _FriendsPageState extends State<FriendsPage> {
       ),
 
       bottomNavigationBar: NavBar(
-        friendsPageKey: null,
         context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

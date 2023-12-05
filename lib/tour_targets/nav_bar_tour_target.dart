@@ -40,12 +40,12 @@ List<TargetFocus> addNavBarTourTargets({
                   ),
                 ),
                 Text(
-                  'Once you\'ve started creating, you will be able to view your playlists here',
+                  'This is the friends page. Search for your friends to start making collaborative playlists ! They must have a MixTape account',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     color: Colors.white,
-                    fontSize: 15,
+                    fontSize: textScaleFactor * 17,
                   ),
                 ),
               ],

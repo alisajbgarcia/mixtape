@@ -6,11 +6,13 @@ import 'package:mixtape/tour_targets/nav_bar_tour_target.dart';
 class NavBar extends StatelessWidget {
   BuildContext context;
   GlobalKey? friendsPageKey;
+  GlobalKey? profileKey;
   final int currentIndex;
   final Function(int) onTap;
   bool newUser = false;
 
-  NavBar({required this.context, required this.currentIndex, required this.onTap, required this.friendsPageKey});
+  NavBar({required this.context, required this.currentIndex, required this.onTap});
+  NavBar.Tutorial({required this.context, required this.currentIndex, required this.onTap, required this.friendsPageKey, required this.profileKey});
 
 
   @override
