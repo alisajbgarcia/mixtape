@@ -57,11 +57,7 @@ class _HomePageState extends State<HomePage> {
       colorShadow: MixTapeColors.dark_gray,
       paddingFocus: 1,
       hideSkip: true,
-      opacityShadow: 0,
-      onSkip: () {
-        newUser = false;
-        return newUser;
-      },
+      opacityShadow: 0.8,
       onFinish: () {
         showNavBarTour();
       }
@@ -75,14 +71,10 @@ class _HomePageState extends State<HomePage> {
         friendsPageKey: friendsPageKey,
         profilePageKey: profilePageKey,
       ),
-      colorShadow: MixTapeColors.green,
-      textSkip: 'NEXT',
+      colorShadow: MixTapeColors.dark_gray,
       paddingFocus: 1,
-      hideSkip: false,
+      hideSkip: true,
       opacityShadow: 0.8,
-      onSkip: () {
-        return true;
-      },
     );
   }
 
@@ -477,13 +469,17 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: MixTapeColors.green, // Change the button's color
           ),
       ),
-      bottomNavigationBar: NavBar.Tutorial(
+      bottomNavigationBar: newUser ? NavBar.Tutorial(
         friendsPageKey: friendsPageKey,
         profilePageKey: profilePageKey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         context: context,
-      ),
+      ) : NavBar(
+        context: context,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      )
     );
   }
 

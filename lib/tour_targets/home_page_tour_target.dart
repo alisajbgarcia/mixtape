@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:mixtape/widgets/playlist_widget.dart';
 
+import '../utilities/colors.dart';
+
 List<TargetFocus> addTourTargets({
   required GlobalKey profileKey,
   required GlobalKey notificationsPageKey,
@@ -80,31 +82,40 @@ List<TargetFocus> addTourTargets({
       contents: [
         TargetContent(
             padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .7),
-            align: ContentAlign.top,
+            align: ContentAlign.bottom,
             builder: (context, controller) => Container(
               alignment: Alignment.center,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Notifications',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontSize: textScaleFactor * 30,
+                  Icon(
+                    Icons.arrow_upward_rounded,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                  Center(
+                    child: Text(
+                      'Notifications',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: textScaleFactor * 30,
+                      ),
                     ),
                   ),
-                  Text(
-                    'This is the notifications page'
-                    'View and filter alerts for events such as friend requests, playlist invitations, and when a MixTape has been added to a playlist !',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontSize: textScaleFactor * 17,
+                  Center(
+                    child: Text(
+                      'Tap on the bell to see the notifications page.\n'
+                      'View and filter alerts for events such as friend requests, playlist invitations, and when a MixTape has been added to a playlist !',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: textScaleFactor * 17,
+                      ),
                     ),
                   ),
                 ],
