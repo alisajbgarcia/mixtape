@@ -58,8 +58,6 @@ class _ProfilePageState extends State<ProfilePage> {
       currentProfile = profileService.getCurrentProfile();
     });
 
-    pageTour();
-    showTour();
 
   }
 
