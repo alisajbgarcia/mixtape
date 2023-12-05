@@ -84,7 +84,8 @@ class _FriendInfoScreenState extends State<FriendInfoScreen> {
                       );
                     }
                     final friend = profileSnapshot.data!;
-                    return Text(
+                    return Column(children: [
+                      Text(
                       friend.displayName,
                       style: TextStyle(
                         fontFamily: 'Montserrat',
@@ -93,7 +94,28 @@ class _FriendInfoScreenState extends State<FriendInfoScreen> {
                         color: Colors.white,
                       ),
                       softWrap: true,
-                    );
+                    ),
+                      Text(
+                        "Mixtapes you created: 4",
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                          fontSize: (14.0 * textScaleFactor),
+                          color: Colors.white,
+                        ),
+                        softWrap: true,
+                      ),
+                      Text(
+                        "Mixtapes they created: 3",
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                          fontSize: (14.0 * textScaleFactor),
+                          color: Colors.white,
+                        ),
+                        softWrap: true,
+                      ),
+                    ]);
                   }),
             ),
           ],

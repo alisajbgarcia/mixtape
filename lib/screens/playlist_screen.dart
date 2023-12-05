@@ -595,7 +595,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                           ),
                         ),
                       ),
-                      icon: Icon(Icons.add),
+                      icon: Icon(Icons.add, color: Colors.white),
                       backgroundColor:
                           MixTapeColors.green, // Change the button's color
                     ),
