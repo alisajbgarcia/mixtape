@@ -50,7 +50,10 @@ class _HomePageState extends State<HomePage> {
   void homePageTour() {
     homePageTutorialMark = TutorialCoachMark(
       targets: addTourTargets(
-          profileKey: homePageKey),
+        context: context,
+        profileKey: homePageKey,
+        notificationsPageKey: notificationsPageKey,
+      ),
       colorShadow: MixTapeColors.dark_gray,
       paddingFocus: 1,
       hideSkip: true,
@@ -70,6 +73,7 @@ class _HomePageState extends State<HomePage> {
       targets: addNavBarTourTargets(
         context: context,
         friendsPageKey: friendsPageKey,
+        profilePageKey: profilePageKey,
       ),
       colorShadow: MixTapeColors.green,
       textSkip: 'NEXT',
@@ -161,6 +165,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         key: homePageKey,
         leading: IconButton(
+          key: notificationsPageKey,
           padding: EdgeInsets.all(10),
           icon: ImageIcon(
             AssetImage("assets/notif.png"),
@@ -474,7 +479,7 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: NavBar.Tutorial(
         friendsPageKey: friendsPageKey,
-        profileKey: profilePageKey,
+        profilePageKey: profilePageKey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         context: context,
