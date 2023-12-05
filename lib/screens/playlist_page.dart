@@ -584,7 +584,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       heroTag: "mixtape_creation",
                       onPressed: () {
                         print("create mixtape");
-                        Navigator.of(context).pushReplacementNamed('/tapecreate', arguments: ScreenArguments(widget.playlist));
+                        Navigator.of(context).pushNamed('/tapecreate', arguments: ScreenArguments(widget.playlist));
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),
