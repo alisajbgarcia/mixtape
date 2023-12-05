@@ -414,34 +414,27 @@ class _FriendsPageState extends State<FriendsPage> {
                                                                   ),
                                                                   onPressed: () async {
                                                                     try {
-                                                                      await friendshipService
-                                                                          .createFriendRequest(
-                                                                          searchFriend
-                                                                              .id);
+                                                                      await friendshipService.createFriendRequest(searchFriend.id);
                                                                       final snackBar = SnackBar(
-                                                                          content: Text(
-                                                                              'Friend request sent to: ${searchFriend
-                                                                                  .displayName}')
-
+                                                                          content: Text('Friend request sent to: ${searchFriend.displayName}')
                                                                       );
-                                                                      ScaffoldMessenger
-                                                                          .of(
-                                                                          context)
-                                                                          .showSnackBar(
-                                                                          snackBar);
+                                                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                                     } catch (err) {
-                                                                      print(err);
-                                                                      final snackBar = SnackBar(
-                                                                          content: Text(
-                                                                              'Error in sending friend request to ${searchFriend
-                                                                                  .displayName}')
+                                                                      String errorMessage = err.toString();
+                                                                      SnackBar? snackBar;
+                                                                      if(errorMessage.contains("500") || errorMessage.contains("461")) {
+                                                                        print('already sent friend request');
+                                                                        snackBar = SnackBar(
+                                                                            content: Text('Friend request already exists for ${searchFriend.displayName}')
+                                                                        );
+                                                                      } else if(errorMessage.contains("500") || errorMessage.contains("461")) {
+                                                                        print('already sent friend request');
+                                                                        snackBar = SnackBar(
+                                                                            content: Text('Friend request already exists for ${searchFriend.displayName}')
+                                                                        );
+                                                                      }
 
-                                                                      );
-                                                                      ScaffoldMessenger
-                                                                          .of(
-                                                                          context)
-                                                                          .showSnackBar(
-                                                                          snackBar);
+                                                                      ScaffoldMessenger.of(context).showSnackBar(snackBar!);
                                                                     }
                                                                   }
                                                               )
