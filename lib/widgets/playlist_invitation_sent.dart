@@ -27,6 +27,7 @@ class PlaylistInvitationSent extends StatelessWidget {
         IconButton(
             onPressed: () {
               Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
             icon: Icon(
               Icons.check,

@@ -1,14 +1,19 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/models/profile.dart';
+import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/login_page.dart';
 import 'package:mixtape/services/authentication_service.dart';
 import 'package:mixtape/services/profile_service.dart';
 import 'package:mixtape/services/services_container.dart';
 import 'package:mixtape/utilities/navbar_pages.dart';
 import 'package:mixtape/widgets/navbar.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../utilities/colors.dart';
+import 'package:mixtape/tour_targets/profile_tour_target.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -22,16 +27,40 @@ class _ProfilePageState extends State<ProfilePage> {
   late ProfileService profileService;
   late AuthenticationService authenticationService;
   late Future<Profile> currentProfile;
+  late TutorialCoachMark tutorialCoachMark;
+
+  GlobalKey profileKey = GlobalKey();
+
+  void pageTour() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: addTourTargets(
+          profileKey: profileKey),
+      colorShadow: MixTapeColors.green,
+      paddingFocus: 10,
+      textSkip: "NEXT",
+      opacityShadow: 0.8,
+      onSkip: () {
+        Navigator.of(context).pop();
+        return true;
+      },
+    );
+  }
+
+  void showTour() => Future.delayed(Duration(seconds: 1),
+      () => tutorialCoachMark.show(context: context));
 
   @override
   void initState() {
     super.initState();
-
     profileService = ServicesContainer.of(context).profileService;
     authenticationService = ServicesContainer.of(context).authService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
     });
+
+    pageTour();
+    showTour();
+
   }
 
   int _selectedIndex = 0;
@@ -56,7 +85,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    final Size screenSize = MediaQuery.of(context).size;
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    final double screenWidth = screenSize.width;
+    final double screenHeight = screenSize.height;
 
     return Scaffold(
       backgroundColor: MixTapeColors.black,
@@ -92,32 +124,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    // Profile picture, using MixTape logo temporarily until Spotify Link
                     Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        height: MediaQuery.of(context).size.width * .5,
-                        child: CachedNetworkImage(
-                          imageUrl: profile.profilePicURL,
-                          placeholder: (context, url) => CircleAvatar(
-                            backgroundColor: MixTapeColors.dark_gray,
-                            radius: 30,
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white70,
-                              size: MediaQuery.of(context).size.width * .3,
-                            ),
-                          ),
-                          errorWidget: (context, url, error) => CircleAvatar(
-                            backgroundColor: MixTapeColors.dark_gray,
-                            radius: 30,
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white70,
-                              size: MediaQuery.of(context).size.width * .3,
-                            ),
-                          ),
+                      padding: EdgeInsets.fromLTRB(0, screenHeight * .05, 0, screenHeight * .03),
+                      child: ClipOval(
+                        child: Image.network(
+                          key: profileKey,
+                          profile.profilePicURL,
+                          width: screenHeight * .15,
+                          height: screenHeight * .15,
+                          fit: BoxFit.cover, // Adjust the fit as needed
                         ),
                       ),
                     ),
@@ -196,10 +211,16 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       ),
       bottomNavigationBar: NavBar(
+        friendsPageKey: GlobalKey(),
+        context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  void showTutorial() {
+    tutorialCoachMark.show(context: context);
   }
 
   handleLogout(void Function() onComplete, {void Function(Object)? onError}) {

@@ -28,15 +28,23 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void onLogin() {
-    _authService.login().then((success) => {
-      if (success) {
-        Navigator.pushReplacementNamed(context, '/home')
-      } else {
-        hasError = true
-      }
-    }, onError: (err) {
-      hasError = true;
-    });
+    _authService.login().then(
+          (success) {
+        if (success) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        } else {
+          hasError = true;
+        }
+        print("this should work");
+        return success; // Return the success value
+      },
+      onError: (err) {
+        hasError = true;
+        print("oh nooo");
+        print(err);
+        return false; // Return a default value in case of an error
+      },
+    );
   }
 
   @override

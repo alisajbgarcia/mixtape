@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/main.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
@@ -14,8 +15,12 @@ import '../services/authentication_service.dart';
 import '../services/playlist_service.dart';
 import '../services/profile_service.dart';
 import '../services/services_container.dart';
+import '../tour_targets/home_page_tour_target.dart';
+import '../tour_targets/nav_bar_tour_target.dart';
 import '../utilities/navbar_pages.dart';
 import '../models/playlist.dart';
+import '../widgets/welcome_dialog.dart';
+import '../widgets/mixtape_premise_dialog.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -25,21 +30,58 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  bool light = true;
-  late Profile targetProfile;
+  bool newUser = false;
   late Profile initiatorProfile;
-  late List<String> songIds;
-  late Mixtape sampleMixtape;
-  late List<Mixtape> mixtapes;
-  late List<Playlist> dummydata;
-  late List<TrackInfo> tracks;
-  late List<Reaction> reactions = [Reaction(id: 123, reactor: initiatorProfile, reactionType: ReactionType.LIKE)];
+
+  late TutorialCoachMark homePageTutorialMark;
+  late TutorialCoachMark navBarTutorialMark;
+  GlobalKey homePageKey = GlobalKey();
+  GlobalKey navBarKey = GlobalKey();
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
   late ProfileService profileService;
   late Future<List<Playlist>> playlists;
   late Future<Profile> currentProfile;
+  late List<Reaction> reactions = [Reaction(id: 123, reactor: initiatorProfile, reactionType: ReactionType.LIKE)];
+
+  void homePageTour() {
+    homePageTutorialMark = TutorialCoachMark(
+      targets: addTourTargets(
+          profileKey: homePageKey),
+      colorShadow: MixTapeColors.dark_gray,
+      paddingFocus: 1,
+      hideSkip: true,
+      opacityShadow: 0,
+      onSkip: () {
+        newUser = false;
+        return newUser;
+      },
+      onFinish: () {
+        showNavBarTour();
+      }
+    );
+  }
+
+  void navBarTour() {
+    navBarTutorialMark = TutorialCoachMark(
+      targets: addNavBarTourTargets(
+          friendsPageKey: navBarKey),
+      colorShadow: MixTapeColors.green,
+      paddingFocus: 1,
+      hideSkip: false,
+      opacityShadow: 0.8,
+      onSkip: () {
+        return true;
+      },
+    );
+  }
+
+  void showTour() => Future.delayed(Duration(milliseconds: 500),
+          () => homePageTutorialMark.show(context: context));
+
+  void showNavBarTour() => Future.delayed(Duration(milliseconds: 500),
+          () => navBarTutorialMark.show(context: context));
 
   void _onItemTapped(int index) {
     setState(() {
@@ -62,16 +104,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    targetProfile = Profile('id', 'cmsale', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
-    initiatorProfile = Profile('id', 'alisajbgarcia', 'spotifyId', 'https://i.scdn.co/image/ab67757000003b8262187a7fae1ceff7d4078e5e');
-    songIds = ['id', 'id', 'id'];
-    tracks = [TrackInfo(id: 'id', name: 'name', artistNames: ['artist'], albumName: 'album', albumImageURL: 'assets/blue_colored_logo.png')];
-    DateTime date = DateTime.now();
-    sampleMixtape = Mixtape(id: 'id', playlistID: 'playlistId', name: 'name', createdAt: date, description: 'description', creator: targetProfile, songIDs: songIds, songs: tracks, reactions: reactions);
-    mixtapes = [sampleMixtape, sampleMixtape];
-    dummydata = [
-      Playlist(id: 'ID', spotifyID: 'spotifyID', name: 'ish and charlie like to party', initiator: initiatorProfile, target: targetProfile, description: 'description', coverPicURL: 'assets/blue_colored_logo.png', mixtapes: mixtapes, totalDurationMS: 9120000, songCount: 5),
-    ];
 
     profileService = ServicesContainer.of(context).profileService;
     playlistService = ServicesContainer.of(context).playlistService;
@@ -80,6 +112,43 @@ class _HomePageState extends State<HomePage> {
       currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
     });
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if(newUser) {
+        homePageTour();
+        navBarTour();
+        openWelcomeDialog();
+      }
+
+    });
+  }
+
+  void openWelcomeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return WelcomeDialog(
+          startTutorial: (bool startTutorial) {
+            setState(() {
+              newUser = startTutorial;
+            });
+          },
+        );
+      },
+    ).then((result) {
+      if (newUser) {
+        showTour();
+      }
+    });
+  }
+
+  void openTutorial1() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MixTapePremiseDialog();
+      },
+    );
   }
 
   @override
@@ -90,10 +159,10 @@ class _HomePageState extends State<HomePage> {
     final double screenHeight = screenSize.height;
 
 
-
     return Scaffold(
       backgroundColor: MixTapeColors.black,
       appBar: AppBar(
+        key: homePageKey,
         leading: IconButton(
           padding: EdgeInsets.all(10),
           icon: ImageIcon(
@@ -118,28 +187,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                /*
-                Icon(
-                  light ? Icons.sunny : Icons.dark_mode,
-                  color: Colors.white,
-                ),
-                Switch(
-                  // This bool value toggles the switch.
-                  value: light,
-                  activeColor: MixTapeColors.green,
-                  onChanged: (bool value) {
-                    // This is called when the user toggles the switch.
-                    setState(() {
-                      light = value;
-                    });
-                  },
-                ),
-                */
-              ],
-            ),
-            ],
+          ],
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
@@ -423,8 +471,10 @@ class _HomePageState extends State<HomePage> {
           ),
       ),
       bottomNavigationBar: NavBar(
+        friendsPageKey: navBarKey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        context: context,
       ),
     );
   }
