@@ -417,6 +417,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                                                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                                     } catch (err) {
                                                                       String errorMessage = err.toString();
+                                                                      print(errorMessage);
                                                                       SnackBar? snackBar;
                                                                       if(errorMessage.contains("500") || errorMessage.contains("461")) {
                                                                         print('already sent friend request');

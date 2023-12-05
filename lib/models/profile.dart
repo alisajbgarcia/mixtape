@@ -14,7 +14,7 @@ class Profile {
     displayName = items["displayName"] ?? "",
     spotifyUID = items["spotifyUID"] ?? "",
     profilePicURL = items["profilePicURL"] ?? "",
-    onboarded = items["onboardde"],
+    onboarded = items["onboarded"]
   ;
 
   Map<String, dynamic> toJson() {

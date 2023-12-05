@@ -101,6 +101,9 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
+      currentProfile.then((profile) {
+        newUser = profile.onboarded;
+      });
     });
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
