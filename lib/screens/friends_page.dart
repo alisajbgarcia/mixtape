@@ -505,6 +505,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                         ),
                                       ),
                                       onPressed: () {
+                                        // TODO: change this routing
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(builder: (context) => SuggestedFriendsPage()),
