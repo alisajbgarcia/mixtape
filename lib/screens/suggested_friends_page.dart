@@ -30,6 +30,8 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
   late Future<List<Profile>> suggestedFriends;
   HashSet<String> suggestedFriendIDs = new HashSet<String>();
 
+  int _selectedIndex = 0;
+
   void initState() {
     super.initState();
 
@@ -40,6 +42,24 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
       currentProfile = profileService.getCurrentProfile();
       suggestedFriends = profileService.getSuggestedFriendsForCurrentUser();
     });
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    String route = "";
+    switch (index) {
+      case 0:
+        route = '/home';
+        break;
+      case 1:
+        route = '/friends';
+        break;
+      case 2:
+        route = "/profile";
+    }
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   @override
@@ -215,6 +235,13 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
             ]);
           }
         },
+      ),
+
+      bottomNavigationBar: NavBar(
+        friendsPageKey: GlobalKey(),
+        context: context,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
