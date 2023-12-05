@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   late AuthenticationService _authService;
 
   bool hasError = false;
+  bool loading = false;
   String? errorMsg;
 
   @override
@@ -28,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void onLogin() {
+    toggleLoading();
     _authService.login().then(
           (success) {
         if (success) {
@@ -42,9 +44,16 @@ class _LoginPageState extends State<LoginPage> {
         hasError = true;
         print("oh nooo");
         print(err);
+        toggleLoading();
         return false; // Return a default value in case of an error
       },
     );
+  }
+
+  void toggleLoading() {
+    setState(() {
+      loading = !loading;
+    });
   }
 
   @override
@@ -88,17 +97,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: screenHeight * .055),
-              FilledButton.icon(
+              !loading ? FilledButton.icon(
                 onPressed: () {
                   print("login");
-
                   onLogin();
 
-                  /*
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );*/
                 },
                 style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -122,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-              ),
+              ) : CircularProgressIndicator(),
               if (hasError) ...[
                 Text(errorMsg ?? 'Failed to login')
               ]
