@@ -5,14 +5,17 @@ class Profile {
   String displayName;
   String spotifyUID;
   String profilePicURL;
+  bool onboarded;
 
-  Profile(this.id, this.displayName, this.spotifyUID, this.profilePicURL);
+  Profile(this.id, this.displayName, this.spotifyUID, this.profilePicURL, this.onboarded  );
 
   Profile.fromJson(Map<String, dynamic> items)
   : id = items["id"],
     displayName = items["displayName"] ?? "",
     spotifyUID = items["spotifyUID"] ?? "",
-    profilePicURL = items["profilePicURL"] ?? "";
+    profilePicURL = items["profilePicURL"] ?? "",
+    onboarded = items["onboardde"],
+  ;
 
   Map<String, dynamic> toJson() {
     return {
