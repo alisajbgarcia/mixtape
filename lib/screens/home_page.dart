@@ -30,12 +30,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  bool light = true;
   bool newUser = false;
   late Profile initiatorProfile;
 
-  late TutorialCoachMark tutorialCoachMark;
+  late TutorialCoachMark homePageTutorialMark;
+  late TutorialCoachMark navBarTutorialMark;
   GlobalKey homePageKey = GlobalKey();
+  GlobalKey navBarKey = GlobalKey();
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
@@ -44,23 +45,43 @@ class _HomePageState extends State<HomePage> {
   late Future<Profile> currentProfile;
   late List<Reaction> reactions = [Reaction(id: 123, reactor: initiatorProfile, reactionType: ReactionType.LIKE)];
 
-  void pageTour() {
-    tutorialCoachMark = TutorialCoachMark(
-      targets: addTourTargets(
-          profileKey: homePageKey),
-      colorShadow: MixTapeColors.dark_gray,
+  void homePageTour() {
+    homePageTutorialMark = TutorialCoachMark(
+        targets: addTourTargets(
+            profileKey: homePageKey),
+        colorShadow: MixTapeColors.dark_gray,
+        paddingFocus: 1,
+        hideSkip: true,
+        opacityShadow: 0,
+        onSkip: () {
+          newUser = false;
+          return newUser;
+        },
+        onFinish: () {
+          showNavBarTour();
+        }
+    );
+  }
+
+  void navBarTour() {
+    navBarTutorialMark = TutorialCoachMark(
+      targets: addNavBarTourTargets(
+          friendsPageKey: navBarKey),
+      colorShadow: MixTapeColors.green,
       paddingFocus: 1,
-      hideSkip: true,
-      opacityShadow: 0,
+      hideSkip: false,
+      opacityShadow: 0.8,
       onSkip: () {
-        print('done');
         return true;
       },
     );
   }
 
   void showTour() => Future.delayed(Duration(milliseconds: 500),
-          () => tutorialCoachMark.show(context: context));
+          () => homePageTutorialMark.show(context: context));
+
+  void showNavBarTour() => Future.delayed(Duration(milliseconds: 500),
+          () => navBarTutorialMark.show(context: context));
 
   void _onItemTapped(int index) {
     setState(() {
@@ -92,13 +113,13 @@ class _HomePageState extends State<HomePage> {
       playlists = playlistService.getPlaylistsForCurrentUser();
     });
 
-
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if(newUser) {
+        homePageTour();
+        navBarTour();
         openWelcomeDialog();
       }
 
-      //openTutorial1();
     });
   }
 
@@ -116,9 +137,7 @@ class _HomePageState extends State<HomePage> {
       },
     ).then((result) {
       if (newUser) {
-        openTutorial1();
-        //pageTour();
-        //showTour();
+        showTour();
       }
     });
   }
@@ -145,15 +164,15 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         key: homePageKey,
         leading: IconButton(
-          padding: EdgeInsets.all(10),
-          icon: ImageIcon(
-            AssetImage("assets/notif.png"),
-            size: textScaleFactor * 50
-          ),
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/notifs');
-          }
-          ),
+            padding: EdgeInsets.all(10),
+            icon: ImageIcon(
+                AssetImage("assets/notif.png"),
+                size: textScaleFactor * 50
+            ),
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed('/notifs');
+            }
+        ),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,28 +187,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                /*
-                Icon(
-                  light ? Icons.sunny : Icons.dark_mode,
-                  color: Colors.white,
-                ),
-                Switch(
-                  // This bool value toggles the switch.
-                  value: light,
-                  activeColor: MixTapeColors.green,
-                  onChanged: (bool value) {
-                    // This is called when the user toggles the switch.
-                    setState(() {
-                      light = value;
-                    });
-                  },
-                ),
-                */
-              ],
-            ),
-            ],
+          ],
         ),
         backgroundColor: MixTapeColors.black,
         automaticallyImplyLeading: false,
@@ -197,91 +195,91 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: screenHeight * .13,
         actions: [
           FutureBuilder(
-            future: currentProfile,
-            builder: (context, profileSnapshot) {
-              if (!profileSnapshot.hasData || profileSnapshot.hasError) {
-                //return const Center(child: CircularProgressIndicator());
+              future: currentProfile,
+              builder: (context, profileSnapshot) {
+                if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                  //return const Center(child: CircularProgressIndicator());
+                  return Padding(
+                    padding: EdgeInsets.all(screenHeight * .03),
+                    child: ClipOval(
+                      child: Container(
+                        width: screenWidth * 0.15,
+                        height: screenWidth * 0.15,
+                        child: CircleAvatar(
+                          backgroundColor: MixTapeColors.dark_gray,
+                          radius: 30,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                final profile = profileSnapshot.data!;
                 return Padding(
                   padding: EdgeInsets.all(screenHeight * .03),
                   child: ClipOval(
                     child: Container(
                       width: screenWidth * 0.15,
                       height: screenWidth * 0.15,
-                      child: CircleAvatar(
-                        backgroundColor: MixTapeColors.dark_gray,
-                        radius: 30,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white70,
+                      child: CachedNetworkImage(
+                        imageUrl: profile.profilePicURL,
+                        placeholder: (context, url) => CircleAvatar(
+                          backgroundColor: MixTapeColors.dark_gray,
+                          radius: 30,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white70,
+                          ),
                         ),
+                        errorWidget: (context, url, error) => CircleAvatar(
+                          backgroundColor: MixTapeColors.dark_gray,
+                          radius: 30,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white70,
+                          ),
+                        ),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 );
               }
-              final profile = profileSnapshot.data!;
-              return Padding(
-                padding: EdgeInsets.all(screenHeight * .03),
-                child: ClipOval(
-                  child: Container(
-                    width: screenWidth * 0.15,
-                    height: screenWidth * 0.15,
-                    child: CachedNetworkImage(
-                      imageUrl: profile.profilePicURL,
-                      placeholder: (context, url) => CircleAvatar(
-                        backgroundColor: MixTapeColors.dark_gray,
-                        radius: 30,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white70,
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => CircleAvatar(
-                        backgroundColor: MixTapeColors.dark_gray,
-                        radius: 30,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white70,
-                        ),
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              );
-            }
           )
         ],
       ),
       body: FutureBuilder(
-        future: playlists,
-        builder: (context, playlistsSnapshot) {
-          List<Playlist> cardData;
-          if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
-            print(playlistsSnapshot.error.toString());
-            return const Center(child: CircularProgressIndicator());
-            // cardData = dummydata;
-            // print('oops');
-          } else {
-            cardData = playlistsSnapshot.data!;
-          }
+          future: playlists,
+          builder: (context, playlistsSnapshot) {
+            List<Playlist> cardData;
+            if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
+              print(playlistsSnapshot.error.toString());
+              return const Center(child: CircularProgressIndicator());
+              // cardData = dummydata;
+              // print('oops');
+            } else {
+              cardData = playlistsSnapshot.data!;
+            }
 
-          // null assert is hella ugly, but the compiler doesn't appear to tell
-          // that this won't be null because of the early return
-          return Column(
-            children: [
-              Container(
-                height: screenHeight * .67,
-                padding: EdgeInsets.fromLTRB(screenWidth * .005, screenWidth * .005, screenWidth * .005, 0),
-                child: SingleChildScrollView(
-                  child: Column(
+            // null assert is hella ugly, but the compiler doesn't appear to tell
+            // that this won't be null because of the early return
+            return Column(
+              children: [
+                Container(
+                  height: screenHeight * .67,
+                  padding: EdgeInsets.fromLTRB(screenWidth * .005, screenWidth * .005, screenWidth * .005, 0),
+                  child: SingleChildScrollView(
+                    child: Column(
                       children: cardData.map((playlist) {
                         return InkWell(
                           borderRadius: BorderRadius.circular(12.0),
                           onTap: () {
                             print('Tapped on Card ${playlist.name}');
                             Navigator.of(context).pushReplacementNamed(
-                              '/playlist', arguments: ScreenArguments(playlist)
+                                '/playlist', arguments: ScreenArguments(playlist)
                             );
                           },
                           child: Card(
@@ -332,73 +330,73 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             FilledButton(
-                                              style: FilledButton.styleFrom(
-                                                backgroundColor: MixTapeColors.dark_gray,
-                                                padding: EdgeInsets.all(0),
-                                                fixedSize: Size(150, 15),
-                                              ),
-                                              onPressed: null,
-                                              child: FutureBuilder(
-                                                future: currentProfile,
-                                                builder: (context, profileSnapshot) {
-                                                  if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                                                style: FilledButton.styleFrom(
+                                                  backgroundColor: MixTapeColors.dark_gray,
+                                                  padding: EdgeInsets.all(0),
+                                                  fixedSize: Size(150, 15),
+                                                ),
+                                                onPressed: null,
+                                                child: FutureBuilder(
+                                                  future: currentProfile,
+                                                  builder: (context, profileSnapshot) {
+                                                    if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                                                      return Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        children: [
+                                                          Image.asset('assets/green_colored_logo.png',
+                                                              width: 25,
+                                                              height: 25
+                                                          ),
+                                                          Text(
+                                                            "loading friend",
+                                                            style: TextStyle(
+                                                              fontSize: (10 * textScaleFactor),
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+                                                    final profile = profileSnapshot.data!;
                                                     return Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                       children: [
-                                                        Image.asset('assets/green_colored_logo.png',
-                                                            width: 25,
-                                                            height: 25
-                                                        ),
-                                                        Text(
-                                                          "loading friend",
-                                                          style: TextStyle(
-                                                            fontSize: (10 * textScaleFactor),
-                                                            color: Colors.white,
+                                                        if (profile.id == playlist.initiator.id)
+                                                          CachedNetworkImage(
+                                                              imageUrl: playlist.target.profilePicURL,
+                                                              placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                                              errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                                              width: 25,
+                                                              height: 25
                                                           ),
-                                                        ),
+                                                        if (profile.id == playlist.initiator.id)
+                                                          Text(
+                                                            "with ${playlist.target.displayName}",
+                                                            style: TextStyle(
+                                                              fontSize: (10 * textScaleFactor),
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                        if (profile.id == playlist.target.id)
+                                                          CachedNetworkImage(
+                                                              imageUrl: playlist.initiator.profilePicURL,
+                                                              placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                                              errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                                              width: 25,
+                                                              height: 25
+                                                          ),
+                                                        if (profile.id == playlist.target.id)
+                                                          Text(
+                                                            "with ${playlist.initiator.displayName}",
+                                                            style: TextStyle(
+                                                              fontSize: (10 * textScaleFactor),
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
                                                       ],
                                                     );
-                                                  }
-                                                  final profile = profileSnapshot.data!;
-                                                  return Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      if (profile.id == playlist.initiator.id)
-                                                        CachedNetworkImage(
-                                                            imageUrl: playlist.target.profilePicURL,
-                                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
-                                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
-                                                            width: 25,
-                                                            height: 25
-                                                        ),
-                                                      if (profile.id == playlist.initiator.id)
-                                                        Text(
-                                                          "with ${playlist.target.displayName}",
-                                                          style: TextStyle(
-                                                            fontSize: (10 * textScaleFactor),
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      if (profile.id == playlist.target.id)
-                                                        CachedNetworkImage(
-                                                            imageUrl: playlist.initiator.profilePicURL,
-                                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
-                                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
-                                                            width: 25,
-                                                            height: 25
-                                                        ),
-                                                      if (profile.id == playlist.target.id)
-                                                        Text(
-                                                          "with ${playlist.initiator.displayName}",
-                                                          style: TextStyle(
-                                                            fontSize: (10 * textScaleFactor),
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                    ],
-                                                  );
-                                                },
-                                              )
+                                                  },
+                                                )
 
                                             ),
                                             Card(
@@ -440,41 +438,43 @@ class _HomePageState extends State<HomePage> {
                         );
                       }).toList(),
                     ),
+                  ),
                 ),
-              ),
-            ],
-          );
-        }
+              ],
+            );
+          }
       ),
       floatingActionButton: Container(
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
         child: FloatingActionButton.extended(
-            heroTag: "playlist_creation",
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
-            ),
-            onPressed: () {
-              print("here omg please");
-              Navigator.of(context).pushNamed(
-                '/playlistcreate'
-              );
-            },
-            label: Text(
-                'Create a Playlist',
-                style: TextStyle(
-                  fontSize: textScaleFactor * 20,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600,
-                ),
-            ),
-            icon: Icon(Icons.add),
-            backgroundColor: MixTapeColors.green, // Change the button's color
+          heroTag: "playlist_creation",
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
           ),
+          onPressed: () {
+            print("here omg please");
+            Navigator.of(context).pushNamed(
+                '/playlistcreate'
+            );
+          },
+          label: Text(
+            'Create a Playlist',
+            style: TextStyle(
+              fontSize: textScaleFactor * 20,
+              fontFamily: "Montserrat",
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          icon: Icon(Icons.add),
+          backgroundColor: MixTapeColors.green, // Change the button's color
+        ),
       ),
       bottomNavigationBar: NavBar(
+        friendsPageKey: navBarKey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        context: context,
       ),
     );
   }
