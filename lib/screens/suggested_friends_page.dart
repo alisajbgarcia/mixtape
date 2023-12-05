@@ -27,8 +27,8 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
   late AuthenticationService authenticationService;
   late FriendshipService friendshipService;
   late Future<Profile> currentProfile;
-  late Future<List<Profile>> friends;
   late Future<List<Profile>> suggestedFriends;
+  HashSet<String> suggestedFriendIDs = new HashSet<String>();
 
   void initState() {
     super.initState();
@@ -38,8 +38,7 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
     friendshipService = ServicesContainer.of(context).friendshipService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
-      friends = profileService.getFriendsForCurrentUser();
-      suggestedFriends = profileService.searchProfiles("");
+      suggestedFriends = profileService.getSuggestedFriendsForCurrentUser();
     });
   }
 
@@ -49,6 +48,175 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: MixTapeColors.black,
+      appBar: AppBar(
+        title: Align(
+          alignment: Alignment.center,
+          child: Text(
+            'Suggested Friends',
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w600,
+              fontSize: (25.0 * textScaleFactor),
+            ),
+          ),
+        ),
+        backgroundColor: MixTapeColors.black,
+        automaticallyImplyLeading: false,
+        elevation: 0.0,
+        toolbarHeight: screenHeight * .13,
+      ),
+      body: FutureBuilder(
+        future: suggestedFriends,
+        builder: (context, friendsSnapshot) {
+          if (friendsSnapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Display a loading indicator while waiting for data.
+          } else {
+            List<Profile> cardData;
+            if (!friendsSnapshot.hasData) {
+              cardData = [];
+              suggestedFriendIDs.clear();
+            } else {
+              cardData = friendsSnapshot.data!;
+              suggestedFriendIDs.clear();
+            }
+            return Stack(children: [
+              Container(
+                height: screenHeight * .67,
+                padding: EdgeInsets.fromLTRB(5, 0, 5, 30),
+                child: SingleChildScrollView(
+                  // Use SingleChildScrollView instead of ListView
+                  child: Container(
+                    child: Column(
+                      children: cardData.map((friend) {
+                        suggestedFriendIDs.add(friend.id);
+                        return InkWell(
+                          borderRadius: BorderRadius.circular(12.0),
+                          onTap: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              backgroundColor: MixTapeColors.black,
+                              //title: const Text('Remove Friend?'),
+                              content: const Text(
+                                'Would you like to remove this user as a friend?',
+                                style: TextStyle(
+                                  fontSize: (22),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'CANCEL'),
+                                  child: const Text(
+                                    'CANCEL',
+                                    style: TextStyle(
+                                      fontSize: (22),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () => {
+                                    Navigator.pop(context, 'YES'),
+                                    cardData.remove(friend),
+                                    friendshipService
+                                        .deleteFriendship(friend.id),
+                                    setState(() {}),
+                                  },
+                                  child: const Text(
+                                    'YES',
+                                    style: TextStyle(
+                                      fontSize: (22),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    12.0), // Adjust the radius as needed
+                              ),
+                              elevation: 3.0,
+                              margin: EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        height: screenHeight * .07,
+                                        color: MixTapeColors.dark_gray,
+                                        child: friend.profilePicURL.isNotEmpty
+                                            ? Image.network(
+                                                friend.profilePicURL)
+                                            : Container(
+                                                child: Icon(
+                                                  Icons.person_2_rounded,
+                                                  color: Colors.white70,
+                                                  size: screenWidth * .1,
+                                                ),
+                                              ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 5,
+                                            left: 10,
+                                            right: 10),
+                                        height: screenHeight * .07,
+                                        color: MixTapeColors.light_gray,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                friend.displayName,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      (22 * textScaleFactor),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            Card(
+                                              color: MixTapeColors.light_gray,
+                                              elevation: 0.0,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ]);
+          }
+        },
+      ),
+    );
   }
 }
