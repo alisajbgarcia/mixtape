@@ -35,15 +35,15 @@ List<TargetFocus> addTourTargets({
                 children: [
                   PlaylistWidget(),
                   SizedBox(
-                    height: 10,
+                    height: screenHeight * .009,
                   ),
                   Icon(
                     Icons.arrow_upward_rounded,
                     color: Colors.white,
-                    size: 50,
+                    size: screenHeight * .045,
                   ),
                   SizedBox(
-                    height: 5,
+                    height: screenHeight * .0045,
                   ),
                   Text(
                     'This is the homepage',
@@ -52,11 +52,27 @@ List<TargetFocus> addTourTargets({
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Montserrat',
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: textScaleFactor * 20,
                     ),
                   ),
+                  SizedBox(
+                    height: screenHeight * .004
+                  ),
                   Text(
-                    'Once you\'ve started creating, you will be able to view your playlists here',
+                    'Once you\'ve started creating, you will be able to view your playlists here.'
+                        'When you click on any playlist, you will be able to view its contents and add MixTapes',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: Colors.white,
+                      fontSize: textScaleFactor * 15,
+                    ),
+                  ),
+                  SizedBox(
+                    height: screenHeight * .05,
+                  ),
+                  Text(
+                    'Tap anywhere on the screen to continue.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Montserrat',
@@ -77,7 +93,7 @@ List<TargetFocus> addTourTargets({
       keyTarget: notificationsPageKey,
       enableOverlayTab: true,
       shape: ShapeLightFocus.Circle,
-      radius: 50,
+      radius: 20,
       paddingFocus: 1,
       contents: [
         TargetContent(

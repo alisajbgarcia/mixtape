@@ -29,7 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  bool newUser = true;
+  bool onboarded = true;
   late Profile initiatorProfile;
 
   late TutorialCoachMark homePageTutorialMark;
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
         profileKey: homePageKey,
         notificationsPageKey: notificationsPageKey,
       ),
-      colorShadow: MixTapeColors.dark_gray,
+      colorShadow: MixTapeColors.green,
       paddingFocus: 1,
       hideSkip: true,
       opacityShadow: 0.8,
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
         friendsPageKey: friendsPageKey,
         profilePageKey: profilePageKey,
       ),
-      colorShadow: MixTapeColors.dark_gray,
+      colorShadow: MixTapeColors.green,
       paddingFocus: 1,
       hideSkip: true,
       opacityShadow: 0.8,
@@ -104,17 +104,18 @@ class _HomePageState extends State<HomePage> {
       currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
       currentProfile.then((profile) {
-        newUser = profile.onboarded;
+        onboarded = profile.onboarded;
       });
     });
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if(newUser) {
+      print('onboarded: $onboarded');
+      if(true) {
+        //print('here: $onboarded');
         homePageTour();
         navBarTour();
         openWelcomeDialog();
       }
-
     });
   }
 
@@ -126,13 +127,13 @@ class _HomePageState extends State<HomePage> {
         return WelcomeDialog(
           startTutorial: (bool startTutorial) {
             setState(() {
-              newUser = startTutorial;
+              onboarded = startTutorial;
             });
           },
         );
       },
     ).then((result) {
-      if (newUser) {
+      if (onboarded) {
         showTour();
       }
     });
@@ -472,7 +473,7 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: MixTapeColors.green, // Change the button's color
           ),
       ),
-      bottomNavigationBar: newUser ? NavBar.Tutorial(
+      bottomNavigationBar: onboarded ? NavBar.Tutorial(
         friendsPageKey: friendsPageKey,
         profilePageKey: profilePageKey,
         currentIndex: _selectedIndex,
