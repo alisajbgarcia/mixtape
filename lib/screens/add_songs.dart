@@ -212,9 +212,8 @@ class _AddSongsPageState extends State<AddSongsPage> {
                   Mixtape createdMixtape = await mixtapeService.createMixtapeInPlaylistForCurrentUser(widget.playlist.id, name: widget.mixTapeName, description: widget.mixTapeDescription, songIDs: songIDs);
                   print(createdMixtape);
                   // print("Title: ${mixTape.title}, NumSongs: ${mixTape.numSongs}, Description: ${mixTape.description}");
-                  Navigator.of(context).pushReplacementNamed(
-                      '/playlist', arguments: ScreenArguments(widget.playlist)
-                      );
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
 
                 },
                 label: Padding(

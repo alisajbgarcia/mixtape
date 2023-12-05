@@ -408,7 +408,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                             borderRadius: BorderRadius.circular(12.0),
                             onTap: () {
                               print('Tapped on Card ${mixtape.name}');
-                              Navigator.of(context).pushReplacementNamed('/tape', arguments: ScreenArguments(widget.playlist, null, null, mixtape));
+                              Navigator.of(context).pushNamed('/tape', arguments: ScreenArguments(widget.playlist, null, null, mixtape));
                             },
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -570,7 +570,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       heroTag: "mixtape_creation",
                       onPressed: () {
                         print("create mixtape");
-                        Navigator.of(context).pushReplacementNamed('/tapecreate', arguments: ScreenArguments(widget.playlist));
+                        Navigator.of(context).pushNamed('/tapecreate', arguments: ScreenArguments(widget.playlist));
                       },
                       label: Padding(
                         padding: EdgeInsets.all(5.0),

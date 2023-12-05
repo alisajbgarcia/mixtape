@@ -278,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(12.0),
                           onTap: () {
                             print('Tapped on Card ${playlist.name}');
-                            Navigator.of(context).pushReplacementNamed(
+                            Navigator.of(context).pushNamed(
                               '/playlist', arguments: ScreenArguments(playlist)
                             );
                           },
