@@ -8,7 +8,7 @@ import 'package:mixtape/utilities/json_utilities.dart';
 
 class Mixtape {
   String id;
-  String playlistID;
+  String playlistId;
   String name;
   DateTime createdAt;
   String description;
@@ -16,45 +16,48 @@ class Mixtape {
   List<String> songIDs;
   List<TrackInfo> songs;
   List<Reaction> reactions;
-
+  bool listened;
 
   Mixtape(
       {required this.id,
-        required this.playlistID,
+        required this.playlistId,
         required this.name,
         required this.createdAt,
         required this.description,
         required this.creator,
         required this.songIDs,
         required this.songs,
-        required this.reactions});
+        required this.reactions,
+        required this.listened,
+      });
 
   factory Mixtape.fromJson(Map<String, dynamic> json) {
     return Mixtape(
       id: json["id"],
-      playlistID: json["playlistID"],
+      playlistId: json["playlistId"],
       name: json["name"],
       createdAt: DateTime.parse(json["createdAt"]),
       description: json["description"],
       creator: Profile.fromJson(json["creator"]),
       songIDs: List<String>.from(json['songIDs'].map((x) => x)),
       songs: jsonDecodeList(json["songs"], TrackInfo.fromJson),
-      reactions: jsonDecodeList(json["reactions"], Reaction.fromJson)
-
+      reactions: jsonDecodeList(json["reactions"], Reaction.fromJson),
+      listened: json["listened"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "playlistID": playlistID,
+      "playlistID": playlistId,
       "name": name,
       "createdAt": createdAt.toIso8601String(),
       "description": description,
       "creator": creator,
       "songIDs": jsonEncode(songIDs),
       "songs": jsonEncode(songs),
-      "reactions": jsonEncode(reactions)
+      "reactions": jsonEncode(reactions),
+      "listened": listened,
     };
   }
 }

@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, screenHeight * .05, 0, screenHeight * .03),
-                      child: ClipOval(
+                      child: ClipOval(// Adjust the fit as needed
                         child: Image.network(
                           key: profileKey,
                           profile.profilePicURL,

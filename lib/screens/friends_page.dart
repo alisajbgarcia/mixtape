@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 
+import 'friend_info_page.dart';
+
 class FriendsPage extends StatefulWidget {
   const FriendsPage({Key? key}) : super(key: key);
 
@@ -93,6 +95,7 @@ class _FriendsPageState extends State<FriendsPage> {
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w600,
               fontSize: (25.0 * textScaleFactor),
+              color: Colors.white,
             ),
           ),
         ),
@@ -128,44 +131,52 @@ class _FriendsPageState extends State<FriendsPage> {
                             friendIDs.add(friend.id);
                             return InkWell(
                               borderRadius: BorderRadius.circular(12.0),
-                              onTap: () => showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: MixTapeColors.black,
-                                  //title: const Text('Remove Friend?'),
-                                  content: const Text('Would you like to remove this user as a friend?',
-                                  style: TextStyle(
-                                        fontSize: (22),
-                                        color: Colors.white,
-                                       ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context, 'CANCEL'),
-                                      child: const Text('CANCEL',
-                                      style: TextStyle(
-                                                      fontSize: (22),
-                                                      color: Colors.white,
-                                       ),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () => {
-                                        Navigator.pop(context, 'YES'),
-                                        cardData.remove(friend),
-                                        friendshipService.deleteFriendship(friend.id),
-                                        setState(() {}),
-                                        },
-                                      child: const Text('YES',
-                                      style: TextStyle(
-                                                      fontSize: (22),
-                                                      color: Colors.white,
-                                       ),
-                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              onTap: () {
+                                print(friend.id);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => FriendInfoScreen(friendId: friend.id)),
+                                );
+                              },
+                              // onTap: () => showDialog<String>(
+                              //   context: context,
+                              //   builder: (BuildContext context) => AlertDialog(
+                              //     backgroundColor: MixTapeColors.black,
+                              //     //title: const Text('Remove Friend?'),
+                              //     content: const Text('Would you like to remove this user as a friend?',
+                              //     style: TextStyle(
+                              //           fontSize: (22),
+                              //           color: Colors.white,
+                              //          ),
+                              //     ),
+                              //     actions: <Widget>[
+                              //       TextButton(
+                              //         onPressed: () => Navigator.pop(context, 'CANCEL'),
+                              //         child: const Text('CANCEL',
+                              //         style: TextStyle(
+                              //                         fontSize: (22),
+                              //                         color: Colors.white,
+                              //          ),
+                              //         ),
+                              //       ),
+                              //       TextButton(
+                              //         onPressed: () => {
+                              //           Navigator.pop(context, 'YES'),
+                              //           cardData.remove(friend),
+                              //           friendshipService.deleteFriendship(friend.id),
+                              //           setState(() {}),
+                              //           },
+                              //         child: const Text('YES',
+                              //         style: TextStyle(
+                              //                         fontSize: (22),
+                              //                         color: Colors.white,
+                              //          ),
+                              //          ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             child: Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(

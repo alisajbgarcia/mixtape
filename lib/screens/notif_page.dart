@@ -139,6 +139,7 @@ class _NotifPage extends State<NotifPage> {
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w600,
             fontSize: (25.0 * textScaleFactor),
+            color: Colors.white,
           ),
         ),
         backgroundColor: MixTapeColors.black,

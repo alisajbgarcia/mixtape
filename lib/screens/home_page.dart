@@ -137,7 +137,8 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.all(10),
           icon: ImageIcon(
             AssetImage("assets/notif.png"),
-            size: textScaleFactor * 50
+            size: textScaleFactor * 50,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.push(
@@ -157,6 +158,7 @@ class _HomePageState extends State<HomePage> {
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w600,
                   fontSize: (25.0 * textScaleFactor),
+                  color: Colors.white
                 ),
               ),
             ),
@@ -460,9 +462,13 @@ class _HomePageState extends State<HomePage> {
                   fontSize: textScaleFactor * 20,
                   fontFamily: "Montserrat",
                   fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
             ),
-            icon: Icon(Icons.add),
+            icon: Icon(
+                Icons.add,
+                color: Colors.white
+            ),
             backgroundColor: MixTapeColors.green, // Change the button's color
           ),
       ),
