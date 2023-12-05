@@ -57,10 +57,8 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       currentProfile = profileService.getCurrentProfile();
     });
-
-    pageTour();
-    showTour();
-
+    //pageTour();
+    //showTour();
   }
 
   int _selectedIndex = 0;

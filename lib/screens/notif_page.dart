@@ -82,10 +82,6 @@ class _NotifPage extends State<NotifPage> {
     });
   }
 
-  List<Notif> dummydata = [
-    Notif(id:'123', target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1', contents: 'NO NOTIFICATIONS!', notificationType: NotificationType.MIXTAPE),
-  ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +164,7 @@ class _NotifPage extends State<NotifPage> {
             List<Notif> cardData;
 
             if(!notifSnapshot.hasData) {
-              cardData = dummydata;
+              return CircularProgressIndicator();
 
             } else {
               cardData = notifSnapshot.data!;

@@ -19,4 +19,8 @@ class ProfileService extends AbstractService {
   Future<List<Profile>> searchProfiles(String displayName) async {
     return getMany("/api/v1/profile", Profile.fromJson, paramMap: Map.fromEntries([MapEntry("displayName", displayName)]));
   }
+
+  Future<Profile> updateOnboarded(bool isOnboarded) async {
+    return put("/api/v1/profile/me/onboarded?isOnboarded=$isOnboarded", null, Profile.fromJson);
+  }
 }
