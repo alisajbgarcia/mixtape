@@ -283,7 +283,7 @@ class _PlaylistCreationScreenState extends State<PlaylistCreationScreen> {
                         label: Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Text(
-                            'Invite ',
+                            'Invite $playlistTargetName',
                             style: TextStyle(
                               fontSize: textScaleFactor * 20,
                               fontFamily: "Montserrat",

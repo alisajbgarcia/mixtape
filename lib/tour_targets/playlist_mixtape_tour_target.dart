@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/tour_targets/playlist_mixtape_tutorial_pages.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 List<TargetFocus> addPlaylistMixtapeTourTargets({
@@ -15,47 +16,15 @@ List<TargetFocus> addPlaylistMixtapeTourTargets({
   targets.add(
     TargetFocus(
       keyTarget: playlistMixtapeKey,
+      enableOverlayTab: false,
       shape: ShapeLightFocus.RRect,
       radius: 15,
-      paddingFocus: 50,
+      paddingFocus: 10,
       contents: [
         TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) => Container(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.arrow_upward_rounded,
-                    color: Colors.white,
-                    size: 50,
-                  ),
-                  Text('This is your Spotify profile',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text('This is linked to your account. '
-                      'You will be able to create collaborative playlists and add a collection of songs to your queue.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            )
+            padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .05),
+            align: ContentAlign.top,
+            builder: (context, controller) => PlaylistMixtapeTutorialPages()
         ),
       ],
     ),

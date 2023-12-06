@@ -61,7 +61,8 @@ class _HomePageState extends State<HomePage> {
       hideSkip: true,
       opacityShadow: 0.8,
       onFinish: () {
-        showNavBarTour();
+        showPlaylistMixtapeTour();
+        //showNavBarTour();
       }
     );
   }
@@ -92,6 +93,7 @@ class _HomePageState extends State<HomePage> {
       colorShadow: MixTapeColors.green,
       paddingFocus: 1,
       opacityShadow: 0.8,
+      hideSkip: true,
     );
   }
 
@@ -469,10 +471,10 @@ class _HomePageState extends State<HomePage> {
         }
       ),
       floatingActionButton: Container(
-        key: playlistMixtapeKey,
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
         child: FloatingActionButton.extended(
+          key: playlistMixtapeKey,
           heroTag: "playlist_creation",
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
@@ -484,12 +486,12 @@ class _HomePageState extends State<HomePage> {
             );
           },
           label: Text(
-              'Create a Playlist',
-              style: TextStyle(
-                fontSize: textScaleFactor * 20,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w600,
-              ),
+            'Create a Playlist',
+            style: TextStyle(
+              fontSize: textScaleFactor * 20,
+              fontFamily: "Montserrat",
+              fontWeight: FontWeight.w600,
+            ),
           ),
           icon: Icon(Icons.add),
           backgroundColor: MixTapeColors.green, // Change the button's color
