@@ -77,7 +77,8 @@ List<TargetFocus> addTourTargets({
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       color: Colors.white,
-                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      fontSize: textScaleFactor * 15,
                     ),
                   ),
                 ],
@@ -125,7 +126,7 @@ List<TargetFocus> addTourTargets({
                   Center(
                     child: Text(
                       'Tap on the bell to see the notifications page.\n'
-                      'View and filter alerts for events such as friend requests, playlist invitations, and when a MixTape has been added to a playlist !',
+                      'View and filter alerts for events such as friend requests, playlist invitations, and when a MixTape has been added to a playlist!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Montserrat',

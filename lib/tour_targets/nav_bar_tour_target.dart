@@ -22,34 +22,52 @@ List<TargetFocus> addNavBarTourTargets({
       paddingFocus: 1,
       contents: [
         TargetContent(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .7),
+          padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .2),
           align: ContentAlign.top,
           builder: (context, controller) => Container(
             alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Friends',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    color: Colors.white,
-                    fontSize: textScaleFactor * 30,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(screenWidth * .017,0,screenWidth * .017,0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: screenHeight * .045,
                   ),
-                ),
-                Text(
-                  'This is the friends page. Search for your friends to start making collaborative playlists ! They must have a MixTape account',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    color: Colors.white,
-                    fontSize: textScaleFactor * 17,
+                  Text(
+                    'Friends',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat',
+                      color: Colors.white,
+                      fontSize: textScaleFactor * 30,
+                    ),
                   ),
-                ),
-              ],
+                  Text(
+                    'This is the friends page. View a list of your friends, or search for your friends to start making collaborative playlists ! They must have a MixTape account',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: Colors.white,
+                      fontSize: textScaleFactor * 17,
+                    ),
+                  ),
+                  SizedBox(
+                    height: screenHeight * .025,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.asset(
+                      'assets/friends_page.png',
+                      height: screenHeight * .45,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                ],
+              ),
             ),
           )
         ),
@@ -66,36 +84,52 @@ List<TargetFocus> addNavBarTourTargets({
       paddingFocus: 1,
       contents: [
         TargetContent(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .7),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .2),
             align: ContentAlign.top,
             builder: (context, controller) => Container(
               alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Profile',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontSize: textScaleFactor * 30,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(screenWidth * .017,0,screenWidth * .017,0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: screenHeight * .045,
                     ),
-                  ),
-
-                  Text(
-                    'This is the profile page. Your MixTape account is linked to your Spotify account'
-                    'You will be able to add a collection of songs from playlist MixTapes to your queue.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontSize: textScaleFactor * 17,
+                    Text(
+                      'Profile',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: textScaleFactor * 30,
+                      ),
                     ),
-                  ),
-                ],
+                    Text(
+                      'This is the profile page. Your MixTape account is linked to your Spotify account'
+                      'You will be able to add a collection of songs from playlist MixTapes to your queue.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: textScaleFactor * 17,
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * .025,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.asset(
+                        'assets/profile_page.png',
+                        height: screenHeight * .45,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )
         ),

@@ -263,6 +263,7 @@ class _HomePageState extends State<HomePage> {
             // print('oops');
           } else {
             cardData = playlistsSnapshot.data!;
+            //cardData = [];
           }
 
           // null assert is hella ugly, but the compiler doesn't appear to tell
