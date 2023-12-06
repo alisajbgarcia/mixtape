@@ -47,19 +47,19 @@ class _HomePageState extends State<HomePage> {
 
   void homePageTour() {
     homePageTutorialMark = TutorialCoachMark(
-        targets: addTourTargets(
-            profileKey: homePageKey),
-        colorShadow: MixTapeColors.dark_gray,
-        paddingFocus: 1,
-        hideSkip: true,
-        opacityShadow: 0,
-        onSkip: () {
-          newUser = false;
-          return newUser;
-        },
-        onFinish: () {
-          showNavBarTour();
-        }
+      targets: addTourTargets(
+          profileKey: homePageKey),
+      colorShadow: MixTapeColors.dark_gray,
+      paddingFocus: 1,
+      hideSkip: true,
+      opacityShadow: 0,
+      onSkip: () {
+        newUser = false;
+        return newUser;
+      },
+      onFinish: () {
+        showNavBarTour();
+      }
     );
   }
 
@@ -151,6 +151,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> _refresh() {
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+      playlists = playlistService.getPlaylistsForCurrentUser();
+    });
+    return Future.delayed(Duration(seconds: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -164,15 +172,15 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         key: homePageKey,
         leading: IconButton(
-            padding: EdgeInsets.all(10),
-            icon: ImageIcon(
-                AssetImage("assets/notif.png"),
-                size: textScaleFactor * 50
-            ),
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/notifs');
-            }
-        ),
+          padding: EdgeInsets.all(10),
+          icon: ImageIcon(
+            AssetImage("assets/notif.png"),
+            size: textScaleFactor * 50
+          ),
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/notifs');
+          }
+          ),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,141 +203,146 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: screenHeight * .13,
         actions: [
           FutureBuilder(
-              future: currentProfile,
-              builder: (context, profileSnapshot) {
-                if (!profileSnapshot.hasData || profileSnapshot.hasError) {
-                  //return const Center(child: CircularProgressIndicator());
-                  return Padding(
-                    padding: EdgeInsets.all(screenHeight * .03),
-                    child: ClipOval(
-                      child: Container(
-                        width: screenWidth * 0.15,
-                        height: screenWidth * 0.15,
-                        child: CircleAvatar(
-                          backgroundColor: MixTapeColors.dark_gray,
-                          radius: 30,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white70,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                final profile = profileSnapshot.data!;
+            future: currentProfile,
+            builder: (context, profileSnapshot) {
+              if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                //return const Center(child: CircularProgressIndicator());
                 return Padding(
                   padding: EdgeInsets.all(screenHeight * .03),
                   child: ClipOval(
                     child: Container(
                       width: screenWidth * 0.15,
                       height: screenWidth * 0.15,
-                      child: CachedNetworkImage(
-                        imageUrl: profile.profilePicURL,
-                        placeholder: (context, url) => CircleAvatar(
-                          backgroundColor: MixTapeColors.dark_gray,
-                          radius: 30,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white70,
-                          ),
+                      child: CircleAvatar(
+                        backgroundColor: MixTapeColors.dark_gray,
+                        radius: 30,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white70,
                         ),
-                        errorWidget: (context, url, error) => CircleAvatar(
-                          backgroundColor: MixTapeColors.dark_gray,
-                          radius: 30,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white70,
-                          ),
-                        ),
-                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 );
               }
+              final profile = profileSnapshot.data!;
+              return Padding(
+                padding: EdgeInsets.all(screenHeight * .03),
+                child: ClipOval(
+                  child: Container(
+                    width: screenWidth * 0.15,
+                    height: screenWidth * 0.15,
+                    child: CachedNetworkImage(
+                      imageUrl: profile.profilePicURL,
+                      placeholder: (context, url) => CircleAvatar(
+                        backgroundColor: MixTapeColors.dark_gray,
+                        radius: 30,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => CircleAvatar(
+                        backgroundColor: MixTapeColors.dark_gray,
+                        radius: 30,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              );
+            }
           )
         ],
       ),
       body: FutureBuilder(
-          future: playlists,
-          builder: (context, playlistsSnapshot) {
-            List<Playlist> cardData;
-            if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
-              print(playlistsSnapshot.error.toString());
-              return const Center(child: CircularProgressIndicator());
-              // cardData = dummydata;
-              // print('oops');
-            } else {
-              cardData = playlistsSnapshot.data!;
-            }
+        future: playlists,
+        builder: (context, playlistsSnapshot) {
+          List<Playlist> cardData;
+          if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
+            print(playlistsSnapshot.error.toString());
+            return const Center(child: CircularProgressIndicator());
+            // cardData = dummydata;
+            // print('oops');
+          } else {
+            cardData = playlistsSnapshot.data!;
+          }
 
-            // null assert is hella ugly, but the compiler doesn't appear to tell
-            // that this won't be null because of the early return
-            return Column(
-              children: [
-                Container(
-                  height: screenHeight * .67,
-                  padding: EdgeInsets.fromLTRB(screenWidth * .005, screenWidth * .005, screenWidth * .005, 0),
+          // null assert is hella ugly, but the compiler doesn't appear to tell
+          // that this won't be null because of the early return
+          return Column(
+            children: [
+              Container(
+                height: screenHeight * .67,
+                padding: EdgeInsets.fromLTRB(screenWidth * .005, screenWidth * .005, screenWidth * .005, 0),
+                child: RefreshIndicator(
+                  onRefresh: _refresh,
+                  color: MixTapeColors.green,
+                  backgroundColor: MixTapeColors.dark_gray,
                   child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
-                      children: cardData.map((playlist) {
-                        return InkWell(
-                          borderRadius: BorderRadius.circular(12.0),
-                          onTap: () {
-                            print('Tapped on Card ${playlist.name}');
-                            Navigator.of(context).pushReplacementNamed(
+                        children: cardData.map((playlist) {
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(12.0),
+                            onTap: () {
+                              print('Tapped on Card ${playlist.name}');
+                              Navigator.of(context).pushReplacementNamed(
                                 '/playlist', arguments: ScreenArguments(playlist)
-                            );
-                          },
-                          child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
-                              ),
-                              elevation: 3.0,
-                              margin: EdgeInsets.all(screenWidth * .03),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        padding: EdgeInsets.all(screenWidth * .005),
-                                        height: screenHeight * .17,
-                                        color: MixTapeColors.dark_gray,
-                                        child: CachedNetworkImage(
-                                          imageUrl: playlist.coverPicURL,
-                                          placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
-                                          errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                              );
+                            },
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                                ),
+                                elevation: 3.0,
+                                margin: EdgeInsets.all(screenWidth * .03),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.all(screenWidth * .005),
+                                          height: screenHeight * .17,
+                                          color: MixTapeColors.dark_gray,
+                                          child: CachedNetworkImage(
+                                            imageUrl: playlist.coverPicURL,
+                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        padding: EdgeInsets.only(top: screenWidth * .01, bottom: screenWidth * .005, left: screenWidth * .01, right: screenWidth * .01),
-                                        height: screenHeight * .17,
-                                        color: MixTapeColors.light_gray,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(screenWidth * .015),
-                                              height: screenHeight * .035,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                child: Text(
-                                                  playlist.name,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: (22 * textScaleFactor),
-                                                    color: Colors.white,
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          padding: EdgeInsets.only(top: screenWidth * .01, bottom: screenWidth * .005, left: screenWidth * .01, right: screenWidth * .01),
+                                          height: screenHeight * .17,
+                                          color: MixTapeColors.light_gray,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.all(screenWidth * .015),
+                                                height: screenHeight * .035,
+                                                child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  child: Text(
+                                                    playlist.name,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: (22 * textScaleFactor),
+                                                      color: Colors.white,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            FilledButton(
+                                              FilledButton(
                                                 style: FilledButton.styleFrom(
                                                   backgroundColor: MixTapeColors.dark_gray,
                                                   padding: EdgeInsets.all(0),
@@ -398,77 +411,78 @@ class _HomePageState extends State<HomePage> {
                                                   },
                                                 )
 
-                                            ),
-                                            Card(
-                                              color: MixTapeColors.light_gray,
-                                              elevation: 0.0,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "${playlist.songCount} songs",
-                                                    style: TextStyle(
-                                                      fontSize: (12 * textScaleFactor),
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '${getTotalTimeHHMM(playlist.totalDurationMS)}',
-                                                    style: TextStyle(
-                                                      color: Colors.grey[400],
-                                                      fontSize: (12 * textScaleFactor),
-                                                    ),
-                                                  ),
-                                                  Image.asset(
-                                                    'assets/spotify/Spotify_Icon_RGB_Green.png',
-                                                    height: screenHeight * .03,
-                                                    width: screenHeight * .03,
-                                                  ),
-                                                ],
                                               ),
-                                            )
-                                          ],
+                                              Card(
+                                                color: MixTapeColors.light_gray,
+                                                elevation: 0.0,
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "${playlist.songCount} songs",
+                                                      style: TextStyle(
+                                                        fontSize: (12 * textScaleFactor),
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${getTotalTimeHHMM(playlist.totalDurationMS)}',
+                                                      style: TextStyle(
+                                                        color: Colors.grey[400],
+                                                        fontSize: (12 * textScaleFactor),
+                                                      ),
+                                                    ),
+                                                    Image.asset(
+                                                      'assets/spotify/Spotify_Icon_RGB_Green.png',
+                                                      height: screenHeight * .03,
+                                                      width: screenHeight * .03,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                                    ],
+                                  ),
+                                )
+                            ),
+                          );
+                        }).toList(),
+                      ),
                   ),
                 ),
-              ],
-            );
-          }
+              ),
+            ],
+          );
+        }
       ),
       floatingActionButton: Container(
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
         child: FloatingActionButton.extended(
-          heroTag: "playlist_creation",
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
-          ),
-          onPressed: () {
-            print("here omg please");
-            Navigator.of(context).pushNamed(
-                '/playlistcreate'
-            );
-          },
-          label: Text(
-            'Create a Playlist',
-            style: TextStyle(
-              fontSize: textScaleFactor * 20,
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w600,
+            heroTag: "playlist_creation",
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
             ),
+            onPressed: () {
+              print("here omg please");
+              Navigator.of(context).pushNamed(
+                '/playlistcreate'
+              );
+            },
+            label: Text(
+                'Create a Playlist',
+                style: TextStyle(
+                  fontSize: textScaleFactor * 20,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w600,
+                ),
+            ),
+            icon: Icon(Icons.add),
+            backgroundColor: MixTapeColors.green, // Change the button's color
           ),
-          icon: Icon(Icons.add),
-          backgroundColor: MixTapeColors.green, // Change the button's color
-        ),
       ),
       bottomNavigationBar: NavBar(
         friendsPageKey: navBarKey,
