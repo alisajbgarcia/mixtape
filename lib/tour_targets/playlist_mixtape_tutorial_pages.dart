@@ -12,7 +12,7 @@ final List<Widget> _tutorialPages = <Widget>[
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Profile',
+            'Playlist Creation',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -22,20 +22,20 @@ final List<Widget> _tutorialPages = <Widget>[
             ),
           ),
           Text(
-            'This is the profile page. Your MixTape account is linked to your Spotify account.\n'
-                'You will be able to add a collection of songs from playlist MixTapes to your queue.',
+            'This is the playlist creation screen. Choose a photo, title, and friend for your playlist. \n\n'
+            'Click the \"Invite\" button to send the playlist invitation. Your friend must accept the invite in order for the playlist to be created',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Montserrat',
               color: Colors.white,
-              fontSize:17,
+              fontSize:15,
             ),
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(5),
             child: Image.asset(
-              'assets/profile_page.png',
-              height: 100,
+              'assets/playlist_creation.png',
+              height: 400,
               fit: BoxFit.cover,
             ),
           ),

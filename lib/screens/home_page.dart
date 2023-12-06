@@ -157,7 +157,8 @@ class _HomePageState extends State<HomePage> {
       },
     ).then((result) {
       if (onboarded) {
-        showTour();
+        //showTour();
+        showPlaylistMixtapeTour();
       }
     });
   }
