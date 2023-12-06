@@ -419,15 +419,14 @@ class _FriendsPageState extends State<FriendsPage> {
                                                                       String errorMessage = err.toString();
                                                                       print(errorMessage);
                                                                       SnackBar? snackBar;
-                                                                      if(errorMessage.contains("500") || errorMessage.contains("461")) {
+                                                                      if(errorMessage.contains("400")) {
                                                                         print('already sent friend request');
                                                                         snackBar = SnackBar(
                                                                             content: Text('Friend request already exists for ${searchFriend.displayName}')
                                                                         );
-                                                                      } else if(errorMessage.contains("500") || errorMessage.contains("461")) {
-                                                                        print('already sent friend request');
+                                                                      } else if(errorMessage.contains("403")) {
                                                                         snackBar = SnackBar(
-                                                                            content: Text('Friend request already exists for ${searchFriend.displayName}')
+                                                                            content: Text('${searchFriend.displayName} is already your friend')
                                                                         );
                                                                       }
 
