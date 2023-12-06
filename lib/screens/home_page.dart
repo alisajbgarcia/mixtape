@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mixtape/tour_targets/playlist_mixtape_tour_target.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
@@ -34,11 +35,12 @@ class _HomePageState extends State<HomePage> {
 
   late TutorialCoachMark homePageTutorialMark;
   late TutorialCoachMark navBarTutorialMark;
+  late TutorialCoachMark playlistMixtapeTutorialMark;
   GlobalKey homePageKey = GlobalKey();
   GlobalKey friendsPageKey = GlobalKey();
   GlobalKey profilePageKey = GlobalKey();
   GlobalKey notificationsPageKey = GlobalKey();
-  GlobalKey playlistKey = GlobalKey();
+  GlobalKey playlistMixtapeKey = GlobalKey();
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
@@ -75,6 +77,21 @@ class _HomePageState extends State<HomePage> {
       paddingFocus: 1,
       hideSkip: true,
       opacityShadow: 0.8,
+      onFinish: () {
+        showPlaylistMixtapeTour();
+      }
+    );
+  }
+
+  void playlistMixtapeTour() {
+    playlistMixtapeTutorialMark = TutorialCoachMark(
+      targets: addPlaylistMixtapeTourTargets(
+        context: context,
+        playlistMixtapeKey: playlistMixtapeKey,
+      ),
+      colorShadow: MixTapeColors.green,
+      paddingFocus: 1,
+      opacityShadow: 0.8,
     );
   }
 
@@ -83,6 +100,9 @@ class _HomePageState extends State<HomePage> {
 
   void showNavBarTour() => Future.delayed(Duration(milliseconds: 500),
           () => navBarTutorialMark.show(context: context));
+
+  void showPlaylistMixtapeTour() => Future.delayed(Duration(milliseconds: 500),
+          () => playlistMixtapeTutorialMark.show(context: context));
 
   void _onItemTapped(int index) {
     setState(() {
@@ -114,6 +134,7 @@ class _HomePageState extends State<HomePage> {
         //print('here: $onboarded');
         homePageTour();
         navBarTour();
+        playlistMixtapeTour();
         openWelcomeDialog();
       }
     });
@@ -448,31 +469,31 @@ class _HomePageState extends State<HomePage> {
         }
       ),
       floatingActionButton: Container(
-        key: playlistKey,
+        key: playlistMixtapeKey,
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
         child: FloatingActionButton.extended(
-            heroTag: "playlist_creation",
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
-              );
-            },
-            label: Text(
-                'Create a Playlist',
-                style: TextStyle(
-                  fontSize: textScaleFactor * 20,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600,
-                ),
-            ),
-            icon: Icon(Icons.add),
-            backgroundColor: MixTapeColors.green, // Change the button's color
+          heroTag: "playlist_creation",
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
           ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
+            );
+          },
+          label: Text(
+              'Create a Playlist',
+              style: TextStyle(
+                fontSize: textScaleFactor * 20,
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w600,
+              ),
+          ),
+          icon: Icon(Icons.add),
+          backgroundColor: MixTapeColors.green, // Change the button's color
+        ),
       ),
       bottomNavigationBar: onboarded ? NavBar.Tutorial(
         friendsPageKey: friendsPageKey,
