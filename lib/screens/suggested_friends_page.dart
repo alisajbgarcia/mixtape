@@ -40,7 +40,7 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
     friendshipService = ServicesContainer.of(context).friendshipService;
     setState(() {
       currentProfile = profileService.getCurrentProfile();
-      suggestedFriends = profileService.getSuggestedFriendsForCurrentUser();
+      suggestedFriends = friendshipService.getSuggestedFriendsForCurrentUser();
     });
   }
 
@@ -89,16 +89,16 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
       ),
       body: FutureBuilder(
         future: suggestedFriends,
-        builder: (context, friendsSnapshot) {
-          if (friendsSnapshot.connectionState == ConnectionState.waiting) {
+        builder: (context, suggestedFriendsSnapshot) {
+          if (suggestedFriendsSnapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(); // Display a loading indicator while waiting for data.
           } else {
             List<Profile> cardData;
-            if (!friendsSnapshot.hasData) {
+            if (!suggestedFriendsSnapshot.hasData) {
               cardData = [];
               suggestedFriendIDs.clear();
             } else {
-              cardData = friendsSnapshot.data!;
+              cardData = suggestedFriendsSnapshot.data!;
               suggestedFriendIDs.clear();
             }
             return Stack(children: [
