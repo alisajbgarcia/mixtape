@@ -9,6 +9,7 @@ void main() async {
     ServicesProvider(
       services: services,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         initialRoute: '/home', // Specify the initial route
         routes: {
           '/home': (context) => LoginPage(), // Define the home screen
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Mixtape',
       theme: ThemeData(
         // This is the theme of your application.

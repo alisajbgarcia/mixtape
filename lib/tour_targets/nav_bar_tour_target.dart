@@ -22,7 +22,7 @@ List<TargetFocus> addNavBarTourTargets({
       paddingFocus: 1,
       contents: [
         TargetContent(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .2),
+          padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .15),
           align: ContentAlign.top,
           builder: (context, controller) => Container(
             alignment: Alignment.center,
@@ -32,9 +32,6 @@ List<TargetFocus> addNavBarTourTargets({
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: screenHeight * .045,
-                  ),
                   Text(
                     'Friends',
                     textAlign: TextAlign.center,
@@ -46,7 +43,7 @@ List<TargetFocus> addNavBarTourTargets({
                     ),
                   ),
                   Text(
-                    'This is the friends page. View a list of your friends, or search for your friends to start making collaborative playlists ! They must have a MixTape account',
+                    'This is the friends page. View a list of your friends, or search for your friends to start making collaborative playlists! They must have a MixTape account',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Montserrat',
@@ -61,7 +58,7 @@ List<TargetFocus> addNavBarTourTargets({
                     borderRadius: BorderRadius.circular(5),
                     child: Image.asset(
                       'assets/friends_page.png',
-                      height: screenHeight * .45,
+                      height: screenHeight * .5,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -84,7 +81,7 @@ List<TargetFocus> addNavBarTourTargets({
       paddingFocus: 1,
       contents: [
         TargetContent(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .2),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, screenHeight * .15),
             align: ContentAlign.top,
             builder: (context, controller) => Container(
               alignment: Alignment.center,
@@ -108,7 +105,7 @@ List<TargetFocus> addNavBarTourTargets({
                       ),
                     ),
                     Text(
-                      'This is the profile page. Your MixTape account is linked to your Spotify account'
+                      'This is the profile page. Your MixTape account is linked to your Spotify account.\n'
                       'You will be able to add a collection of songs from playlist MixTapes to your queue.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -124,7 +121,7 @@ List<TargetFocus> addNavBarTourTargets({
                       borderRadius: BorderRadius.circular(5),
                       child: Image.asset(
                         'assets/profile_page.png',
-                        height: screenHeight * .45,
+                        height: screenHeight * .5,
                         fit: BoxFit.cover,
                       ),
                     ),
