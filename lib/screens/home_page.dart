@@ -61,8 +61,11 @@ class _HomePageState extends State<HomePage> {
       hideSkip: true,
       opacityShadow: 0.8,
       onFinish: () {
-        showPlaylistMixtapeTour();
         //showNavBarTour();
+        showPlaylistMixtapeTour();
+        setState(() {
+          onboarded = true;
+        });
       }
     );
   }
@@ -80,6 +83,7 @@ class _HomePageState extends State<HomePage> {
       opacityShadow: 0.8,
       onFinish: () {
         showPlaylistMixtapeTour();
+        profileService.updateOnboarded(true);
       }
     );
   }
@@ -161,15 +165,6 @@ class _HomePageState extends State<HomePage> {
         showPlaylistMixtapeTour();
       }
     });
-  }
-
-  void openTutorial1() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MixTapePremiseDialog();
-      },
-    );
   }
 
   @override
