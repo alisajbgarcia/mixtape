@@ -94,7 +94,7 @@ class _NotifPage extends State<NotifPage> {
   }
 
   List<Notif> dummydata = [
-    Notif(id:'123', target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1', contents: 'NO NOTIFICATIONS!', notificationType: NotificationType.MIXTAPE),
+    //Notif(id:'123', target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1', contents: 'NO NOTIFICATIONS!', notificationType: NotificationType.MIXTAPE),
   ];
 
   Future<void> _refresh() {
@@ -319,9 +319,9 @@ class _NotifPage extends State<NotifPage> {
                           ),
                           onPressed: () async {
                             print('activity pressed');
-                            Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.externalId);
+                            Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.routingPath);
                             
-                            Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(playlist));
+                            Navigator.of(context).pushNamed('/playlist', arguments: ScreenArguments(playlist));
                           },
                         ),
                     ) : SizedBox()
