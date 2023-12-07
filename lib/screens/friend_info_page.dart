@@ -5,6 +5,7 @@ import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/playlist_page.dart';
 import 'package:mixtape/utilities/colors.dart';
 
+import '../models/friendship_info.dart';
 import '../models/mixtape.dart';
 import '../models/playlist.dart';
 import '../models/profile.dart';
@@ -35,6 +36,7 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
   late FriendshipService friendshipService;
   late PlaylistService playlistService;
   late Future<List<Playlist>> playlists;
+  late Future<FriendshipInfo> friendshipInfo;
 
   GlobalKey friendInfoPageKey = GlobalKey();
 
@@ -49,6 +51,7 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
       currentProfile = profileService.getCurrentProfile();
       friendProfile = profileService.getProfileById(widget.friendId);
       playlists = playlistService.getPlaylistsForCurrentUser();
+      friendshipInfo = friendshipService.getFriendshipInfo(widget.friendId);
     });
   }
 
@@ -96,7 +99,7 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
                       softWrap: true,
                     ),
                       Text(
-                        "Mixtapes you created: 4",
+                        "Mixtapes you created",
                         style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.w600,
@@ -182,16 +185,21 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
         ],
       ),
       body: FutureBuilder(
-          future: playlists,
-          builder: (context, playlistsSnapshot) {
+          future: friendshipInfo,
+          builder: (context, friendshipInfoSnapshot) {
+            FriendshipInfo friendInfo;
             List<Playlist> cardData;
-            if (!playlistsSnapshot.hasData || playlistsSnapshot.hasError) {
-              print(playlistsSnapshot.error.toString());
+            int userMixtapes = 0;
+            int friendMixtapes = 0;
+            if (!friendshipInfoSnapshot.hasData || friendshipInfoSnapshot.hasError) {
               return const Center(child: CircularProgressIndicator());
               // cardData = dummydata;
               // print('oops');
             } else {
-              cardData = playlistsSnapshot.data!;
+              friendInfo = friendshipInfoSnapshot.data!;
+              cardData = friendInfo.sharedPlaylists;
+              userMixtapes = friendInfo.numMixtapesFromProfile;
+              friendMixtapes = friendInfo.numMixtapesFromFriend;
             }
 
             // null assert is hella ugly, but the compiler doesn't appear to tell

@@ -438,7 +438,7 @@ class _ApprovedFriendsPageState extends State<ApprovedFriendsPage> {
                               child: Center(
                                   child: TextButton(
                                 child: Text(
-                                  'Add Approved Friends +',
+                                  'Add Approved +',
                                   style: TextStyle(
                                     fontSize: (22 * textScaleFactor),
                                     color: Colors.white,
