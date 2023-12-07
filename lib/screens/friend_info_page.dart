@@ -484,7 +484,7 @@ class _FriendInfoScreenState extends State<FriendInfoScreen> {
                 TextButton(
                   onPressed: () => {
                     Navigator.pop(context, 'BLOCK'),
-                    friendshipService.deleteFriendship(widget.friendId),
+                    friendshipService.blockUser(widget.friendId),
                     //Add user to blocked list
                     setState(() {}),
                     Navigator.push(context, MaterialPageRoute(builder: (context) => FriendsPage())),

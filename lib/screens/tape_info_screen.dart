@@ -349,10 +349,11 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                                 fontSize: textScaleFactor * 20,
                                 fontFamily: "Montserrat",
                                 fontWeight: FontWeight.w600,
+                                color: Colors.white
                               ),
                             ),
                           ),
-                          icon: Icon(Icons.delete),
+                          icon: Icon(Icons.delete, color: Colors.white),
                           backgroundColor: Colors
                               .red, // Change the button's color
                         ),

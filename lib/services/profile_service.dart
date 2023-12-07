@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:mixtape/services/abstract_service.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 
@@ -22,5 +24,9 @@ class ProfileService extends AbstractService {
 
   Future<List<Profile>> searchProfiles(String displayName) async {
     return getMany("/api/v1/profile", Profile.fromJson, paramMap: Map.fromEntries([MapEntry("displayName", displayName)]));
+  }
+
+  Future<List<Profile>> getBlockedProfilesForCurrentUser() async {
+    return getMany("/api/v1/profile/me/blocklist", Profile.fromJson);
   }
 }

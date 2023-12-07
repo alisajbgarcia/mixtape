@@ -180,10 +180,11 @@ class _TapeCreationScreenState extends State<TapeCreationScreen> {
                                             fontSize: textScaleFactor * 20,
                                             fontFamily: "Montserrat",
                                             fontWeight: FontWeight.w600,
+                                            color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                      icon: Icon(Icons.add),
+                                      icon: Icon(Icons.add, color: Colors.white),
                                       backgroundColor: MixTapeColors
                                           .green, // Change the button's color
                                     ),

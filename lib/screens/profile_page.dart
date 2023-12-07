@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mixtape/models/profile.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/login_page.dart';
+import 'package:mixtape/screens/settings_page.dart';
 import 'package:mixtape/services/authentication_service.dart';
 import 'package:mixtape/services/profile_service.dart';
 import 'package:mixtape/services/services_container.dart';
@@ -29,6 +30,8 @@ class _ProfilePageState extends State<ProfilePage> {
   late Future<Profile> currentProfile;
   late TutorialCoachMark tutorialCoachMark;
   late bool playlists_enabled;
+
+  GlobalKey profilePageSettingsKey = GlobalKey();
 
   GlobalKey profileKey = GlobalKey();
 
@@ -86,6 +89,47 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       backgroundColor: MixTapeColors.black,
+      appBar: AppBar(
+        backgroundColor: MixTapeColors.black,
+        key: profilePageSettingsKey,
+        // leading: IconButton(
+        //   padding: EdgeInsets.all(10),
+        //   icon: Icon(
+        //     Icons.settings,
+        //     color: Colors.white,
+        //   ),
+        //   onPressed: () {
+        //     print("settings");
+        //     // Navigator.push(
+        //     //   context,
+        //     //   MaterialPageRoute(builder: (context) => SettingsPage()),
+        //     // );
+        //   }
+        // ),
+        // title: Text(
+        //   'Profile',
+        //   style: TextStyle(
+        //     color: Colors.white,
+        //     fontFamily: 'Montserrat',
+        //     fontWeight: FontWeight.bold,
+        //     fontSize: 40.0 * textScaleFactor,
+        //   ),
+        // ),
+        actions: [ IconButton(
+            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * .03),
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+              size: MediaQuery.of(context).size.width * .1,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage()),
+              );
+            }
+        ),]
+      ),
       body: FutureBuilder(
         future: currentProfile,
         builder: (context, profileSnapshot) {
@@ -119,15 +163,40 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, screenHeight * .05, 0, screenHeight * .03),
+                      padding: EdgeInsets.fromLTRB(0, screenHeight * .02, 0, screenHeight * .03),
                       child: ClipOval(// Adjust the fit as needed
-                        child: Image.network(
-                          key: profileKey,
-                          profile.profilePicURL,
-                          width: screenHeight * .15,
-                          height: screenHeight * .15,
-                          fit: BoxFit.cover, // Adjust the fit as needed
+                        child: CachedNetworkImage(
+                          width: screenHeight * .2,
+                          height: screenHeight * .2,
+                          // fit: BoxFit.cover, // Adjust the fit as needed
+                          imageUrl: profile.profilePicURL,
+                          placeholder: (context, url) => CircleAvatar(
+                            backgroundColor: MixTapeColors.dark_gray,
+                            radius: 30,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white70,
+                              size: MediaQuery.of(context).size.width * .3,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => CircleAvatar(
+                            backgroundColor: MixTapeColors.dark_gray,
+                            radius: 30,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white70,
+                              size: MediaQuery.of(context).size.width * .25,
+                            ),
+                          ),
+                          fit: BoxFit.cover,
                         ),
+                        // child: Image.network(
+                        //   key: profileKey,
+                        //   profile.profilePicURL,
+                        //   width: screenHeight * .15,
+                        //   height: screenHeight * .15,
+                        //   fit: BoxFit.cover, // Adjust the fit as needed
+                        // ),
                       ),
                     ),
                     Padding(
@@ -145,39 +214,43 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              Flexible(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Switch(
-                      // This bool value toggles the switch.
-                      value: playlists_enabled,
-                      activeColor: MixTapeColors.green,
-                      inactiveTrackColor: MixTapeColors.light_gray,
-                      onChanged: (bool value) {
-                        // This is called when the user toggles the switch.
-                        setState(() {
-                          playlists_enabled = value;
-                        });
-                      },
-                    ),
-                    Text("Require Approval For Playlists",
-                      style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.0 * textScaleFactor,
-                    ),)
-                  ]
-                )
-              ),
+              // Flexible(
+              //   flex: 1,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       // Padding(
+              //       //   padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * .015),
+              //       //   child: Switch(
+              //       //   // This bool value toggles the switch.
+              //       //   value: playlists_enabled,
+              //       //   activeColor: MixTapeColors.green,
+              //       //   inactiveTrackColor: MixTapeColors.light_gray,
+              //       //   onChanged: (bool value) {
+              //       //     // This is called when the user toggles the switch.
+              //       //     setState(() {
+              //       //       playlists_enabled = value;
+              //       //     });
+              //       //   },
+              //       // ), ),
+              //       // Text("Require Approval For Playlists",
+              //       //   style: TextStyle(
+              //       //   color: Colors.white,
+              //       //   fontFamily: 'Montserrat',
+              //       //   fontWeight: FontWeight.bold,
+              //       //   fontSize: 15.0 * textScaleFactor,
+              //       // ),)
+              //     ]
+              //   )
+              // ),
               Flexible(
                 flex: 1,
                 child: Padding(
                   padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * .1,
-                      right: MediaQuery.of(context).size.width * .1),
+                    left: MediaQuery.of(context).size.width * .1,
+                    right: MediaQuery.of(context).size.width * .1,
+                    top: MediaQuery.of(context).size.height * .05,
+                  ),
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:

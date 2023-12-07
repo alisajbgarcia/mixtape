@@ -531,7 +531,31 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                             heroTag: "mixtape_creation",
                                             onPressed: () async {
                                               // print("add to queue");
-                                              await mixtapeService.enqueueMixtape(mixtape.playlistId, mixtape.id);
+                                              try {
+                                                await mixtapeService
+                                                    .enqueueMixtape(
+                                                    mixtape.playlistId,
+                                                    mixtape.id);
+                                              } on FormatException {
+                                                final snackBar = SnackBar(
+                                                  content: Text("Mixtape successfully queued")
+                                                );
+                                                ScaffoldMessenger
+                                                    .of(
+                                                context)
+                                                    .showSnackBar(
+                                                snackBar);
+                                              } catch (e) {
+                                                print(e);
+                                                final snackBar = SnackBar(
+                                                    content: Text("Error queueing, please ensure you have Spotify open")
+                                                );
+                                                ScaffoldMessenger
+                                                    .of(
+                                                    context)
+                                                    .showSnackBar(
+                                                    snackBar);
+                                              }
                                               /* Navigator.push(
                                             context,
                                             MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),

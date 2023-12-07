@@ -30,4 +30,12 @@ class FriendshipService extends AbstractService {
   Future<void> deleteFriendship (String profileId) async {
     return delete("/api/v1/profile/me/friendship/$profileId");
   }
+
+  Future<bool> blockUser(String blockedProfileID) async {
+    return postStringNoConverter("/api/v1/profile/me/blocklist/${blockedProfileID}", jsonEncode(null));
+  }
+
+  Future<bool> unblockUser(String blockedProfileID) async {
+    return postStringNoConverter("/api/v1/profile/me/blocklist/${blockedProfileID}/unblock", jsonEncode(null));
+  }
 }
