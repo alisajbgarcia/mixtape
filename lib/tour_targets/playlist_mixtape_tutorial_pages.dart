@@ -6,9 +6,9 @@ List<Widget> _tutorialPages = <Widget>[
   Container(
     alignment: Alignment.center,
     child: Padding(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
@@ -60,21 +60,26 @@ List<Widget> _tutorialPages = <Widget>[
                   fontSize: 12,
                 ),
               ),
-              Text(
-                "Swipe",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
+              Container(
+                child: Row(
+                  children: [
+                    Text(
+                      "Swipe",
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ],
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
-
             ],
           ),
         ],
@@ -85,9 +90,9 @@ List<Widget> _tutorialPages = <Widget>[
   Container(
     alignment: Alignment.center,
     child: Padding(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
@@ -115,7 +120,7 @@ List<Widget> _tutorialPages = <Widget>[
             height: 10,
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(22, 0, 0, 0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: Image.asset(
@@ -125,6 +130,44 @@ List<Widget> _tutorialPages = <Widget>[
               ),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "2 of 4",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    Text(
+                      "Swipe",
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     ),
@@ -133,9 +176,9 @@ List<Widget> _tutorialPages = <Widget>[
   Container(
     alignment: Alignment.center,
     child: Padding(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
@@ -169,6 +212,44 @@ List<Widget> _tutorialPages = <Widget>[
               fit: BoxFit.cover,
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "3 of 4",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    Text(
+                      "Swipe",
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     ),
@@ -177,9 +258,9 @@ List<Widget> _tutorialPages = <Widget>[
   Container(
     alignment: Alignment.center,
     child: Padding(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.fromLTRB(8, 30, 8, 0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
@@ -202,9 +283,6 @@ List<Widget> _tutorialPages = <Widget>[
               fontSize:15,
             ),
           ),
-          SizedBox(
-            height: 5,
-          ),
           ClipRRect(
             borderRadius: BorderRadius.circular(5),
             child: Image.asset(
@@ -212,6 +290,64 @@ List<Widget> _tutorialPages = <Widget>[
               height: 375,
               fit: BoxFit.cover,
             ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "4 of 4",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    Text(
+                      "Swipe",
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 45,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Get Started",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              Icon(
+                Icons.arrow_downward_rounded,
+                color: Colors.white,
+                size: 40,
+              ),
+            ],
           ),
         ],
       ),

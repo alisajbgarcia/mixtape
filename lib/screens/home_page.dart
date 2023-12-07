@@ -61,11 +61,7 @@ class _HomePageState extends State<HomePage> {
       hideSkip: true,
       opacityShadow: 0.8,
       onFinish: () {
-        //showNavBarTour();
-        showPlaylistMixtapeTour();
-        setState(() {
-          onboarded = true;
-        });
+        showNavBarTour();
       }
     );
   }
@@ -161,8 +157,8 @@ class _HomePageState extends State<HomePage> {
       },
     ).then((result) {
       if (onboarded) {
-        //showTour();
-        showPlaylistMixtapeTour();
+        showTour();
+        //showPlaylistMixtapeTour();
       }
     });
   }
