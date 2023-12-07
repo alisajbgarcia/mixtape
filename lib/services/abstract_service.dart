@@ -29,6 +29,9 @@ class AbstractService {
     uri = _sanitizeUri(uri);
 
     final response = await helper.get("$baseUrl/$uri");
+    print("IN GET");
+    print("$baseUrl/$uri");
+    print(response.body);
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }

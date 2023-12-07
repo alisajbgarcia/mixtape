@@ -5,6 +5,7 @@ import 'package:mixtape/services/abstract_service.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 
 import '../models/profile.dart';
+import '../models/settings.dart';
 
 class ProfileService extends AbstractService {
 
@@ -29,4 +30,18 @@ class ProfileService extends AbstractService {
   Future<List<Profile>> getBlockedProfilesForCurrentUser() async {
     return getMany("/api/v1/profile/me/blocklist", Profile.fromJson);
   }
+
+  Future<Settings> getProfileSettings() async {
+    print("IN PROFILE SETTINGS");
+    return get("/api/v1/profile/me/settings", Settings.fromJson);
+  }
+
+  Future<Settings> updateProfileSettingsPermission(bool value) {
+    return put("/api/v1/profile/me/settings?isPermissionNeededForPlaylists=${value}", null, Settings.fromJson);
+  }
+
+  Future<Settings> addApprovedFriend(String friendId) {
+    return put("/api/v1/profile/<profileId>/settings/${friendId}", null, Settings.fromJson);
+  }
+
 }

@@ -471,7 +471,6 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
                   onPressed: () => {
                     Navigator.pop(context, 'REMOVE'),
                     friendshipService.deleteFriendship(widget.friendId),
-                    setState(() {}),
                     Navigator.push(context, MaterialPageRoute(builder: (context) => FriendsPage())),
                   },
                   child: const Text('REMOVE',
