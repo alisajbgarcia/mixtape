@@ -10,6 +10,7 @@ import '../services/profile_service.dart';
 import '../services/services_container.dart';
 import '../utilities/navbar_pages.dart';
 import '../widgets/navbar.dart';
+import '../screens/suggested_friends_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
@@ -490,36 +491,75 @@ class _FriendsPageState extends State<FriendsPage> {
                           : SizedBox() // Empty placeholder when not visible
                   ),
                 )
-                    : Container(
-                  alignment: Alignment.bottomRight,
-                  margin: EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      print('Tapped Added Friends');
-                    },
-                    child: Container(
-                      //alignment: Alignment.bottomRight,
-                      width: 200,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: MixTapeColors.green,
-                      ),
-                      child: Center(
-                          child: TextButton(
-                            child: Text(
-                              'Add Friends +',
-                              style: TextStyle(
-                                fontSize: (22 * textScaleFactor),
-                                color: Colors.white,
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                print('Tapped Suggested Friends');
+                              },
+                              child: Container(
+                                //alignment: Alignment.bottomRight,
+                                width: screenWidth * .45,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: MixTapeColors.green,
+                                ),
+                                child: Center(
+                                    child: TextButton(
+                                      child: Text(
+                                        'Suggested Friends',
+                                        style: TextStyle(
+                                          fontSize: (20 * textScaleFactor),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        // TODO: change this routing
+                                        Navigator.of(context).pushReplacementNamed('/suggestedfriends');
+                                      },
+                                    )
+                                ),
                               ),
                             ),
-                            onPressed: toggleSearchBar,
-                          )
-                      ),
-                    ),
-                  ),
-                ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomRight,
+                            margin: EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                print('Tapped Added Friends');
+                              },
+                              child: Container(
+                                //alignment: Alignment.bottomRight,
+                                width: screenWidth * .45,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: MixTapeColors.green,
+                                ),
+                                child: Center(
+                                    child: TextButton(
+                                      child: Text(
+                                        'Add Friends +',
+                                        style: TextStyle(
+                                          fontSize: (20 * textScaleFactor),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: toggleSearchBar,
+                                    )
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
               ],
             );
           }

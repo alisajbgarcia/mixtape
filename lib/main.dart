@@ -5,6 +5,7 @@ import 'package:mixtape/screens/login_page.dart';
 import 'package:mixtape/screens/notif_page.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/search_page.dart';
+import 'package:mixtape/screens/suggested_friends_page.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_page.dart';
 import 'package:mixtape/services/services_container.dart';
@@ -62,6 +63,9 @@ void main() async {
               return MaterialPageRoute(builder: builder);
             case '/tapecreate':
               builder = (BuildContext context) => TapeCreationPage(playlist: args.playlist as Playlist);
+              return MaterialPageRoute(builder: builder);
+            case '/suggestedfriends':
+              builder = (BuildContext context) => SuggestedFriendsPage();
               return MaterialPageRoute(builder: builder);
             default:
               throw Exception('Invalid route: ${settings.name}');
