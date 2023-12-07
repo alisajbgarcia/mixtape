@@ -31,7 +31,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  bool onboarded = true;
+  bool? onboarded = null;
   late Profile initiatorProfile;
 
   late TutorialCoachMark homePageTutorialMark;
@@ -130,6 +130,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
+    print('home page');
 
     profileService = ServicesContainer.of(context).profileService;
     playlistService = ServicesContainer.of(context).playlistService;
@@ -139,19 +140,14 @@ class _HomePageState extends State<HomePage> {
       playlists = playlistService.getPlaylistsForCurrentUser();
       currentProfile.then((profile) {
         onboarded = profile.onboarded;
+        print('onboarded: $onboarded');
+        if(onboarded! == false) {
+          homePageTour();
+          navBarTour();
+          playlistMixtapeTour();
+          openWelcomeDialog();
+        }
       });
-    });
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      print('onboarded: $onboarded');
-      if(!onboarded) {
-        //print('here: $onboarded');
-        homePageTour();
-        navBarTour();
-        playlistMixtapeTour();
-        openWelcomeDialog();
-      }
-
     });
   }
 
@@ -169,9 +165,11 @@ class _HomePageState extends State<HomePage> {
         );
       },
     ).then((result) {
-      if (onboarded) {
+      if (onboarded!) {
         showTour();
         //showPlaylistMixtapeTour();
+      } else {
+        profileService.updateOnboarded(true);
       }
     });
   }
@@ -511,7 +509,7 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: MixTapeColors.green, // Change the button's color
           ),
       ),
-      bottomNavigationBar: onboarded ? NavBar.Tutorial(
+      bottomNavigationBar: onboarded != null ? NavBar.Tutorial(
         friendsPageKey: friendsPageKey,
         profilePageKey: profilePageKey,
         currentIndex: _selectedIndex,
