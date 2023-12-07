@@ -79,7 +79,6 @@ class _HomePageState extends State<HomePage> {
       opacityShadow: 0.8,
       onFinish: () {
         showPlaylistMixtapeTour();
-        profileService.updateOnboarded(true);
       }
     );
   }
@@ -94,6 +93,9 @@ class _HomePageState extends State<HomePage> {
       paddingFocus: 1,
       opacityShadow: 0.8,
       hideSkip: true,
+      onFinish: () {
+        profileService.updateOnboarded(true);
+      }
     );
   }
 
@@ -132,7 +134,7 @@ class _HomePageState extends State<HomePage> {
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       print('onboarded: $onboarded');
-      if(true) {
+      if(!onboarded) {
         //print('here: $onboarded');
         homePageTour();
         navBarTour();
