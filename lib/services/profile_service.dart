@@ -41,7 +41,8 @@ class ProfileService extends AbstractService {
   }
 
   Future<Settings> addApprovedFriend(String friendId) {
-    return put("/api/v1/profile/<profileId>/settings/${friendId}", null, Settings.fromJson);
+    print("ADDING APPROVED FRIEND");
+    return put("/api/v1/profile/me/settings/${friendId}", null, Settings.fromJson);
   }
 
 }

@@ -13,10 +13,10 @@ class Settings {
 
   factory Settings.fromJson(Map<String, dynamic> json) {
     return Settings(
-        id: json["id"] ?? "",
-        profile: Profile.fromJson(json["profile"]),
-        permissionNeededForPlaylists: json["permissionNeededForPlaylists"] ?? false,
-        friendsWithPermission: List<Profile>.from(json['friendsWithPermission'].map((x) => x))
+      id: json["id"] ?? "",
+      profile: Profile.fromJson(json["profile"]),
+      permissionNeededForPlaylists: json["permissionNeededForPlaylists"] ?? false,
+      friendsWithPermission: List<Profile>.from(json['friendsWithPermission'].map((x) => new Profile.fromJson(x))),
     );
   }
 

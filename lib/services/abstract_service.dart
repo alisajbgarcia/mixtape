@@ -109,7 +109,9 @@ class AbstractService {
   }
 
   Future<R> putString<R>(String uri, String body, DeserializerFactory<R> responseConverter) async {
+    print("$baseUrl/$uri");
     final response = await helper.put("$baseUrl/$uri", body: body, headers: { HttpHeaders.contentTypeHeader: ContentType.json.mimeType });
+    print(response.body);
     if (response.statusCode != 200) {
       return Future.error("Request error: ${response.statusCode} - ${response.reasonPhrase}");
     }
