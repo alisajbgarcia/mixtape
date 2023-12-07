@@ -5,17 +5,18 @@ import 'package:mixtape/screens/add_songs.dart';
 
 import '../utilities/colors.dart';
 
-class TapeCreationScreen extends StatefulWidget {
+class TapeCreationPage extends StatefulWidget {
+
   final Playlist playlist;
-  const TapeCreationScreen({
+  const TapeCreationPage({
     required this.playlist,
   });
 
   @override
-  State<TapeCreationScreen> createState() => _TapeCreationScreenState();
+  State<TapeCreationPage> createState() => _TapeCreationPageState();
 }
 
-class _TapeCreationScreenState extends State<TapeCreationScreen> {
+class _TapeCreationPageState extends State<TapeCreationPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 

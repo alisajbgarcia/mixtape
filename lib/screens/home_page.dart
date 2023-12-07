@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mixtape/tour_targets/playlist_mixtape_tour_target.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:flutter/material.dart';
+import 'package:mixtape/main.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
-import 'package:mixtape/screens/playlist_screen.dart';
+import 'package:mixtape/screens/playlist_page.dart';
 import 'package:mixtape/utilities/colors.dart';
 import 'package:mixtape/widgets/navbar.dart';
 import 'package:mixtape/screens/notif_page.dart';
@@ -112,9 +113,18 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => NavbarPages.navBarPages.elementAt(_selectedIndex)),
-    );
+
+    String route = "/home";
+    switch (index) {
+      case 0:
+        return; //don't migrate
+      case 1:
+        route = "/friends";
+        break;
+      case 2:
+        route = "/profile";
+    }
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   @override
@@ -141,6 +151,7 @@ class _HomePageState extends State<HomePage> {
         playlistMixtapeTour();
         openWelcomeDialog();
       }
+
     });
   }
 
@@ -165,6 +176,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _refresh() {
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+      playlists = playlistService.getPlaylistsForCurrentUser();
+    });
+    return Future.delayed(Duration(seconds: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -185,10 +204,7 @@ class _HomePageState extends State<HomePage> {
             size: textScaleFactor * 50
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NotifPage()),
-            );
+            Navigator.of(context).pushReplacementNamed('/notifs');
           }
           ),
         title: Column(
@@ -280,7 +296,6 @@ class _HomePageState extends State<HomePage> {
             // print('oops');
           } else {
             cardData = playlistsSnapshot.data!;
-            //cardData = [];
           }
 
           // null assert is hella ugly, but the compiler doesn't appear to tell
@@ -290,174 +305,179 @@ class _HomePageState extends State<HomePage> {
               Container(
                 height: screenHeight * .67,
                 padding: EdgeInsets.fromLTRB(screenWidth * .005, screenWidth * .005, screenWidth * .005, 0),
-                child: SingleChildScrollView(
-                  child: Column(
-                      children: cardData.map((playlist) {
-                        return InkWell(
-                          borderRadius: BorderRadius.circular(12.0),
-                          onTap: () {
-                            print('Tapped on Card ${playlist.name}');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist)),
-                            );
-                          },
-                          child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
-                              ),
-                              elevation: 3.0,
-                              margin: EdgeInsets.all(screenWidth * .03),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        padding: EdgeInsets.all(screenWidth * .005),
-                                        height: screenHeight * .17,
-                                        color: MixTapeColors.dark_gray,
-                                        child: CachedNetworkImage(
-                                          imageUrl: playlist.coverPicURL,
-                                          placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
-                                          errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                child: RefreshIndicator(
+                  onRefresh: _refresh,
+                  color: MixTapeColors.green,
+                  backgroundColor: MixTapeColors.dark_gray,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                        children: cardData.map((playlist) {
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(12.0),
+                            onTap: () {
+                              print('Tapped on Card ${playlist.name}');
+                              Navigator.of(context).pushNamed(
+                                '/playlist', arguments: ScreenArguments(playlist)
+                              );
+                            },
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                                ),
+                                elevation: 3.0,
+                                margin: EdgeInsets.all(screenWidth * .03),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.all(screenWidth * .005),
+                                          height: screenHeight * .17,
+                                          color: MixTapeColors.dark_gray,
+                                          child: CachedNetworkImage(
+                                            imageUrl: playlist.coverPicURL,
+                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        padding: EdgeInsets.only(top: screenWidth * .01, bottom: screenWidth * .005, left: screenWidth * .01, right: screenWidth * .01),
-                                        height: screenHeight * .17,
-                                        color: MixTapeColors.light_gray,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(screenWidth * .015),
-                                              height: screenHeight * .035,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                child: Text(
-                                                  playlist.name,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: (22 * textScaleFactor),
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            FilledButton(
-                                              style: FilledButton.styleFrom(
-                                                backgroundColor: MixTapeColors.dark_gray,
-                                                padding: EdgeInsets.all(0),
-                                                fixedSize: Size(150, 15),
-                                              ),
-                                              onPressed: null,
-                                              child: FutureBuilder(
-                                                future: currentProfile,
-                                                builder: (context, profileSnapshot) {
-                                                  if (!profileSnapshot.hasData || profileSnapshot.hasError) {
-                                                    return Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                      children: [
-                                                        Image.asset('assets/green_colored_logo.png',
-                                                            width: 25,
-                                                            height: 25
-                                                        ),
-                                                        Text(
-                                                          "loading friend",
-                                                          style: TextStyle(
-                                                            fontSize: (10 * textScaleFactor),
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }
-                                                  final profile = profileSnapshot.data!;
-                                                  return Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      if (profile.id == playlist.initiator.id)
-                                                        CachedNetworkImage(
-                                                            imageUrl: playlist.target.profilePicURL,
-                                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
-                                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
-                                                            width: 25,
-                                                            height: 25
-                                                        ),
-                                                      if (profile.id == playlist.initiator.id)
-                                                        Text(
-                                                          "with ${playlist.target.displayName}",
-                                                          style: TextStyle(
-                                                            fontSize: (10 * textScaleFactor),
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      if (profile.id == playlist.target.id)
-                                                        CachedNetworkImage(
-                                                            imageUrl: playlist.initiator.profilePicURL,
-                                                            placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
-                                                            errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
-                                                            width: 25,
-                                                            height: 25
-                                                        ),
-                                                      if (profile.id == playlist.target.id)
-                                                        Text(
-                                                          "with ${playlist.initiator.displayName}",
-                                                          style: TextStyle(
-                                                            fontSize: (10 * textScaleFactor),
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                    ],
-                                                  );
-                                                },
-                                              )
-
-                                            ),
-                                            Card(
-                                              color: MixTapeColors.light_gray,
-                                              elevation: 0.0,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "${playlist.songCount} songs",
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          padding: EdgeInsets.only(top: screenWidth * .01, bottom: screenWidth * .005, left: screenWidth * .01, right: screenWidth * .01),
+                                          height: screenHeight * .17,
+                                          color: MixTapeColors.light_gray,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.all(screenWidth * .015),
+                                                height: screenHeight * .035,
+                                                child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  child: Text(
+                                                    playlist.name,
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      fontSize: (12 * textScaleFactor),
+                                                      fontSize: (22 * textScaleFactor),
                                                       color: Colors.white,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    '${getTotalTimeHHMM(playlist.totalDurationMS)}',
-                                                    style: TextStyle(
-                                                      color: Colors.grey[400],
-                                                      fontSize: (12 * textScaleFactor),
-                                                    ),
-                                                  ),
-                                                  Image.asset(
-                                                    'assets/spotify/Spotify_Icon_RGB_Green.png',
-                                                    height: screenHeight * .03,
-                                                    width: screenHeight * .03,
-                                                  ),
-                                                ],
+                                                ),
                                               ),
-                                            )
-                                          ],
+                                              FilledButton(
+                                                style: FilledButton.styleFrom(
+                                                  backgroundColor: MixTapeColors.dark_gray,
+                                                  padding: EdgeInsets.all(0),
+                                                  fixedSize: Size(150, 15),
+                                                ),
+                                                onPressed: null,
+                                                child: FutureBuilder(
+                                                  future: currentProfile,
+                                                  builder: (context, profileSnapshot) {
+                                                    if (!profileSnapshot.hasData || profileSnapshot.hasError) {
+                                                      return Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        children: [
+                                                          Image.asset('assets/green_colored_logo.png',
+                                                              width: 25,
+                                                              height: 25
+                                                          ),
+                                                          Text(
+                                                            "loading friend",
+                                                            style: TextStyle(
+                                                              fontSize: (10 * textScaleFactor),
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+                                                    final profile = profileSnapshot.data!;
+                                                    return Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        if (profile.id == playlist.initiator.id)
+                                                          CachedNetworkImage(
+                                                              imageUrl: playlist.target.profilePicURL,
+                                                              placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                                              errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                                              width: 25,
+                                                              height: 25
+                                                          ),
+                                                        if (profile.id == playlist.initiator.id)
+                                                          Text(
+                                                            "with ${playlist.target.displayName}",
+                                                            style: TextStyle(
+                                                              fontSize: (10 * textScaleFactor),
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                        if (profile.id == playlist.target.id)
+                                                          CachedNetworkImage(
+                                                              imageUrl: playlist.initiator.profilePicURL,
+                                                              placeholder: (context, url) => Image.asset('assets/green_colored_logo.png'),
+                                                              errorWidget: (context, url, error) => Image.asset('assets/green_colored_logo.png'),
+                                                              width: 25,
+                                                              height: 25
+                                                          ),
+                                                        if (profile.id == playlist.target.id)
+                                                          Text(
+                                                            "with ${playlist.initiator.displayName}",
+                                                            style: TextStyle(
+                                                              fontSize: (10 * textScaleFactor),
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                      ],
+                                                    );
+                                                  },
+                                                )
+
+                                              ),
+                                              Card(
+                                                color: MixTapeColors.light_gray,
+                                                elevation: 0.0,
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "${playlist.songCount} songs",
+                                                      style: TextStyle(
+                                                        fontSize: (12 * textScaleFactor),
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${getTotalTimeHHMM(playlist.totalDurationMS)}',
+                                                      style: TextStyle(
+                                                        color: Colors.grey[400],
+                                                        fontSize: (12 * textScaleFactor),
+                                                      ),
+                                                    ),
+                                                    Image.asset(
+                                                      'assets/spotify/Spotify_Icon_RGB_Green.png',
+                                                      height: screenHeight * .03,
+                                                      width: screenHeight * .03,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                                    ],
+                                  ),
+                                )
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                  ),
                 ),
               ),
             ],
@@ -468,28 +488,28 @@ class _HomePageState extends State<HomePage> {
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
         child: FloatingActionButton.extended(
-          key: playlistMixtapeKey,
-          heroTag: "playlist_creation",
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
-            );
-          },
-          label: Text(
-            'Create a Playlist',
-            style: TextStyle(
-              fontSize: textScaleFactor * 20,
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w600,
+            key: playlistMixtapeKey,
+            heroTag: "playlist_creation",
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
             ),
+            onPressed: () {
+              print("here omg please");
+              Navigator.of(context).pushNamed(
+                '/playlistcreate'
+              );
+            },
+            label: Text(
+                'Create a Playlist',
+                style: TextStyle(
+                  fontSize: textScaleFactor * 20,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w600,
+                ),
+            ),
+            icon: Icon(Icons.add),
+            backgroundColor: MixTapeColors.green, // Change the button's color
           ),
-          icon: Icon(Icons.add),
-          backgroundColor: MixTapeColors.green, // Change the button's color
-        ),
       ),
       bottomNavigationBar: onboarded ? NavBar.Tutorial(
         friendsPageKey: friendsPageKey,

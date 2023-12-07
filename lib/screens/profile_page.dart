@@ -57,8 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       currentProfile = profileService.getCurrentProfile();
     });
-    //pageTour();
-    //showTour();
   }
 
   int _selectedIndex = 0;
@@ -67,9 +65,18 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => NavbarPages.navBarPages.elementAt(_selectedIndex)),
-    );
+    String route = "/friends";
+    switch (index) {
+      case 0:
+        route = '/home';
+        break;
+      case 1:
+        route = '/friends';
+        break;
+      case 2:
+        return; //don't migrate
+    }
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   @override
@@ -238,7 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
             content: Text('Successfully Logged Out'),
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()),);
+          Navigator.of(context).pushReplacementNamed('/');
         }, onError: (err) {
           const snackBar = SnackBar(
             content: Text('Failed to log out'),

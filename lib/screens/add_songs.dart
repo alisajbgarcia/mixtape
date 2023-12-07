@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/main.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/screens/home_page.dart';
-import 'package:mixtape/screens/playlist_screen.dart';
+import 'package:mixtape/screens/playlist_page.dart';
 import 'package:mixtape/screens/search_page.dart';
 import 'package:mixtape/services/mixtape_service.dart';
 import 'package:mixtape/services/services_container.dart';
@@ -211,10 +212,9 @@ class _AddSongsPageState extends State<AddSongsPage> {
                   Mixtape createdMixtape = await mixtapeService.createMixtapeInPlaylistForCurrentUser(widget.playlist.id, name: widget.mixTapeName, description: widget.mixTapeDescription, songIDs: songIDs);
                   print(createdMixtape);
                   // print("Title: ${mixTape.title}, NumSongs: ${mixTape.numSongs}, Description: ${mixTape.description}");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HomePage(),));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+
                 },
                 label: Padding(
                   padding: EdgeInsets.all(5.0),
