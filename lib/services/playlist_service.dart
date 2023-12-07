@@ -3,6 +3,7 @@ import 'package:mixtape/models/json_serializable.dart';
 import 'package:mixtape/models/playlist.dart';
 import 'package:mixtape/services/abstract_service.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
+import 'package:mixtape/models/track_info.dart';
 
 class PlaylistService extends AbstractService {
   PlaylistService(OAuth2Helper helper, String baseUrl) : super(helper, baseUrl);
@@ -38,5 +39,9 @@ class PlaylistService extends AbstractService {
 
   Future<void> deleteRequest(String playlistId) async {
     return delete("/api/v1/profile/me/playlist/$playlistId/deny");
+  }
+
+  Future<List<TrackInfo>> getRecentlyListened() async {
+    return getMany("/api/v1/profile/me/search/recent-tracks", TrackInfo.fromJson);
   }
 }
