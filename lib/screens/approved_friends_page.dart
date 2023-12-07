@@ -453,10 +453,6 @@ class _ApprovedFriendsPageState extends State<ApprovedFriendsPage> {
               );
             }
           }),
-      bottomNavigationBar: NavBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
     );
   }
 }
