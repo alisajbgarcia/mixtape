@@ -238,7 +238,6 @@ class _SuggestedFriendsPageState extends State<SuggestedFriendsPage> {
       ),
 
       bottomNavigationBar: NavBar(
-        friendsPageKey: GlobalKey(),
         context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

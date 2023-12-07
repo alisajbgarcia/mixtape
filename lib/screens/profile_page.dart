@@ -57,8 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       currentProfile = profileService.getCurrentProfile();
     });
-
-
   }
 
   int _selectedIndex = 0;
@@ -209,7 +207,6 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       ),
       bottomNavigationBar: NavBar(
-        friendsPageKey: GlobalKey(),
         context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

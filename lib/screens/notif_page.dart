@@ -93,10 +93,6 @@ class _NotifPage extends State<NotifPage> {
     });
   }
 
-  List<Notif> dummydata = [
-    //Notif(id:'123', target: Profile('2', 'Zesty', 'Zesty', ''), externalId: '1', contents: 'NO NOTIFICATIONS!', notificationType: NotificationType.MIXTAPE),
-  ];
-
   Future<void> _refresh() {
     setState(() {
       currentProfile = profileService.getCurrentProfile();
@@ -187,7 +183,7 @@ class _NotifPage extends State<NotifPage> {
             List<Notif> cardData;
 
             if(!notifSnapshot.hasData) {
-              cardData = dummydata;
+              return CircularProgressIndicator();
 
             } else {
               cardData = notifSnapshot.data!;
@@ -319,8 +315,8 @@ class _NotifPage extends State<NotifPage> {
                           ),
                           onPressed: () async {
                             print('activity pressed');
+
                             Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.routingPath);
-                            
                             Navigator.of(context).pushNamed('/playlist', arguments: ScreenArguments(playlist));
                           },
                         ),
@@ -334,7 +330,6 @@ class _NotifPage extends State<NotifPage> {
             ); } }
       ),
       bottomNavigationBar: NavBar(
-        friendsPageKey: GlobalKey(),
         context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
