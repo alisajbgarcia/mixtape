@@ -130,9 +130,12 @@ class _ProfilePageState extends State<ProfilePage> {
               size: MediaQuery.of(context).size.width * .1,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsPage()),
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => SettingsPage()),
+              // );
+              Navigator.of(context).pushNamed(
+                  '/settings'
               );
             }
         ),]

@@ -120,8 +120,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       leading: Icon(Icons.group),
                       title: Text('Users Who Don\'t Require Approval'),
                       onPressed: (BuildContext context) {
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => const ApprovedFriendsPage()),);
+                        // Navigator.push(context, MaterialPageRoute(
+                        //     builder: (context) => const ApprovedFriendsPage()),);
+                        Navigator.of(context).pushNamed(
+                            '/approvedusers'
+                        );
                       }
                     ),
                   ],
@@ -133,8 +136,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       leading: Icon(Icons.block),
                       title: Text('Blocked Users'),
                       onPressed: (BuildContext context) {
-                        Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => const BlockedUsersPage()),);
+                        // Navigator.push(context, MaterialPageRoute(
+                        // builder: (context) => const BlockedUsersPage()),);
+                        Navigator.of(context).pushNamed(
+                            '/blockedusers'
+                        );
                       }
                     ),
                   ]

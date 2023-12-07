@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mixtape/screens/add_songs.dart';
+import 'package:mixtape/screens/approved_friends_page.dart';
+import 'package:mixtape/screens/blocked_users_page.dart';
 import 'package:mixtape/screens/home_page.dart';
 import 'package:mixtape/screens/login_page.dart';
 import 'package:mixtape/screens/notif_page.dart';
 import 'package:mixtape/screens/playlist_creation.dart';
 import 'package:mixtape/screens/search_page.dart';
+import 'package:mixtape/screens/settings_page.dart';
 import 'package:mixtape/screens/suggested_friends_page.dart';
 import 'package:mixtape/screens/tape_creation.dart';
 import 'package:mixtape/screens/tape_info_page.dart';
@@ -66,6 +69,15 @@ void main() async {
               return MaterialPageRoute(builder: builder);
             case '/suggestedfriends':
               builder = (BuildContext context) => SuggestedFriendsPage();
+              return MaterialPageRoute(builder: builder);
+            case '/settings':
+              builder = (BuildContext context) => SettingsPage();
+              return MaterialPageRoute(builder: builder);
+            case '/blockedusers':
+              builder = (BuildContext context) => BlockedUsersPage();
+              return MaterialPageRoute(builder: builder);
+            case '/approvedusers':
+              builder = (BuildContext context) => ApprovedFriendsPage();
               return MaterialPageRoute(builder: builder);
             default:
               throw Exception('Invalid route: ${settings.name}');
