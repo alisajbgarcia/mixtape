@@ -426,7 +426,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                                                         );
                                                                       } else if(errorMessage.contains("403")) {
                                                                         snackBar = SnackBar(
-                                                                            content: Text('${searchFriend.displayName} is already your friend')
+                                                                          content: Text('${searchFriend.displayName} is already your friend'),
                                                                         );
                                                                       }
 
