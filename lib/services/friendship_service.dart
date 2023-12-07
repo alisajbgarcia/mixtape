@@ -15,6 +15,10 @@ class FriendshipService extends AbstractService {
     return getMany("/api/v1/profile/me/playlist", Friendship.fromJson);
   }
 
+  Future<List<Profile>> getSuggestedFriendsForCurrentUser() async {
+    return getMany("/api/v1/profile/me/suggestions", Profile.fromJson);
+  }
+
   Future<void> acceptRequest(String friendshipId) async {
     return put("/api/v1/profile/me/friendship/$friendshipId/accept", null, Friendship.fromJson);
   }

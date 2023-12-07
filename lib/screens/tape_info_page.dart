@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mixtape/main.dart';
 import 'package:mixtape/models/track_info.dart';
 import 'package:mixtape/screens/home_page.dart';
-import 'package:mixtape/screens/playlist_screen.dart';
+import 'package:mixtape/screens/playlist_page.dart';
 import 'package:mixtape/utilities/colors.dart';
 
 import '../models/mixtape.dart';
@@ -13,7 +14,8 @@ import '../services/profile_service.dart';
 import '../services/services_container.dart';
 
 
-class TapeInfoScreen extends StatefulWidget {
+class TapeInfoPage extends StatefulWidget {
+
   // final int tape_id;
   // final int spotify_id;
   // final String title;
@@ -21,17 +23,17 @@ class TapeInfoScreen extends StatefulWidget {
   // final String description;
   Mixtape mixtape;
   final Playlist playlist;
-  TapeInfoScreen(
+  TapeInfoPage(
       {
         required this.mixtape,
         required this.playlist
       });
 
   @override
-  State<TapeInfoScreen> createState() => _TapeInfoScreenState();
+  State<TapeInfoPage> createState() => _TapeInfoPageState();
 }
 
-class _TapeInfoScreenState extends State<TapeInfoScreen> {
+class _TapeInfoPageState extends State<TapeInfoPage> {
   late ProfileService profileService;
   late AuthenticationService authenticationService;
   late MixtapeService mixtapeService;
@@ -319,12 +321,8 @@ class _TapeInfoScreenState extends State<TapeInfoScreen> {
                                       await mixtapeService
                                           .deleteMixtapeInPlaylistForCurrentUser(
                                           widget.playlist.id, widget.mixtape.id);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => HomePage(),
-                                          )
-                                      );
+
+                                      Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(widget.playlist));
                                     } catch (err) {
                                       print(err);
                                       Navigator.pop(context, 'ERROR');

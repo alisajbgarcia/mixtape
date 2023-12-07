@@ -10,6 +10,7 @@ import '../services/profile_service.dart';
 import '../services/services_container.dart';
 import '../utilities/navbar_pages.dart';
 import '../widgets/navbar.dart';
+import '../screens/suggested_friends_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:mixtape/utilities/colors.dart';
@@ -62,18 +63,33 @@ class _FriendsPageState extends State<FriendsPage> {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) =>
-              NavbarPages.navBarPages.elementAt(_selectedIndex)),
-    );
+    String route = "/friends";
+    switch (index) {
+      case 0:
+        route = '/home';
+        break;
+      case 1:
+        return; //don't migrate
+      case 2:
+        route = "/profile";
+    }
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   void toggleSearchBar() {
       setState(() {
         isSearchBarVisible = !isSearchBarVisible;
       });
-    }
+  }
+
+  Future<void> _refresh() {
+    setState(() {
+      currentProfile = profileService.getCurrentProfile();
+      friends = profileService.getFriendsForCurrentUser();
+      searchFriends = profileService.searchProfiles("");
+    });
+    return Future.delayed(Duration(seconds: 1));
+  }
 
   List<Profile> dummydata = [
     Profile('zestythomae', 'andrew thomae', 'spotifyuid', 'assets/green_colored_logo.png'),
@@ -124,134 +140,102 @@ class _FriendsPageState extends State<FriendsPage> {
                   Container(
                     height: screenHeight * .67,
                     padding: EdgeInsets.fromLTRB(5, 0, 5, 30),
-                    child: SingleChildScrollView( // Use SingleChildScrollView instead of ListView
-                      child: Container(
-                        child: Column(
-                          children: cardData.map((friend) {
-                            friendIDs.add(friend.id);
-                            return InkWell(
-                              borderRadius: BorderRadius.circular(12.0),
-                              onTap: () {
-                                print(friend.id);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => FriendInfoPage(friendId: friend.id)),
-                                );
-                              },
-                              // onTap: () => showDialog<String>(
-                              //   context: context,
-                              //   builder: (BuildContext context) => AlertDialog(
-                              //     backgroundColor: MixTapeColors.black,
-                              //     //title: const Text('Remove Friend?'),
-                              //     content: const Text('Would you like to remove this user as a friend?',
-                              //     style: TextStyle(
-                              //           fontSize: (22),
-                              //           color: Colors.white,
-                              //          ),
-                              //     ),
-                              //     actions: <Widget>[
-                              //       TextButton(
-                              //         onPressed: () => Navigator.pop(context, 'CANCEL'),
-                              //         child: const Text('CANCEL',
-                              //         style: TextStyle(
-                              //                         fontSize: (22),
-                              //                         color: Colors.white,
-                              //          ),
-                              //         ),
-                              //       ),
-                              //       TextButton(
-                              //         onPressed: () => {
-                              //           Navigator.pop(context, 'YES'),
-                              //           cardData.remove(friend),
-                              //           friendshipService.deleteFriendship(friend.id),
-                              //           setState(() {}),
-                              //           },
-                              //         child: const Text('YES',
-                              //         style: TextStyle(
-                              //                         fontSize: (22),
-                              //                         color: Colors.white,
-                              //          ),
-                              //          ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
-                            child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      12.0), // Adjust the radius as needed
-                                ),
-                                elevation: 3.0,
-                                margin: EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          height: screenHeight * .07,
-                                          color: MixTapeColors.dark_gray,
-                                          child: friend.profilePicURL.isNotEmpty ?
-                                          Image.network(friend.profilePicURL) :
-                                          Container(
-                                            child: Icon(
-                                              Icons.person_2_rounded,
-                                              color: Colors.white70,
-                                              size: screenWidth * .1,
+                    child: RefreshIndicator(
+                      onRefresh: _refresh,
+                      color: MixTapeColors.green,
+                      backgroundColor: MixTapeColors.dark_gray,
+                      child: SingleChildScrollView(// Use SingleChildScrollView instead of ListView
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Container(
+                          child: Column(
+                            children: cardData.map((friend) {
+                              friendIDs.add(friend.id);
+                              return InkWell(
+                                borderRadius: BorderRadius.circular(12.0),
+                                onTap: () {
+                                  print(friend.id);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => FriendInfoPage(friendId: friend.id)),
+                                  );
+                                },
+                              child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        12.0), // Adjust the radius as needed
+                                  ),
+                                  elevation: 3.0,
+                                  margin: EdgeInsets.all(8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            height: screenHeight * .07,
+                                            color: MixTapeColors.dark_gray,
+                                            child: friend.profilePicURL.isNotEmpty ?
+                                            Image.network(friend.profilePicURL) :
+                                            Container(
+                                              child: Icon(
+                                                Icons.person_2_rounded,
+                                                color: Colors.white70,
+                                                size: screenWidth * .1,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.only(top: 10,
-                                              bottom: 5,
-                                              left: 10,
-                                              right: 10),
-                                          height: screenHeight * .07,
-                                          color: MixTapeColors.light_gray,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment
-                                                .spaceBetween,
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  friend.displayName,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: (22 *
-                                                        textScaleFactor),
-                                                    color: Colors.white,
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            padding: EdgeInsets.only(top: 10,
+                                                bottom: 5,
+                                                left: 10,
+                                                right: 10),
+                                            height: screenHeight * .07,
+                                            color: MixTapeColors.light_gray,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    friend.displayName,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: (22 *
+                                                          textScaleFactor),
+                                                      color: Colors.white,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Card(
-                                                color: MixTapeColors.light_gray,
-                                                elevation: 0.0,
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment
-                                                      .spaceBetween,
-                                                ),
-                                              )
-                                            ],
+                                                Card(
+                                                  color: MixTapeColors.light_gray,
+                                                  elevation: 0.0,
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment
+                                                        .spaceBetween,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                            ),
-                          );
-                        }).toList(),
+                                      ],
+                                    ),
+                                  )
+                              ),
+                            );
+                          }).toList(),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
                 isSearchBarVisible
                     ? Container(
                   color: MixTapeColors.dark_gray,
@@ -480,36 +464,75 @@ class _FriendsPageState extends State<FriendsPage> {
                           : SizedBox() // Empty placeholder when not visible
                   ),
                 )
-                    : Container(
-                  alignment: Alignment.bottomRight,
-                  margin: EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      print('Tapped Added Friends');
-                    },
-                    child: Container(
-                      //alignment: Alignment.bottomRight,
-                      width: 200,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: MixTapeColors.green,
-                      ),
-                      child: Center(
-                          child: TextButton(
-                            child: Text(
-                              'Add Friends +',
-                              style: TextStyle(
-                                fontSize: (22 * textScaleFactor),
-                                color: Colors.white,
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                print('Tapped Suggested Friends');
+                              },
+                              child: Container(
+                                //alignment: Alignment.bottomRight,
+                                width: screenWidth * .45,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: MixTapeColors.green,
+                                ),
+                                child: Center(
+                                    child: TextButton(
+                                      child: Text(
+                                        'Suggested Friends',
+                                        style: TextStyle(
+                                          fontSize: (20 * textScaleFactor),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        // TODO: change this routing
+                                        Navigator.of(context).pushReplacementNamed('/suggestedfriends');
+                                      },
+                                    )
+                                ),
                               ),
                             ),
-                            onPressed: toggleSearchBar,
-                          )
-                      ),
-                    ),
-                  ),
-                ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomRight,
+                            margin: EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                print('Tapped Added Friends');
+                              },
+                              child: Container(
+                                //alignment: Alignment.bottomRight,
+                                width: screenWidth * .45,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: MixTapeColors.green,
+                                ),
+                                child: Center(
+                                    child: TextButton(
+                                      child: Text(
+                                        'Add Friends +',
+                                        style: TextStyle(
+                                          fontSize: (20 * textScaleFactor),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: toggleSearchBar,
+                                    )
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
               ],
             );
           }
@@ -517,6 +540,8 @@ class _FriendsPageState extends State<FriendsPage> {
       ),
 
       bottomNavigationBar: NavBar(
+        friendsPageKey: GlobalKey(),
+        context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),

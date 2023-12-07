@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/models/track_info.dart';
 import 'package:mixtape/screens/home_page.dart';
-import 'package:mixtape/screens/playlist_screen.dart';
+import 'package:mixtape/screens/playlist_page.dart';
 import 'package:mixtape/utilities/colors.dart';
 
 import '../models/mixtape.dart';
@@ -215,7 +215,7 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        PlaylistScreen(playlist: playlist)),
+                                        PlaylistPage(playlist: playlist)),
                               );
                             },
                             child: Card(

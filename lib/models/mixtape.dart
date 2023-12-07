@@ -16,7 +16,7 @@ class Mixtape {
   List<String> songIDs;
   List<TrackInfo> songs;
   List<Reaction> reactions;
-  bool listened;
+
 
   Mixtape(
       {required this.id,
@@ -27,9 +27,7 @@ class Mixtape {
         required this.creator,
         required this.songIDs,
         required this.songs,
-        required this.reactions,
-        required this.listened,
-      });
+        required this.reactions});
 
   factory Mixtape.fromJson(Map<String, dynamic> json) {
     return Mixtape(
@@ -42,7 +40,6 @@ class Mixtape {
       songIDs: List<String>.from(json['songIDs'].map((x) => x)),
       songs: jsonDecodeList(json["songs"], TrackInfo.fromJson),
       reactions: jsonDecodeList(json["reactions"], Reaction.fromJson),
-      listened: json["listened"],
     );
   }
 
@@ -56,8 +53,7 @@ class Mixtape {
       "creator": creator,
       "songIDs": jsonEncode(songIDs),
       "songs": jsonEncode(songs),
-      "reactions": jsonEncode(reactions),
-      "listened": listened,
+      "reactions": jsonEncode(reactions)
     };
   }
 }
