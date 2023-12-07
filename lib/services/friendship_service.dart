@@ -36,6 +36,6 @@ class FriendshipService extends AbstractService {
   }
 
   Future<bool> unblockUser(String blockedProfileID) async {
-    return postStringNoConverter("/api/v1/profile/me/blocklist/${blockedProfileID}/unblock", jsonEncode(null));
+    return putStringNoConverter("/api/v1/profile/me/blocklist/${blockedProfileID}/unblock", jsonEncode(null));
   }
 }
