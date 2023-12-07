@@ -136,7 +136,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => FriendInfoScreen(friendId: friend.id)),
+                                      builder: (context) => FriendInfoPage(friendId: friend.id)),
                                 );
                               },
                               // onTap: () => showDialog<String>(

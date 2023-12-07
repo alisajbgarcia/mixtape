@@ -16,17 +16,17 @@ import '../services/profile_service.dart';
 import '../services/services_container.dart';
 import 'friends_page.dart';
 
-class FriendInfoScreen extends StatefulWidget {
+class FriendInfoPage extends StatefulWidget {
   String friendId;
-  FriendInfoScreen({
+  FriendInfoPage({
     required this.friendId,
   });
 
   @override
-  State<FriendInfoScreen> createState() => _FriendInfoScreenState();
+  State<FriendInfoPage> createState() => _FriendInfoPageState();
 }
 
-class _FriendInfoScreenState extends State<FriendInfoScreen> {
+class _FriendInfoPageState extends State<FriendInfoPage> {
   late ProfileService profileService;
   late AuthenticationService authenticationService;
   late MixtapeService mixtapeService;
