@@ -322,7 +322,7 @@ class _TapeInfoPageState extends State<TapeInfoPage> {
                                           .deleteMixtapeInPlaylistForCurrentUser(
                                           widget.playlist.id, widget.mixtape.id);
 
-                                      Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(widget.playlist));
+                                      Navigator.of(context).pop();
                                     } catch (err) {
                                       print(err);
                                       Navigator.pop(context, 'ERROR');

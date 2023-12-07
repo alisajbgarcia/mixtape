@@ -16,6 +16,7 @@ class Notif {
   String externalId;
   String contents;
   NotificationType notificationType;
+  String routingPath;
 
 
   Notif(
@@ -23,7 +24,8 @@ class Notif {
         required this.target,
         required this.externalId,
         required this.notificationType,
-        required this.contents
+        required this.contents,
+        required this.routingPath
         });
 
   factory Notif.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,7 @@ class Notif {
       externalId: json["externalId"],
       notificationType: NotificationType.fromJson(json["notificationType"]),
       contents: json["contents"],
+      routingPath: json["routingPath"],
     );
   }
 

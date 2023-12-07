@@ -315,9 +315,9 @@ class _NotifPage extends State<NotifPage> {
                           ),
                           onPressed: () async {
                             print('activity pressed');
-                            Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.externalId);
 
-                            Navigator.of(context).pushReplacementNamed('/playlist', arguments: ScreenArguments(playlist));
+                            Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.routingPath);
+                            Navigator.of(context).pushNamed('/playlist', arguments: ScreenArguments(playlist));
                           },
                         ),
                     ) : SizedBox()
