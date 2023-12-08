@@ -73,10 +73,9 @@ class _ApprovedFriendsPageState extends State<ApprovedFriendsPage> {
     });
   }
 
-  List<Profile> dummydata = [
-    Profile('zestythomae', 'andrew thomae', 'spotifyuid',
-        'assets/green_colored_logo.png'),
-  ];
+  // List<Profile> dummydata = [
+  //   Profile('zestythomae', 'andrew thomae', 'spotifyuid', 'assets/green_colored_logo.png'),
+  // ];
 
   @override
   Widget build(BuildContext context) {

@@ -26,7 +26,7 @@ void main() async {
     ServicesProvider(
       services: services,
       child: MaterialApp(
-        initialRoute: '/', 
+        initialRoute: '/',
         onGenerateRoute: (settings) {
           late ScreenArguments args;
           WidgetBuilder builder;
@@ -95,6 +95,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Mixtape',
       theme: ThemeData(
         // This is the theme of your application.

@@ -63,8 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
       // TODO: initialize playlists enabled value to backend value
       playlists_enabled = false;
     });
-
-
   }
 
   int _selectedIndex = 0;
@@ -315,7 +313,6 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       ),
       bottomNavigationBar: NavBar(
-        friendsPageKey: GlobalKey(),
         context: context,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

@@ -49,4 +49,7 @@ class ProfileService extends AbstractService {
     return put("/api/v1/profile/me/settings/${friendId}", null, Settings.fromJson);
   }
 
+  Future<Profile> updateOnboarded(bool isOnboarded) async {
+    return put("/api/v1/profile/me/onboarded?isOnboarded=$isOnboarded", null, Profile.fromJson);
+  }
 }

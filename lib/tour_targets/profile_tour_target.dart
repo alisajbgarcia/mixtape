@@ -10,7 +10,7 @@ List<TargetFocus> addTourTargets({
     TargetFocus(
       keyTarget: profileKey,
       shape: ShapeLightFocus.RRect,
-      radius: 10,
+      radius: 15,
       paddingFocus: 50,
       contents: [
         TargetContent(

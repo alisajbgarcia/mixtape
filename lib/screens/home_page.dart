@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mixtape/tour_targets/playlist_mixtape_tour_target.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:flutter/material.dart';
 import 'package:mixtape/main.dart';
@@ -30,13 +31,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  bool newUser = false;
+  bool? onboarded = null;
   late Profile initiatorProfile;
 
   late TutorialCoachMark homePageTutorialMark;
   late TutorialCoachMark navBarTutorialMark;
+  late TutorialCoachMark playlistMixtapeTutorialMark;
   GlobalKey homePageKey = GlobalKey();
-  GlobalKey navBarKey = GlobalKey();
+  GlobalKey friendsPageKey = GlobalKey();
+  GlobalKey profilePageKey = GlobalKey();
+  GlobalKey notificationsPageKey = GlobalKey();
+  GlobalKey playlistMixtapeKey = GlobalKey();
 
   late PlaylistService playlistService;
   late AuthenticationService authenticationService;
@@ -48,15 +53,14 @@ class _HomePageState extends State<HomePage> {
   void homePageTour() {
     homePageTutorialMark = TutorialCoachMark(
       targets: addTourTargets(
-          profileKey: homePageKey),
-      colorShadow: MixTapeColors.dark_gray,
+        context: context,
+        profileKey: homePageKey,
+        notificationsPageKey: notificationsPageKey,
+      ),
+      colorShadow: MixTapeColors.green,
       paddingFocus: 1,
       hideSkip: true,
-      opacityShadow: 0,
-      onSkip: () {
-        newUser = false;
-        return newUser;
-      },
+      opacityShadow: 0.8,
       onFinish: () {
         showNavBarTour();
       }
@@ -66,14 +70,33 @@ class _HomePageState extends State<HomePage> {
   void navBarTour() {
     navBarTutorialMark = TutorialCoachMark(
       targets: addNavBarTourTargets(
-          friendsPageKey: navBarKey),
+        context: context,
+        friendsPageKey: friendsPageKey,
+        profilePageKey: profilePageKey,
+      ),
       colorShadow: MixTapeColors.green,
       paddingFocus: 1,
-      hideSkip: false,
+      hideSkip: true,
       opacityShadow: 0.8,
-      onSkip: () {
-        return true;
-      },
+      onFinish: () {
+        showPlaylistMixtapeTour();
+      }
+    );
+  }
+
+  void playlistMixtapeTour() {
+    playlistMixtapeTutorialMark = TutorialCoachMark(
+      targets: addPlaylistMixtapeTourTargets(
+        context: context,
+        playlistMixtapeKey: playlistMixtapeKey,
+      ),
+      colorShadow: MixTapeColors.green,
+      paddingFocus: 1,
+      opacityShadow: 0.8,
+      hideSkip: true,
+      onFinish: () {
+        profileService.updateOnboarded(true);
+      }
     );
   }
 
@@ -82,6 +105,9 @@ class _HomePageState extends State<HomePage> {
 
   void showNavBarTour() => Future.delayed(Duration(milliseconds: 500),
           () => navBarTutorialMark.show(context: context));
+
+  void showPlaylistMixtapeTour() => Future.delayed(Duration(milliseconds: 500),
+          () => playlistMixtapeTutorialMark.show(context: context));
 
   void _onItemTapped(int index) {
     setState(() {
@@ -104,6 +130,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
+    print('home page');
 
     profileService = ServicesContainer.of(context).profileService;
     playlistService = ServicesContainer.of(context).playlistService;
@@ -111,44 +138,40 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
-    });
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if(newUser) {
-        homePageTour();
-        navBarTour();
-        openWelcomeDialog();
-      }
-
+      currentProfile.then((profile) {
+        onboarded = profile.onboarded;
+        print('onboarded: $onboarded');
+        if(onboarded! == false) {
+          homePageTour();
+          navBarTour();
+          playlistMixtapeTour();
+          openWelcomeDialog();
+        }
+      });
     });
   }
 
   void openWelcomeDialog() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return WelcomeDialog(
           startTutorial: (bool startTutorial) {
             setState(() {
-              newUser = startTutorial;
+              onboarded = startTutorial;
             });
           },
         );
       },
     ).then((result) {
-      if (newUser) {
+      if (onboarded!) {
         showTour();
+        //showPlaylistMixtapeTour();
+      } else {
+        profileService.updateOnboarded(true);
       }
     });
-  }
-
-  void openTutorial1() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MixTapePremiseDialog();
-      },
-    );
   }
 
   Future<void> _refresh() {
@@ -172,6 +195,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         key: homePageKey,
         leading: IconButton(
+          key: notificationsPageKey,
           padding: EdgeInsets.all(10),
           icon: ImageIcon(
             AssetImage("assets/notif.png"),
@@ -464,6 +488,7 @@ class _HomePageState extends State<HomePage> {
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(top: 10, bottom: 5, left: 30, right: 10),
         child: FloatingActionButton.extended(
+            key: playlistMixtapeKey,
             heroTag: "playlist_creation",
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
@@ -490,12 +515,17 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: MixTapeColors.green, // Change the button's color
           ),
       ),
-      bottomNavigationBar: NavBar(
-        friendsPageKey: navBarKey,
+      bottomNavigationBar: onboarded != null ? NavBar.Tutorial(
+        friendsPageKey: friendsPageKey,
+        profilePageKey: profilePageKey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         context: context,
-      ),
+      ) : NavBar(
+        context: context,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      )
     );
   }
 
