@@ -130,7 +130,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    print('home page');
 
     profileService = ServicesContainer.of(context).profileService;
     playlistService = ServicesContainer.of(context).playlistService;
@@ -139,6 +138,7 @@ class _HomePageState extends State<HomePage> {
       currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
       currentProfile.then((profile) {
+        profileService.updateOnboarded(false);
         onboarded = profile.onboarded;
         print('onboarded: $onboarded');
         if(onboarded! == false) {
