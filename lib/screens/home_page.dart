@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
       currentProfile = profileService.getCurrentProfile();
       playlists = playlistService.getPlaylistsForCurrentUser();
       currentProfile.then((profile) {
-        profileService.updateOnboarded(false);
+        //profileService.updateOnboarded(false);
         onboarded = profile.onboarded;
         print('onboarded: $onboarded');
         if(onboarded! == false) {
