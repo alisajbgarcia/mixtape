@@ -45,4 +45,8 @@ class MixtapeService extends AbstractService {
     print(type);
     return putString("/api/v1/profile/me/playlist/$playlistId/mixtape/$mixtapeId/reaction", jsonEncode(type), Mixtape.fromJson);
   }
+
+  Future<Mixtape> enqueueMixtape(String playlistId, String mixtapeId) {
+    return postWithoutBody("/api/v1/profile/me/playlist/${playlistId}/mixtape/${mixtapeId}/enqueue", Mixtape.fromJson);
+  }
 }

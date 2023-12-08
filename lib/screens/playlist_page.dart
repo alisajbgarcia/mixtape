@@ -151,40 +151,40 @@ class _PlaylistPageState extends State<PlaylistPage> {
                           onPressed: () => showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                                backgroundColor: MixTapeColors.black,
-                                //title: const Text('Remove Friend?'),
-                                content: const Text('Would you like to delete this playlist?',
+                              backgroundColor: MixTapeColors.black,
+                              //title: const Text('Remove Friend?'),
+                              content: const Text('Would you like to delete this playlist?',
                                 style: TextStyle(
+                                  fontSize: (22),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'CANCEL'),
+                                  child: const Text('CANCEL',
+                                    style: TextStyle(
                                       fontSize: (22),
                                       color: Colors.white,
                                     ),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context, 'CANCEL'),
-                                    child: const Text('CANCEL',
-                                    style: TextStyle(
-                                                    fontSize: (22),
-                                                    color: Colors.white,
-                                    ),
-                                    ),
                                   ),
-                                  TextButton(
-                                    onPressed: () => {Navigator.pop(context, 'YES'),
-                                      _onDeletePlaylist(widget.playlist.id),
-                                      Navigator.of(context).pushReplacementNamed(
+                                ),
+                                TextButton(
+                                  onPressed: () => {Navigator.pop(context, 'YES'),
+                                    _onDeletePlaylist(widget.playlist.id),
+                                    Navigator.of(context).pushReplacementNamed(
                                         '/home'),
 
-                                    },
-                                    child: const Text('YES',
-                                      style: TextStyle(
-                                                      fontSize: (22),
-                                                      color: Colors.white,
-                                      ),
+                                  },
+                                  child: const Text('YES',
+                                    style: TextStyle(
+                                      fontSize: (22),
+                                      color: Colors.white,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -439,12 +439,12 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                     width: screenWidth * .9,
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(20, 20, 10, 0),
+                                          EdgeInsets.fromLTRB(20, 20, 10, 0),
                                           child: Text(
                                             mixtape.name,
                                             textAlign: TextAlign.center,
@@ -538,12 +538,22 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                     15), // Adjust the radius as needed
                                               ),
                                               heroTag: "mixtape_creation",
-                                              onPressed: () {
-                                                print("add to queue");
-                                                /* Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => PlaylistCreationScreen()),
-                                           ); */
+                                              onPressed: () async {
+                                                // print("add to queue");
+                                                try {
+                                                  await mixtapeService.enqueueMixtape(mixtape.playlistId, mixtape.id);
+                                                } on FormatException {
+                                                  final snackBar = SnackBar(
+                                                    content: Text("Mixtape successfully queued")
+                                                  );
+                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                } catch (e) {
+                                                  print(e);
+                                                  final snackBar = SnackBar(
+                                                    content: Text("Error queueing, please ensure you have Spotify open")
+                                                  );
+                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                }
                                               },
                                               label: Padding(
                                                 padding: EdgeInsets.fromLTRB(
@@ -552,9 +562,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                   'Queue',
                                                   style: TextStyle(
                                                     fontSize:
-                                                        textScaleFactor * 15,
+                                                    textScaleFactor * 15,
                                                     fontFamily: "Montserrat",
                                                     fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
                                                   ),
                                                 ),
                                               ),
@@ -594,12 +605,13 @@ class _PlaylistPageState extends State<PlaylistPage> {
                             fontSize: textScaleFactor * 20,
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w600,
+                            color: Colors.white,
                           ),
                         ),
                       ),
-                      icon: Icon(Icons.add),
+                      icon: Icon(Icons.add, color: Colors.white),
                       backgroundColor:
-                          MixTapeColors.green, // Change the button's color
+                      MixTapeColors.green, // Change the button's color
                     ),
                   ),
                 ],

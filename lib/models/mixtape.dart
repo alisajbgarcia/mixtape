@@ -39,15 +39,14 @@ class Mixtape {
       creator: Profile.fromJson(json["creator"]),
       songIDs: List<String>.from(json['songIDs'].map((x) => x)),
       songs: jsonDecodeList(json["songs"], TrackInfo.fromJson),
-      reactions: jsonDecodeList(json["reactions"], Reaction.fromJson)
-
+      reactions: jsonDecodeList(json["reactions"], Reaction.fromJson),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "playlistId": playlistId,
+      "playlistID": playlistId,
       "name": name,
       "createdAt": createdAt.toIso8601String(),
       "description": description,

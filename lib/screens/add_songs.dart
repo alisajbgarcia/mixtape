@@ -173,10 +173,11 @@ class _AddSongsPageState extends State<AddSongsPage> {
                             fontSize: textScaleFactor * 20,
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w600,
+                            color: Colors.white
                           ),
                         ),
                       ),
-                      icon: Icon(Icons.add),
+                      icon: Icon(Icons.add, color: Colors.white),
                       backgroundColor:
                           MixTapeColors.dark_gray, // Change the button's color
                     ),
@@ -224,10 +225,11 @@ class _AddSongsPageState extends State<AddSongsPage> {
                       fontSize: textScaleFactor * 20,
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-                icon: Icon(Icons.send),
+                icon: Icon(Icons.send, color: Colors.white),
                 backgroundColor:
                     MixTapeColors.green, // Change the button's color
               ),
