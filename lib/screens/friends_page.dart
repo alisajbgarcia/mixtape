@@ -478,7 +478,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                       child: Text(
                                         'Suggested Friends',
                                         style: TextStyle(
-                                          fontSize: (20 * textScaleFactor),
+                                          fontSize: (16 * textScaleFactor),
                                           color: Colors.white,
                                         ),
                                       ),
@@ -511,7 +511,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                       child: Text(
                                         'Add Friends +',
                                         style: TextStyle(
-                                          fontSize: (20 * textScaleFactor),
+                                          fontSize: (16 * textScaleFactor),
                                           color: Colors.white,
                                         ),
                                       ),
