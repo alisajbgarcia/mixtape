@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:mixtape/services/friendship_service.dart';
 
+import '../main.dart';
 import '../models/friendship.dart';
 import '../models/profile.dart';
 import '../services/authentication_service.dart';
@@ -150,10 +151,10 @@ class _FriendsPageState extends State<FriendsPage> {
                                 borderRadius: BorderRadius.circular(12.0),
                                 onTap: () {
                                   print(friend.id);
-                                  Navigator.push(
+                                  Navigator.pushNamed(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) => FriendInfoPage(friendId: friend.id)),
+                                    '/friendinfo',
+                                    arguments: ScreenArguments(null, null, null, null, friend.id),
                                   );
                                 },
                               child: Card(
