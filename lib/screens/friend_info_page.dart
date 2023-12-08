@@ -98,26 +98,7 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
                       ),
                       softWrap: true,
                     ),
-                      Text(
-                        "Mixtapes you created",
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          fontSize: (14.0 * textScaleFactor),
-                          color: Colors.white,
-                        ),
-                        softWrap: true,
-                      ),
-                      Text(
-                        "Mixtapes they created: 3",
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          fontSize: (14.0 * textScaleFactor),
-                          color: Colors.white,
-                        ),
-                        softWrap: true,
-                      ),
+
                     ]);
                   }),
             ),
@@ -192,6 +173,9 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
             int userMixtapes = 0;
             int friendMixtapes = 0;
             if (!friendshipInfoSnapshot.hasData || friendshipInfoSnapshot.hasError) {
+              if (friendshipInfoSnapshot.hasError) {
+                print(friendshipInfoSnapshot.error);
+              }
               return const Center(child: CircularProgressIndicator());
               // cardData = dummydata;
               // print('oops');
@@ -206,6 +190,26 @@ class _FriendInfoPageState extends State<FriendInfoPage> {
             // that this won't be null because of the early return
             return Column(
               children: [
+                Text(
+                  "Mixtapes you created: ${userMixtapes}",
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    fontSize: (14.0 * textScaleFactor),
+                    color: Colors.white,
+                  ),
+                  softWrap: true,
+                ),
+                Text(
+                  "Mixtapes they created: ${friendMixtapes}",
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    fontSize: (14.0 * textScaleFactor),
+                    color: Colors.white,
+                  ),
+                  softWrap: true,
+                ),
                 Container(
                   height: screenHeight * .67,
                   padding: EdgeInsets.fromLTRB(screenWidth * .005,

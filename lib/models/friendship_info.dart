@@ -16,9 +16,9 @@ class FriendshipInfo {
 
   factory FriendshipInfo.fromJson(Map<String, dynamic> json) {
     return FriendshipInfo(
-      sharedPlaylists: List<Playlist>.from(json['sharedPlaylists'].map((x) => x)),
+      sharedPlaylists: List<Playlist>.from(json['sharedPlaylists'].map((x) => new Playlist.fromJson(x))),
       numMixtapesFromProfile: json["numMixtapesFromProfile"],
-      numMixtapesFromFriend: json["userMixtapes"],
+      numMixtapesFromFriend: json["numMixtapesFromFriend"],
     );
   }
 
