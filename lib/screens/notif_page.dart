@@ -317,6 +317,8 @@ class _NotifPage extends State<NotifPage> {
                             print('activity pressed');
 
                             Playlist playlist = await playlistService.getPlaylistForCurrentUser(notif.routingPath);
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushNamed('/home', arguments: ScreenArguments(playlist));
                             Navigator.of(context).pushNamed('/playlist', arguments: ScreenArguments(playlist));
                           },
                         ),
